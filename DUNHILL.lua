@@ -285,7 +285,7 @@ end
     
     local Sidebar = Instance.new("ScrollingFrame", Content)
     Sidebar.Name = "Sidebar"
-    Sidebar.Size = UDim2.new(0, 150, 1, -15)
+    Sidebar.Size = UDim2.new(0, 120, 1, -15)
     Sidebar.Position = UDim2.new(0, 10, 0, 10)
     Sidebar.BackgroundColor3 = Theme.Sidebar
     Sidebar.BackgroundTransparency = 0.3
@@ -478,6 +478,8 @@ end)
         TabBtn.BorderSizePixel = 0
         Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 7)
         
+        
+        --[[
         local Icon = Instance.new("TextLabel", TabBtn)
         Icon.Name = "Icon"
         Icon.Size = UDim2.new(0, 28, 1, 0)
@@ -487,11 +489,13 @@ end)
         Icon.TextColor3 = Theme.TextDim
         Icon.TextSize = 16
         Icon.Font = Enum.Font.Gotham
+        ]]--
+        
         
         local Label = Instance.new("TextLabel", TabBtn)
         Label.Name = "Label"
-        Label.Size = UDim2.new(1, -42, 1, 0)
-        Label.Position = UDim2.new(0, 36, 0, 0)
+        Label.Size = UDim2.new(1, -20, 1, 0)  
+        Label.Position = UDim2.new(0, 10, 0, 0) 
         Label.BackgroundTransparency = 1
         Label.Text = TabName
         Label.TextColor3 = Theme.TextDim
@@ -501,8 +505,8 @@ end)
         
         local TabContent = Instance.new("ScrollingFrame", Content)
         TabContent.Name = TabName .. "Content"
-        TabContent.Size = UDim2.new(1, -175, 1, -15)
-        TabContent.Position = UDim2.new(0, 165, 0, 10)
+        TabContent.Size = UDim2.new(1, -145, 1, -15)
+        TabContent.Position = UDim2.new(0, 135, 0, 10)
         TabContent.BackgroundColor3 = Theme.Background
         TabContent.BackgroundTransparency = 1
         TabContent.BorderSizePixel = 0
@@ -539,14 +543,14 @@ end)
             for _, tab in pairs(Window.Tabs) do
                 tab.Content.Visible = false
                 Tween(tab.Button, {BackgroundColor3 = Theme.TabInactive})
-                Tween(tab.Icon, {TextColor3 = Theme.TextDim})
+               -- Tween(tab.Icon, {TextColor3 = Theme.TextDim})--
                 Tween(tab.Label, {TextColor3 = Theme.TextDim})
             end
             
             Window.CurrentTab = TabContent
             TabContent.Visible = true
             Tween(TabBtn, {BackgroundColor3 = Theme.TabActive})
-            Tween(Icon, {TextColor3 = Theme.Text})
+            --Tween(Icon, {TextColor3 = Theme.Text})--
             Tween(Label, {TextColor3 = Theme.Text})
         end
         
@@ -570,7 +574,7 @@ end)
         local Tab = {
             Button = TabBtn, 
             Content = TabContent,
-            Icon = Icon,
+            --Icon = Icon,--
             Label = Label
         }
         table.insert(Window.Tabs, Tab)
