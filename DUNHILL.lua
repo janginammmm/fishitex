@@ -168,8 +168,8 @@ end
     
     local Main = Instance.new("Frame")
     Main.Name = "Main"
-    Main.Size = UDim2.new(0, 460, 0, 290)
-    Main.Position = UDim2.new(0.5, -230, 0.5, -145)
+    Main.Size = UDim2.new(0, 550, 0, 290)
+    Main.Position = UDim2.new(0.5, -275, 0.5, -175)
     Main.BackgroundColor3 = Theme.Background
     Main.BackgroundTransparency = 0.15
     Main.BorderSizePixel = 0
@@ -930,7 +930,7 @@ end)
                 -- ✅ FIX: Tambah pcall untuk semua operasi
                 local success, Frame = pcall(function()
                     local frame = Instance.new("Frame")
-                    frame.Size = UDim2.new(1, 0, 0, 65)
+                    frame.Size = UDim2.new(1, 0, 0, 40)
                     frame.BackgroundColor3 = Theme.ElementBg
                     frame.BackgroundTransparency = 0.3
                     frame.BorderSizePixel = 0
@@ -954,8 +954,8 @@ end)
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
                 local NameLabel = Instance.new("TextLabel", Frame)
-                NameLabel.Size = UDim2.new(1, -30, 0, 22)
-                NameLabel.Position = UDim2.new(0, 15, 0, 8)
+                NameLabel.Size = UDim2.new(1, -160, 1, 0)
+                NameLabel.Position = UDim2.new(0, 15, 0, 0)
                 NameLabel.BackgroundTransparency = 1
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
@@ -964,8 +964,8 @@ end)
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local InputBox = Instance.new("TextBox", Frame)
-                InputBox.Size = UDim2.new(1, -30, 0, 28)
-                InputBox.Position = UDim2.new(0, 15, 0, 32)
+                InputBox.Size = UDim2.new(0, 140, 0, 28)
+                InputBox.Position = UDim2.new(1, -155, 0.5, -14)
                 InputBox.BackgroundColor3 = Theme.SliderBg
                 InputBox.Text = ""
                 InputBox.PlaceholderText = PlaceholderText
@@ -1451,8 +1451,8 @@ function SectionObj:CreateCollapsible(config)
         Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
         
         local NameLabel = Instance.new("TextLabel", Frame)
-        NameLabel.Size = UDim2.new(1, -30, 0, 22)
-        NameLabel.Position = UDim2.new(0, 15, 0, 8)
+        NameLabel.Size = UDim2.new(1, -160, 1, 0)
+        NameLabel.Position = UDim2.new(0, 15, 0, 0)
         NameLabel.BackgroundTransparency = 1
         NameLabel.Text = Name
         NameLabel.TextColor3 = Theme.Text
@@ -1461,8 +1461,8 @@ function SectionObj:CreateCollapsible(config)
         NameLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local InputBox = Instance.new("TextBox", Frame)
-        InputBox.Size = UDim2.new(1, -30, 0, 28)
-        InputBox.Position = UDim2.new(0, 15, 0, 32)
+        InputBox.Size = UDim2.new(0, 140, 0, 28)
+        InputBox.Position = UDim2.new(1, -155, 0.5, -14)
         InputBox.BackgroundColor3 = Theme.SliderBg
         InputBox.Text = ""
         InputBox.PlaceholderText = PlaceholderText
