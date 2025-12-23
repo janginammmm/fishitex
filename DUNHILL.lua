@@ -68,7 +68,7 @@ local Theme = {
     
     SliderFill = Color3.fromRGB(190, 190, 190),
     SliderBg = Color3.fromRGB(35, 35, 35),
-    BorderBlue = Color3.fromRGB(135, 206, 250),
+    BorderBlue = Color3.fromRGB(65, 105, 225),
 }
 
 local function Tween(obj, props, duration, style, direction)
