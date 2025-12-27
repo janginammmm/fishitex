@@ -624,6 +624,23 @@ end)
                 SectionStroke.Thickness = 1
                 SectionStroke.Transparency = 0.4
                 SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                -- ✅ TAMBAHKAN INI: GARIS CAHAYA BIRU DI BAWAH
+                local GlowLine = Instance.new("Frame", SectionHeader)
+                GlowLine.Name = "GlowLine"
+                GlowLine.Size = UDim2.new(1, -10, 0, 2)  -- Lebar penuh, tinggi 2px
+                GlowLine.Position = UDim2.new(0, 5, 1, 0)  -- Di bawah header
+                GlowLine.BackgroundColor3 = Theme.BorderBlue  -- Warna biru (sesuai border utama)
+                GlowLine.BackgroundTransparency = 0  -- Full solid
+                GlowLine.BorderSizePixel = 0
+
+                -- ✅ GLOW EFFECT (shadow biru)
+                local GlowShadow = Instance.new("UIGradient", GlowLine)
+                GlowShadow.Transparency = NumberSequence.new({
+                    NumberSequenceKeypoint.new(0, 0.3),   -- Kiri: agak terang
+                    NumberSequenceKeypoint.new(0.5, 0),   -- Tengah: full terang
+                    NumberSequenceKeypoint.new(1, 0.3)    -- Kanan: agak terang
+                })
+                GlowShadow.Rotation = 0
                 
                 local SectionTitle = Instance.new("TextLabel", SectionHeader)
                 SectionTitle.Name = "Title"
