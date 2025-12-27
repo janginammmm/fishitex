@@ -50,6 +50,9 @@ local Theme = {
     ElementBg = Color3.fromRGB(25, 25, 25),
     ElementBgHover = Color3.fromRGB(30, 30, 30),
     ElementBorder = Color3.fromRGB(45, 45, 45),
+
+    ElementContentBg = Color3.fromRGB(45, 50, 60),  -- Abu-abu untuk element
+    ElementContentHover = Color3.fromRGB(55, 60, 70),
     
     TabActive = Color3.fromRGB(60, 60, 60),
     TabInactive = Color3.fromRGB(25, 25, 25),
@@ -614,7 +617,7 @@ end)
                 local SectionHeader = Instance.new("Frame", TabContent)
                 SectionHeader.Name = SectionName .. "_Header"
                 SectionHeader.Size = UDim2.new(1, 0, 0, 30)
-                SectionHeader.BackgroundColor3 = Theme.BackgroundSecondary
+                SectionHeader.BackgroundColor3 = Theme.ElementContentBg
                 SectionHeader.BackgroundTransparency = 0.7
                 SectionHeader.BorderSizePixel = 0
                 Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
@@ -693,7 +696,7 @@ end)
                 
                 local Btn = Instance.new("TextButton", Container)
                 Btn.Size = UDim2.new(1, 0, 0, 38)
-                Btn.BackgroundColor3 = Theme.ElementBg
+                Btn.BackgroundColor3 = Theme.ElementContentBg
                 Btn.BackgroundTransparency = 0.7
                 Btn.Text = Name
                 Btn.TextColor3 = Theme.Text
@@ -710,12 +713,12 @@ end)
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
                 Btn.MouseEnter:Connect(function()
-                    Tween(Btn, {BackgroundColor3 = Theme.ElementBgHover})
+                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentHover})
                     Tween(Stroke, {Color = Theme.Primary})
                 end)
                 
                 Btn.MouseLeave:Connect(function()
-                    Tween(Btn, {BackgroundColor3 = Theme.ElementBg})
+                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentBg})
                     Tween(Stroke, {Color = Theme.ElementBorder})
                 end)
                 
@@ -742,7 +745,7 @@ end)
                 
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
-                Frame.BackgroundColor3 = Theme.ElementBg
+                Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
@@ -783,7 +786,7 @@ end)
                 Interact.Text = ""
                 
                 Interact.MouseEnter:Connect(function()
-                    Tween(Frame, {BackgroundColor3 = Theme.ElementBgHover})
+                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentHover})
                 end)
                 
                 Interact.MouseLeave:Connect(function()
@@ -831,7 +834,7 @@ end)
                 
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 54)
-                Frame.BackgroundColor3 = Theme.ElementBg
+                Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
@@ -970,7 +973,7 @@ end)
                 local success, Frame = pcall(function()
                     local frame = Instance.new("Frame")
                     frame.Size = UDim2.new(1, 0, 0, 40)
-                    frame.BackgroundColor3 = Theme.ElementBg
+                    frame.BackgroundColor3 = Theme.ElementContentBg
                     frame.BackgroundTransparency = 0.7
                     frame.BorderSizePixel = 0
                     frame.Parent = Container
@@ -1115,7 +1118,7 @@ end)
                 
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
-                Frame.BackgroundColor3 = Theme.ElementBg
+                Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
                 Frame.ClipsDescendants = true
@@ -1281,7 +1284,7 @@ function SectionObj:CreateCollapsible(config)
     
     local CollapsibleFrame = Instance.new("Frame", Container)
     CollapsibleFrame.Size = UDim2.new(1, 0, 0, 38)
-    CollapsibleFrame.BackgroundColor3 = Theme.ElementBg
+    CollapsibleFrame.BackgroundColor3 = Theme.ElementContentBg
     CollapsibleFrame.BackgroundTransparency = 0.7
     CollapsibleFrame.BorderSizePixel = 0
     CollapsibleFrame.ClipsDescendants = true
@@ -1349,11 +1352,11 @@ function SectionObj:CreateCollapsible(config)
     end)
     
     HeaderBtn.MouseEnter:Connect(function()
-        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementBgHover})
+        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementContentHover})
     end)
     
     HeaderBtn.MouseLeave:Connect(function()
-        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementBg})
+        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementContentBg})
     end)
     
     -- Initialize
