@@ -287,7 +287,7 @@ end
     Instance.new("UICorner", Sidebar).CornerRadius = UDim.new(0, 8)
     
     local SidebarLayout = Instance.new("UIListLayout", Sidebar)
-    SidebarLayout.Padding = UDim.new(0, 6)
+    SidebarLayout.Padding = UDim.new(0, 5)
     SidebarLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     SidebarLayout.SortOrder = Enum.SortOrder.LayoutOrder
     local SidebarPadding = Instance.new("UIPadding", Sidebar)
@@ -613,7 +613,7 @@ end)
                 -- ✅ FRAME HANYA UNTUK JUDUL
                 local SectionHeader = Instance.new("Frame", TabContent)
                 SectionHeader.Name = SectionName .. "_Header"
-                SectionHeader.Size = UDim2.new(1, 0, 0, 36)
+                SectionHeader.Size = UDim2.new(1, 0, 0, 30)
                 SectionHeader.BackgroundColor3 = Theme.BackgroundSecondary
                 SectionHeader.BackgroundTransparency = 0.5
                 SectionHeader.BorderSizePixel = 0
@@ -630,7 +630,7 @@ end)
                 SectionTitle.Size = UDim2.new(1, -20, 1, 0)
                 SectionTitle.Position = UDim2.new(0, 12, 0, 0)
                 SectionTitle.BackgroundTransparency = 1
-                SectionTitle.Text = "▸ " .. SectionName
+                SectionTitle.Text = SectionName
                 SectionTitle.TextColor3 = Theme.Accent
                 SectionTitle.TextSize = 14
                 SectionTitle.Font = Enum.Font.GothamBold
@@ -644,7 +644,7 @@ end)
                 Container.BackgroundTransparency = 1
                 
                 local ContainerLayout = Instance.new("UIListLayout", Container)
-                ContainerLayout.Padding = UDim.new(0, 5)
+                ContainerLayout.Padding = UDim.new(0, 4)
                 ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
                 
                 local SectionObj = {Container = Container, Frame = SectionHeader}
