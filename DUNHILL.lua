@@ -168,8 +168,8 @@ end
     
     local Main = Instance.new("Frame")
     Main.Name = "Main"
-    Main.Size = UDim2.new(0, 550, 0, 290)
-    Main.Position = UDim2.new(0.5, -275, 0.5, -175)
+    Main.Size = UDim2.new(0, 500, 0, 290)
+    Main.Position = UDim2.new(0.5, -250, 0.5, -175)
     Main.BackgroundColor3 = Theme.Background
     Main.BackgroundTransparency = 0.15
     Main.BorderSizePixel = 0
@@ -180,7 +180,7 @@ end
     MainBorder.Color = Theme.BorderBlue  -- Sky Blue
     MainBorder.Thickness = 2
     MainBorder.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    --Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)--
+    Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
     
     local Shadow = Instance.new("ImageLabel", Main)
     Shadow.Name = "Shadow"
@@ -198,7 +198,7 @@ end
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 45)
     TopBar.BackgroundColor3 = Theme.TopBar
-    TopBar.BackgroundTransparency = 0.3
+    TopBar.BackgroundTransparency = 0.15
     TopBar.BorderSizePixel = 0
     
     local TopBarCorner = Instance.new("UICorner", TopBar)
@@ -208,18 +208,26 @@ end
     TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
     TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
     TopBarExtend.BackgroundColor3 = Theme.TopBar
-    TopBarExtend.BackgroundTransparency = 0.3
+    TopBarExtend.BackgroundTransparency = 0.15
     TopBarExtend.BorderSizePixel = 0
     
-    local Title = Instance.new("TextLabel", TopBar)
-    Title.Size = UDim2.new(0, 200, 1, 0)
-    Title.Position = UDim2.new(0, 20, 0, 0)
+    local Title = Instance.new("ImageLabel", TopBar)
+    Title.Size = UDim2.new(0, 30, 0, 30)  -- Ukuran logo
+    Title.Position = UDim2.new(0, 15, 0.5, -15)  -- Posisi kiri atas
     Title.BackgroundTransparency = 1
-    Title.Text = "👻" .. WindowName
-    Title.TextColor3 = Theme.Accent
-    Title.TextSize = 17
-    Title.Font = Enum.Font.GothamBold
-    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Image = "rbxassetid://101311528770915"  -- Logo Mach kamu (sama kayak minimize icon)
+    Title.ScaleType = Enum.ScaleType.Fit
+    Title.ImageTransparency = 0
+
+    local TitleText = Instance.new("TextLabel", TopBar)
+    TitleText.Size = UDim2.new(0, 150, 1, 0)
+    TitleText.Position = UDim2.new(0, 60, 0, 0)  -- Di sebelah kanan logo
+    TitleText.BackgroundTransparency = 1
+    TitleText.Text = WindowName
+    TitleText.TextColor3 = Theme.Accent
+    TitleText.TextSize = 17
+    TitleText.Font = Enum.Font.GothamBold
+    TitleText.TextXAlignment = Enum.TextXAlignment.Left
     
     local CloseBtn = Instance.new("TextButton", TopBar)
     CloseBtn.Size = UDim2.new(0, 35, 0, 35)
@@ -247,34 +255,16 @@ end
         
     local MinimizedIcon = Instance.new("ImageButton", ScreenGui)
     MinimizedIcon.Name = "MinIcon"
-    MinimizedIcon.Size = UDim2.new(0, 65, 0, 65)
+    MinimizedIcon.Size = UDim2.new(0, 50, 0, 50)  
     MinimizedIcon.Position = UDim2.new(0, 20, 0, 20)
-    MinimizedIcon.BackgroundColor3 = Theme.TopBar
-    MinimizedIcon.Image = "rbxassetid://89143179359530"  -- Ganti dengan ID kamu
+    MinimizedIcon.BackgroundTransparency = 1 
+    MinimizedIcon.Image = "rbxassetid://101311528770915"  -- Logo Mach kamu
     MinimizedIcon.ScaleType = Enum.ScaleType.Fit
-    -- HAPUS baris ImageColor3 atau set ke putih
-    MinimizedIcon.ImageTransparency = 0  -- Gambar full visible
+    MinimizedIcon.ImageTransparency = 0
     MinimizedIcon.AutoButtonColor = false
     MinimizedIcon.BorderSizePixel = 0
     MinimizedIcon.Visible = false
-    Instance.new("UICorner", MinimizedIcon).CornerRadius = UDim.new(1, 0)
-
-    local MinIconShadow = Instance.new("ImageLabel", MinimizedIcon)
-    MinIconShadow.Size = UDim2.new(1, 30, 1, 30)
-    MinIconShadow.Position = UDim2.new(0, -15, 0, -15)
-    MinIconShadow.BackgroundTransparency = 1
-    MinIconShadow.Image = "rbxassetid://5554236805"
-    MinIconShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    MinIconShadow.ImageTransparency = 0.4
-    MinIconShadow.ScaleType = Enum.ScaleType.Slice
-    MinIconShadow.SliceCenter = Rect.new(23, 23, 277, 277)
-    MinIconShadow.ZIndex = -1
-
-    local IconPadding = Instance.new("UIPadding", MinimizedIcon)
-    IconPadding.PaddingTop = UDim.new(0, 10)
-    IconPadding.PaddingBottom = UDim.new(0, 10)
-    IconPadding.PaddingLeft = UDim.new(0, 10)
-    IconPadding.PaddingRight = UDim.new(0, 10)
+    Instance.new("UICorner", MinimizedIcon).CornerRadius = UDim.new(0, 8)
     MakeDraggable(MinimizedIcon, MinimizedIcon)
     
     local Content = Instance.new("Frame", Main)
@@ -288,7 +278,7 @@ end
     Sidebar.Size = UDim2.new(0, 135, 1, -15)
     Sidebar.Position = UDim2.new(0, 10, 0, 10)
     Sidebar.BackgroundColor3 = Theme.Sidebar
-    Sidebar.BackgroundTransparency = 0.3
+    Sidebar.BackgroundTransparency = 0.15
     Sidebar.BorderSizePixel = 0
     Sidebar.ScrollBarThickness = 3
     Sidebar.ScrollBarImageColor3 = Theme.Primary
@@ -326,7 +316,7 @@ MinBtn.MouseButton1Click:Connect(function()
     Main.Visible = false
     MinimizedIcon.Visible = true
     MinimizedIcon.Size = UDim2.new(0, 0, 0, 0)
-    Tween(MinimizedIcon, {Size = UDim2.new(0, 65, 0, 65)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+    Tween(MinimizedIcon, {Size = UDim2.new(0, 50, 0, 50)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 end)
 
         local isDraggingIcon = false
@@ -488,34 +478,53 @@ end)
         Instance.new("UICorner", ActiveIndicator).CornerRadius = UDim.new(0, 2)
         
         
-        --[[
-        local Icon = Instance.new("TextLabel", TabBtn)
+        local Icon = Instance.new("ImageLabel", TabBtn)
         Icon.Name = "Icon"
-        Icon.Size = UDim2.new(0, 28, 1, 0)
-        Icon.Position = UDim2.new(0, 8, 0, 0)
+        Icon.Size = UDim2.new(0, 20, 0, 20)
+        Icon.Position = UDim2.new(0, 10, 0.5, -10)
         Icon.BackgroundTransparency = 1
-        Icon.Text = TabIcon
-        Icon.TextColor3 = Theme.TextDim
-        Icon.TextSize = 16
-        Icon.Font = Enum.Font.Gotham
-        ]]--
+        Icon.Image = TabIcon ~= "" and "rbxassetid://" .. TabIcon or ""
+        Icon.ImageColor3 = Theme.TextDim
+        Icon.ScaleType = Enum.ScaleType.Fit
+        Icon.Visible = TabIcon ~= ""
         
         
         local Label = Instance.new("TextLabel", TabBtn)
         Label.Name = "Label"
-        Label.Size = UDim2.new(1, -20, 1, 0)  
-        Label.Position = UDim2.new(0, 10, 0, 0) 
+        Label.Size = UDim2.new(1, -45, 1, 0)  
+        Label.Position = UDim2.new(0, TabIcon ~= "" and 35 or 10, 0, 0) 
         Label.BackgroundTransparency = 1
         Label.Text = TabName
         Label.TextColor3 = Theme.TextDim
         Label.TextSize = 13
         Label.Font = Enum.Font.GothamMedium
         Label.TextXAlignment = Enum.TextXAlignment.Left
+
+        local TabTitleBar = Instance.new("Frame", Content)
+        TabTitleBar.Name = TabName .. "TitleBar"
+        TabTitleBar.Size = UDim2.new(1, -160, 0, 45)
+        TabTitleBar.Position = UDim2.new(0, 150, 0, 10)
+        TabTitleBar.BackgroundColor3 = Theme.BackgroundSecondary
+        TabTitleBar.BackgroundTransparency = 0.5
+        TabTitleBar.BorderSizePixel = 0
+        TabTitleBar.Visible = false
+        TabTitleBar.ZIndex = 2
+        Instance.new("UICorner", TabTitleBar).CornerRadius = UDim.new(0, 8)
+
+        local TabTitleLabel = Instance.new("TextLabel", TabTitleBar)
+        TabTitleLabel.Size = UDim2.new(1, -30, 1, 0)
+        TabTitleLabel.Position = UDim2.new(0, 15, 0, 0)
+        TabTitleLabel.BackgroundTransparency = 1
+        TabTitleLabel.Text = TabName
+        TabTitleLabel.TextColor3 = Theme.Accent
+        TabTitleLabel.TextSize = 18
+        TabTitleLabel.Font = Enum.Font.GothamBold
+        TabTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local TabContent = Instance.new("ScrollingFrame", Content)
         TabContent.Name = TabName .. "Content"
-        TabContent.Size = UDim2.new(1, -160, 1, -15)
-        TabContent.Position = UDim2.new(0, 150, 0, 10)
+        TabContent.Size = UDim2.new(1, -160, 1, -65)
+        TabContent.Position = UDim2.new(0, 150, 0, 60)
         TabContent.BackgroundColor3 = Theme.Background
         TabContent.BackgroundTransparency = 1
         TabContent.BorderSizePixel = 0
@@ -548,26 +557,36 @@ end)
             end
         end)
         
-        local function ActivateTab()
-            for _, tab in pairs(Window.Tabs) do
-                tab.Content.Visible = false
-                Tween(tab.Button, {BackgroundColor3 = Theme.TabInactive})
-                Tween(tab.Label, {TextColor3 = Theme.TextDim})
-                -- Sembunyikan indicator
-                if tab.Button:FindFirstChild("ActiveIndicator") then
-                    tab.Button.ActiveIndicator.Visible = false
+            local function ActivateTab()
+                for _, tab in pairs(Window.Tabs) do
+                    tab.Content.Visible = false
+                    tab.TitleBar.Visible = false  -- ✅ TAMBAHKAN
+                    Tween(tab.Button, {BackgroundColor3 = Theme.TabInactive})
+                    Tween(tab.Label, {TextColor3 = Theme.TextDim})
+                    
+                    if tab.Icon and tab.Icon.Visible then
+                        Tween(tab.Icon, {ImageColor3 = Theme.TextDim})
+                    end
+                    
+                    if tab.Button:FindFirstChild("ActiveIndicator") then
+                        tab.Button.ActiveIndicator.Visible = false
+                    end
+                end
+                
+                Window.CurrentTab = TabContent
+                TabContent.Visible = true
+                TabTitleBar.Visible = true  -- ✅ TAMBAHKAN
+                Tween(TabBtn, {BackgroundColor3 = Theme.TabActive})
+                Tween(Label, {TextColor3 = Theme.Text})
+                
+                if Icon and Icon.Visible then
+                    Tween(Icon, {ImageColor3 = Theme.Text})
+                end
+                
+                if TabBtn:FindFirstChild("ActiveIndicator") then
+                    TabBtn.ActiveIndicator.Visible = true
                 end
             end
-            
-            Window.CurrentTab = TabContent
-            TabContent.Visible = true
-            Tween(TabBtn, {BackgroundColor3 = Theme.TabActive})
-            Tween(Label, {TextColor3 = Theme.Text})
-            -- Tampilkan indicator
-            if TabBtn:FindFirstChild("ActiveIndicator") then
-                TabBtn.ActiveIndicator.Visible = true
-            end
-        end
         
         TabBtn.MouseButton1Click:Connect(ActivateTab)
         
@@ -586,61 +605,57 @@ end)
             end)
         end
         
-        local Tab = {
-            Button = TabBtn, 
-            Content = TabContent,
-            --Icon = Icon,--
-            Label = Label
-        }
+            local Tab = {
+                Button = TabBtn, 
+                Content = TabContent,
+                TitleBar = TabTitleBar,  -- ✅ TAMBAHKAN
+                Icon = Icon,
+                Label = Label
+            }
         table.insert(Window.Tabs, Tab)
         
-        function Tab:CreateSection(config)
-            config = config or {}
-            local SectionName = config.Name or "Section"
-            
-            local Section = Instance.new("Frame", TabContent)
-            Section.Name = SectionName
-            Section.Size = UDim2.new(1, 0, 0, 0)
-            Section.AutomaticSize = Enum.AutomaticSize.Y
-            Section.BackgroundColor3 = Theme.BackgroundSecondary
-            Section.BackgroundTransparency = 0.4
-            Section.BorderSizePixel = 0
-            Instance.new("UICorner", Section).CornerRadius = UDim.new(0, 8)
-            
-            local SectionStroke = Instance.new("UIStroke", Section)
-            SectionStroke.Color = Theme.ElementBorder
-            SectionStroke.Thickness = 1
-            SectionStroke.Transparency = 0.4
-            SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-            
-            local SectionPadding = Instance.new("UIPadding", Section)
-            SectionPadding.PaddingTop = UDim.new(0, 12)
-            SectionPadding.PaddingBottom = UDim.new(0, 12)
-            SectionPadding.PaddingLeft = UDim.new(0, 12)
-            SectionPadding.PaddingRight = UDim.new(0, 12)
-            
-            local SectionTitle = Instance.new("TextLabel", Section)
-            SectionTitle.Name = "Title"
-            SectionTitle.Size = UDim2.new(1, 0, 0, 22)
-            SectionTitle.BackgroundTransparency = 1
-            SectionTitle.Text = "▸ " .. SectionName
-            SectionTitle.TextColor3 = Theme.Accent
-            SectionTitle.TextSize = 14
-            SectionTitle.Font = Enum.Font.GothamBold
-            SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-            
-            local Container = Instance.new("Frame", Section)
-            Container.Name = "Container"
-            Container.Size = UDim2.new(1, 0, 0, 0)
-            Container.Position = UDim2.new(0, 0, 0, 28)
-            Container.AutomaticSize = Enum.AutomaticSize.Y
-            Container.BackgroundTransparency = 1
-            
-            local ContainerLayout = Instance.new("UIListLayout", Container)
-            ContainerLayout.Padding = UDim.new(0, 8)
-            ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            
-            local SectionObj = {Container = Container, Frame = Section}
+            function Tab:CreateSection(config)
+                config = config or {}
+                local SectionName = config.Name or "Section"
+                
+                -- ✅ FRAME HANYA UNTUK JUDUL
+                local SectionHeader = Instance.new("Frame", TabContent)
+                SectionHeader.Name = SectionName .. "_Header"
+                SectionHeader.Size = UDim2.new(1, 0, 0, 36)
+                SectionHeader.BackgroundColor3 = Theme.BackgroundSecondary
+                SectionHeader.BackgroundTransparency = 0.5
+                SectionHeader.BorderSizePixel = 0
+                Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
+                
+                local SectionStroke = Instance.new("UIStroke", SectionHeader)
+                SectionStroke.Color = Theme.ElementBorder
+                SectionStroke.Thickness = 1
+                SectionStroke.Transparency = 0.4
+                SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                
+                local SectionTitle = Instance.new("TextLabel", SectionHeader)
+                SectionTitle.Name = "Title"
+                SectionTitle.Size = UDim2.new(1, -20, 1, 0)
+                SectionTitle.Position = UDim2.new(0, 12, 0, 0)
+                SectionTitle.BackgroundTransparency = 1
+                SectionTitle.Text = "▸ " .. SectionName
+                SectionTitle.TextColor3 = Theme.Accent
+                SectionTitle.TextSize = 14
+                SectionTitle.Font = Enum.Font.GothamBold
+                SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+                
+                -- ✅ CONTAINER LANGSUNG DI TabContent (BUKAN DALAM FRAME)
+                local Container = Instance.new("Frame", TabContent)
+                Container.Name = SectionName .. "_Content"
+                Container.Size = UDim2.new(1, 0, 0, 0)
+                Container.AutomaticSize = Enum.AutomaticSize.Y
+                Container.BackgroundTransparency = 1
+                
+                local ContainerLayout = Instance.new("UIListLayout", Container)
+                ContainerLayout.Padding = UDim.new(0, 8)
+                ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                
+                local SectionObj = {Container = Container, Frame = SectionHeader}
             
             function SectionObj:CreateLabel(config)
                 config = config or {}
@@ -719,7 +734,7 @@ end)
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
                 Frame.BackgroundColor3 = Theme.ElementBg
-                Frame.BackgroundTransparency = 0.3
+                Frame.BackgroundTransparency = 0.4
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
@@ -808,7 +823,7 @@ end)
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 54)
                 Frame.BackgroundColor3 = Theme.ElementBg
-                Frame.BackgroundTransparency = 0.3
+                Frame.BackgroundTransparency = 0.4
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
@@ -1092,7 +1107,7 @@ end)
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
                 Frame.BackgroundColor3 = Theme.ElementBg
-                Frame.BackgroundTransparency = 0.3
+                Frame.BackgroundTransparency = 0.4
                 Frame.BorderSizePixel = 0
                 Frame.ClipsDescendants = true
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
@@ -1258,7 +1273,7 @@ function SectionObj:CreateCollapsible(config)
     local CollapsibleFrame = Instance.new("Frame", Container)
     CollapsibleFrame.Size = UDim2.new(1, 0, 0, 38)
     CollapsibleFrame.BackgroundColor3 = Theme.ElementBg
-    CollapsibleFrame.BackgroundTransparency = 0.3
+    CollapsibleFrame.BackgroundTransparency = 0.4
     CollapsibleFrame.BorderSizePixel = 0
     CollapsibleFrame.ClipsDescendants = true
     Instance.new("UICorner", CollapsibleFrame).CornerRadius = UDim.new(0, 7)
@@ -1371,7 +1386,7 @@ function SectionObj:CreateCollapsible(config)
         local Frame = Instance.new("Frame", ContentContainer)
         Frame.Size = UDim2.new(1, 0, 0, 38)
         Frame.BackgroundColor3 = Theme.ElementBg
-        Frame.BackgroundTransparency = 0.3
+        Frame.BackgroundTransparency = 0.4
         Frame.BorderSizePixel = 0
         Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
         
@@ -1455,7 +1470,7 @@ function SectionObj:CreateCollapsible(config)
         local Frame = Instance.new("Frame", ContentContainer)
         Frame.Size = UDim2.new(1, 0, 0, 65)
         Frame.BackgroundColor3 = Theme.ElementBg
-        Frame.BackgroundTransparency = 0.3
+        Frame.BackgroundTransparency = 0.4
         Frame.BorderSizePixel = 0
         Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
         
@@ -1554,7 +1569,7 @@ end
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
                 Frame.BackgroundColor3 = Theme.ElementBg
-                Frame.BackgroundTransparency = 0.3
+                Frame.BackgroundTransparency = 0.4
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
@@ -1640,7 +1655,7 @@ end
                 local Frame = Instance.new("Frame", Container)
                 Frame.Size = UDim2.new(1, 0, 0, 38)
                 Frame.BackgroundColor3 = Theme.ElementBg
-                Frame.BackgroundTransparency = 0.3
+                Frame.BackgroundTransparency = 0.4
                 Frame.BorderSizePixel = 0
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
