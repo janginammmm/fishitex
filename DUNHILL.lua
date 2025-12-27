@@ -1481,7 +1481,7 @@ function SectionObj:CreateCollapsible(config)
         
         local Frame = Instance.new("Frame", ContentContainer)
         Frame.Size = UDim2.new(1, 0, 0, 65)
-        Frame.BackgroundColor3 = Theme.ElementBg
+        Frame.BackgroundColor3 = Theme.ElementContenBg
         Frame.BackgroundTransparency = 0.7
         Frame.BorderSizePixel = 0
         Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
