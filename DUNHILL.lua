@@ -51,8 +51,8 @@ local Theme = {
     ElementBgHover = Color3.fromRGB(30, 30, 30),
     ElementBorder = Color3.fromRGB(45, 45, 45),
 
-    ElementContentBg = Color3.fromRGB(55, 60, 70),  -- Abu-abu untuk element
-    ElementContentHover = Color3.fromRGB(65, 70, 80),
+    ElementContentBg = Color3.fromRGB(65, 70, 80),  -- Abu-abu untuk element
+    ElementContentHover = Color3.fromRGB(75, 80, 90),
     
     TabActive = Color3.fromRGB(60, 60, 60),
     TabInactive = Color3.fromRGB(25, 25, 25),
