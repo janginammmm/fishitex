@@ -500,26 +500,18 @@ end)
         Label.Font = Enum.Font.GothamMedium
         Label.TextXAlignment = Enum.TextXAlignment.Left
 
-        local TabTitleBar = Instance.new("Frame", Content)
+        local TabTitleBar = Instance.new("TextLabel", Content)
         TabTitleBar.Name = TabName .. "TitleBar"
-        TabTitleBar.Size = UDim2.new(1, -160, 0, 45)
-        TabTitleBar.Position = UDim2.new(0, 150, 0, 10)
-        TabTitleBar.BackgroundColor3 = Theme.BackgroundSecondary
-        TabTitleBar.BackgroundTransparency = 0.5
-        TabTitleBar.BorderSizePixel = 0
+        TabTitleBar.Size = UDim2.new(1, -175, 0, 35)
+        TabTitleBar.Position = UDim2.new(0, 155, 0, 15)
+        TabTitleBar.BackgroundTransparency = 1  -- Tanpa background
+        TabTitleBar.Text = TabName
+        TabTitleBar.TextColor3 = Theme.Accent
+        TabTitleBar.TextSize = 18
+        TabTitleBar.Font = Enum.Font.GothamBold
+        TabTitleBar.TextXAlignment = Enum.TextXAlignment.Left
         TabTitleBar.Visible = false
         TabTitleBar.ZIndex = 2
-        Instance.new("UICorner", TabTitleBar).CornerRadius = UDim.new(0, 8)
-
-        local TabTitleLabel = Instance.new("TextLabel", TabTitleBar)
-        TabTitleLabel.Size = UDim2.new(1, -30, 1, 0)
-        TabTitleLabel.Position = UDim2.new(0, 15, 0, 0)
-        TabTitleLabel.BackgroundTransparency = 1
-        TabTitleLabel.Text = TabName
-        TabTitleLabel.TextColor3 = Theme.Accent
-        TabTitleLabel.TextSize = 18
-        TabTitleLabel.Font = Enum.Font.GothamBold
-        TabTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local TabContent = Instance.new("ScrollingFrame", Content)
         TabContent.Name = TabName .. "Content"
@@ -536,7 +528,7 @@ end)
         TabContent.ClipsDescendants = true
         
         local Layout = Instance.new("UIListLayout", TabContent)
-        Layout.Padding = UDim.new(0, 10)
+        Layout.Padding = UDim.new(0, 6)
         Layout.SortOrder = Enum.SortOrder.LayoutOrder
         
         local Padding = Instance.new("UIPadding", TabContent)
@@ -652,7 +644,7 @@ end)
                 Container.BackgroundTransparency = 1
                 
                 local ContainerLayout = Instance.new("UIListLayout", Container)
-                ContainerLayout.Padding = UDim.new(0, 8)
+                ContainerLayout.Padding = UDim.new(0, 5)
                 ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
                 
                 local SectionObj = {Container = Container, Frame = SectionHeader}
