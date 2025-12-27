@@ -790,7 +790,7 @@ end)
                 end)
                 
                 Interact.MouseLeave:Connect(function()
-                    ween(Frame, {BackgroundColor3 = Theme.ElementContentBg})
+                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentBg})
                 end)
                 
                 local function SetValue(value)
@@ -1438,11 +1438,11 @@ function SectionObj:CreateCollapsible(config)
         Interact.Text = ""
         
         Interact.MouseEnter:Connect(function()
-            Tween(Frame, {BackgroundColor3 = Theme.ElementContenHover})
+            Tween(Frame, {BackgroundColor3 = Theme.ElementContentHover})
         end)
         
         Interact.MouseLeave:Connect(function()
-            Tween(Frame, {BackgroundColor3 = Theme.ElementContenBg})
+            Tween(Frame, {BackgroundColor3 = Theme.ElementContentBg})
         end)
         
         local function SetValue(value)
@@ -1481,7 +1481,7 @@ function SectionObj:CreateCollapsible(config)
         
         local Frame = Instance.new("Frame", ContentContainer)
         Frame.Size = UDim2.new(1, 0, 0, 65)
-        Frame.BackgroundColor3 = Theme.ElementContenBg
+        Frame.BackgroundColor3 = Theme.ElementContentBg
         Frame.BackgroundTransparency = 0.7
         Frame.BorderSizePixel = 0
         Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
