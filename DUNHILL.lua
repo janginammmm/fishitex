@@ -309,7 +309,72 @@ end
         wait(0.35)
         ScreenGui:Destroy()
     end)
-    
+            -- ✅ RESIZE HANDLE (setelah MakeDraggable)
+        local ResizeHandle = Instance.new("TextButton", Main)
+        ResizeHandle.Size = UDim2.new(0, 20, 0, 20)
+        ResizeHandle.Position = UDim2.new(1, -20, 1, -20)
+        ResizeHandle.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+        ResizeHandle.BackgroundTransparency = 0.3
+        ResizeHandle.Text = ""
+        ResizeHandle.AutoButtonColor = false
+        ResizeHandle.BorderSizePixel = 0
+        ResizeHandle.ZIndex = 10
+        Instance.new("UICorner", ResizeHandle).CornerRadius = UDim.new(0, 4)
+
+        -- Icon garis resize (opsional, bisa dihapus jika mau polos)
+        local ResizeIcon = Instance.new("TextLabel", ResizeHandle)
+        ResizeIcon.Size = UDim2.new(1, 0, 1, 0)
+        ResizeIcon.BackgroundTransparency = 1
+        ResizeIcon.Text = "⋰"
+        ResizeIcon.TextColor3 = Theme.Text
+        ResizeIcon.TextSize = 16
+        ResizeIcon.Font = Enum.Font.GothamBold
+        ResizeIcon.Rotation = 90
+
+        -- ✅ RESIZE LOGIC
+        local resizing = false
+        local resizeStart = nil
+        local startSize = nil
+        local minSize = Vector2.new(400, 250)  -- Minimum: 400x250
+        local maxSize = Vector2.new(1000, 700)   -- Ukuran maksimum
+
+        ResizeHandle.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                resizing = true
+                resizeStart = input.Position
+                startSize = Main.AbsoluteSize
+            end
+        end)
+
+        ResizeHandle.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                resizing = false
+                -- Update OriginalSize agar minimize/maximize tetap pakai size baru
+                OriginalSize = Main.Size
+            end
+        end)
+
+        UserInputService.InputChanged:Connect(function(input)
+            if resizing and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                local delta = input.Position - resizeStart
+                local newWidth = math.clamp(startSize.X + delta.X, minSize.X, maxSize.X)
+                local newHeight = math.clamp(startSize.Y + delta.Y, minSize.Y, maxSize.Y)
+                
+                Main.Size = UDim2.new(0, newWidth, 0, newHeight)
+            end
+        end)
+
+        -- Hover effect untuk resize handle
+        ResizeHandle.MouseEnter:Connect(function()
+            Tween(ResizeHandle, {BackgroundTransparency = 0})
+        end)
+
+        ResizeHandle.MouseLeave:Connect(function()
+            if not resizing then
+                Tween(ResizeHandle, {BackgroundTransparency = 0.3})
+            end
+        end)
+
     MinBtn.MouseEnter:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBgHover}) end)
     MinBtn.MouseLeave:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBg}) end)
 -- ✅ FIX: Simpan ukuran dan posisi asli
