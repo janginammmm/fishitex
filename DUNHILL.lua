@@ -313,7 +313,7 @@ end
         local ResizeHandle = Instance.new("TextButton", Main)
         ResizeHandle.Size = UDim2.new(0, 20, 0, 20)
         ResizeHandle.Position = UDim2.new(1, -20, 1, -20)
-        ResizeHandle.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+        ResizeHandle.BackgroundColor3 = Theme.BorderBlue
         ResizeHandle.BackgroundTransparency = 0.3
         ResizeHandle.Text = ""
         ResizeHandle.AutoButtonColor = false
