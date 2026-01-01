@@ -199,7 +199,7 @@ end
     
     local TopBar = Instance.new("Frame", Main)
     TopBar.Name = "TopBar"
-    TopBar.Size = UDim2.new(1, 0, 0, 45)
+    TopBar.Size = UDim2.new(1, 0, 0, 40)
     TopBar.BackgroundColor3 = Theme.Background
     TopBar.BackgroundTransparency = 0.7
     TopBar.BorderSizePixel = 0
@@ -210,7 +210,7 @@ end
     local TopBarExtend = Instance.new("Frame", TopBar)
     TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
     TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
-    TopBarExtend.BackgroundColor3 = Theme.Background 
+    TopBarExtend.BackgroundColor3 = Theme.Background  
     TopBarExtend.BackgroundTransparency = 0.7
     TopBarExtend.BorderSizePixel = 0
     
@@ -232,17 +232,15 @@ end
     TitleText.Font = Enum.Font.GothamBold
     TitleText.TextXAlignment = Enum.TextXAlignment.Left
     
-    local CloseBtn = Instance.new("TextButton", TopBar)
+    local CloseBtn = Instance.new("ImageButton", TopBar)
     CloseBtn.Size = UDim2.new(0, 35, 0, 35)
     CloseBtn.Position = UDim2.new(1, -40, 0.5, -17.5)
     CloseBtn.BackgroundColor3 = Theme.ElementBg
-    CloseBtn.Text = "✕"
-    CloseBtn.TextColor3 = Theme.Error
-    CloseBtn.TextSize = 18
-    CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.Image = "rbxassetid://97946818577230"
+    CloseBtn.ScaleType = Enum.ScaleType.Fit
     CloseBtn.AutoButtonColor = false
     CloseBtn.BorderSizePixel = 0
-    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
+    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)  -- ✅ TAMBAHKAN INI
     
     local MinBtn = Instance.new("TextButton", TopBar)
     MinBtn.Size = UDim2.new(0, 35, 0, 35)
@@ -299,8 +297,13 @@ end
     
     MakeDraggable(Main, TopBar)
     
-    CloseBtn.MouseEnter:Connect(function() Tween(CloseBtn, {BackgroundColor3 = Theme.Error}) end)
-    CloseBtn.MouseLeave:Connect(function() Tween(CloseBtn, {BackgroundColor3 = Theme.ElementBg}) end)
+    CloseBtn.MouseEnter:Connect(function() 
+        Tween(CloseBtn, {BackgroundColor3 = Theme.Error})
+    end)
+
+    CloseBtn.MouseLeave:Connect(function() 
+        Tween(CloseBtn, {BackgroundColor3 = Theme.ElementBg})
+    end)
     CloseBtn.MouseButton1Click:Connect(function()
         Tween(Main, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In)
         wait(0.35)
@@ -506,7 +509,7 @@ end)
         local TabTitleBar = Instance.new("TextLabel", Content)
         TabTitleBar.Name = TabName .. "TitleBar"
         TabTitleBar.Size = UDim2.new(1, -175, 0, 35)
-        TabTitleBar.Position = UDim2.new(0, 155, 0, 15)
+        TabTitleBar.Position = UDim2.new(0, 155, 0, 4)
         TabTitleBar.BackgroundTransparency = 1  -- Tanpa background
         TabTitleBar.Text = TabName
         TabTitleBar.TextColor3 = Theme.Accent
@@ -518,8 +521,8 @@ end)
         
         local TabContent = Instance.new("ScrollingFrame", Content)
         TabContent.Name = TabName .. "Content"
-        TabContent.Size = UDim2.new(1, -160, 1, -65)
-        TabContent.Position = UDim2.new(0, 150, 0, 60)
+        TabContent.Size = UDim2.new(1, -160, 1, -43)  
+        TabContent.Position = UDim2.new(0, 150, 0, 38)  
         TabContent.BackgroundColor3 = Theme.Background
         TabContent.BackgroundTransparency = 1
         TabContent.BorderSizePixel = 0
