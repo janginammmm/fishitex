@@ -1085,15 +1085,16 @@ end)
                 InputBox.Font = Enum.Font.Gotham
                 InputBox.ClearTextOnFocus = false
                 InputBox.BorderSizePixel = 0
-                InputBox.TextXAlignment = Enum.TextXAlignment.Left -- ✅ FIX: Tambah alignment
-                
+                InputBox.TextXAlignment = Enum.TextXAlignment.Center  -- ✅ UBAH ke Center
+
                 pcall(function()
                     Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 5)
                 end)
-                
+
+                -- ✅ HAPUS PADDING atau kurangi nilainya
                 local InputPadding = Instance.new("UIPadding", InputBox)
-                InputPadding.PaddingLeft = UDim.new(0, 10)
-                InputPadding.PaddingRight = UDim.new(0, 10)
+                InputPadding.PaddingLeft = UDim.new(0, 5)   -- ✅ Dari 10 jadi 5
+                InputPadding.PaddingRight = UDim.new(0, 5)  -- ✅ Dari 10 jadi 5
                 
                 -- ✅ FIX: Wrap semua event dengan pcall
                 pcall(function()
@@ -1698,13 +1699,13 @@ function SectionObj:CreateCollapsible(config)
         InputBox.Font = Enum.Font.Gotham
         InputBox.ClearTextOnFocus = false
         InputBox.BorderSizePixel = 0
-        InputBox.TextXAlignment = Enum.TextXAlignment.Left
-        
+        InputBox.TextXAlignment = Enum.TextXAlignment.Center  -- ✅ Ubah ke Center
+
         Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 5)
-        
+
         local InputPadding = Instance.new("UIPadding", InputBox)
-        InputPadding.PaddingLeft = UDim.new(0, 10)
-        InputPadding.PaddingRight = UDim.new(0, 10)
+        InputPadding.PaddingLeft = UDim.new(0, 5)   -- ✅ Kurangi jadi 5
+        InputPadding.PaddingRight = UDim.new(0, 5)  -- ✅ Kurangi jadi 5
         
         InputBox.Focused:Connect(function()
             Tween(Stroke, {Color = Theme.Primary})
