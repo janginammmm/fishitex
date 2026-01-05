@@ -1362,6 +1362,8 @@ end)
                             touchStart = nil
                         end
                     end)
+                end
+            end
                 
                 CreateOptions()
                 
