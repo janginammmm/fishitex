@@ -1189,7 +1189,7 @@ end)
                 Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
-                Frame.ClipsDescendants = true
+                Frame.ClipsDescendants = false  -- ✅ UBAH ke false biar popup bisa keluar
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
                 local Stroke = Instance.new("UIStroke", Frame)
@@ -1222,70 +1222,217 @@ end)
                 Arrow.TextSize = 10
                 Arrow.Font = Enum.Font.Gotham
                 
-                local OptionsFrame = Instance.new("Frame", Frame)
-                OptionsFrame.Size = UDim2.new(1, 0, 0, 0)
-                OptionsFrame.Position = UDim2.new(0, 0, 0, 38)
-                OptionsFrame.BackgroundTransparency = 1
+                -- ✅ POPUP DROPDOWN (Floating, parent ke Main bukan ScreenGui)
+                local DropdownPopup = Instance.new("Frame")
+                DropdownPopup.Name = "DropdownPopup_" .. Name
+                DropdownPopup.Size = UDim2.new(0, 200, 0, 0)  -- Lebar 200px
+                DropdownPopup.BackgroundColor3 = Color3.fromRGB(12, 12, 12)  -- Hitam polos
+                DropdownPopup.BorderSizePixel = 0
+                DropdownPopup.Visible = false
+                DropdownPopup.ZIndex = 100  -- Pastikan di atas semua
+                DropdownPopup.Parent = Main  -- Parent ke Main window
+                Instance.new("UICorner", DropdownPopup).CornerRadius = UDim.new(0, 6)
                 
-                local OptionsLayout = Instance.new("UIListLayout", OptionsFrame)
-                OptionsLayout.Padding = UDim.new(0, 3)
+                -- ✅ SHADOW untuk popup
+                local PopupShadow = Instance.new("ImageLabel", DropdownPopup)
+                PopupShadow.Size = UDim2.new(1, 20, 1, 20)
+                PopupShadow.Position = UDim2.new(0, -10, 0, -10)
+                PopupShadow.BackgroundTransparency = 1
+                PopupShadow.Image = "rbxassetid://5554236805"
+                PopupShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                PopupShadow.ImageTransparency = 0.5
+                PopupShadow.ScaleType = Enum.ScaleType.Slice
+                PopupShadow.SliceCenter = Rect.new(23, 23, 277, 277)
+                PopupShadow.ZIndex = -1
+                
+                -- ✅ SCROLLING FRAME
+                local OptionsScroll = Instance.new("ScrollingFrame", DropdownPopup)
+                OptionsScroll.Size = UDim2.new(1, -6, 1, -6)
+                OptionsScroll.Position = UDim2.new(0, 3, 0, 3)
+                OptionsScroll.BackgroundTransparency = 1
+                OptionsScroll.ScrollBarThickness = 4
+                OptionsScroll.ScrollBarImageColor3 = Theme.Primary
+                OptionsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+                OptionsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+                OptionsScroll.BorderSizePixel = 0
+                OptionsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+                
+                local OptionsLayout = Instance.new("UIListLayout", OptionsScroll)
+                OptionsLayout.Padding = UDim.new(0, 4)
+                OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                
+                local OptionsPadding = Instance.new("UIPadding", OptionsScroll)
+                OptionsPadding.PaddingTop = UDim.new(0, 5)
+                OptionsPadding.PaddingBottom = UDim.new(0, 5)
+                OptionsPadding.PaddingLeft = UDim.new(0, 5)
+                OptionsPadding.PaddingRight = UDim.new(0, 5)
                 
                 local Opened = false
                 
+                -- ✅ UPDATE SIZE & POSITION
                 local function UpdateSize()
                     if Opened then
-                        Tween(Frame, {Size = UDim2.new(1, 0, 0, 38 + (#Options * 28) + ((#Options - 1) * 3))})
-                        Tween(Arrow, {Rotation = 180})
+                        -- Hitung tinggi berdasarkan jumlah options
+                        local itemHeight = 30  -- Tinggi per item
+                        local spacing = 4      -- Spacing antar item
+                        local padding = 10     -- Padding top + bottom
+                        local calculatedHeight = (#Options * itemHeight) + ((#Options - 1) * spacing) + padding
+                        
+                        -- Batas maksimal tinggi (80% dari tinggi window)
+                        local maxHeight = Main.AbsoluteSize.Y * 0.6
+                        local finalHeight = math.min(calculatedHeight, maxHeight)
+                        
+                        -- Posisi popup: di bawah dropdown button, mepet ke kiri content area
+                        local framePos = Frame.AbsolutePosition
+                        local mainPos = Main.AbsolutePosition
+                        
+                        -- Hitung posisi relatif terhadap Main window
+                        local relativeX = framePos.X - mainPos.X + 10  -- Mepet kiri dengan margin 10px
+                        local relativeY = framePos.Y - mainPos.Y + 42  -- Di bawah button
+                        
+                        -- Pastikan tidak keluar dari window
+                        if relativeY + finalHeight > Main.AbsoluteSize.Y then
+                            relativeY = (framePos.Y - mainPos.Y) - finalHeight - 5  -- Muncul di atas button
+                        end
+                        
+                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                        DropdownPopup.Size = UDim2.new(0, 200, 0, finalHeight)
+                        DropdownPopup.Visible = true
+                        Tween(Arrow, {Rotation = 180}, 0.2)
                     else
-                        Tween(Frame, {Size = UDim2.new(1, 0, 0, 38)})
-                        Tween(Arrow, {Rotation = 0})
+                        DropdownPopup.Visible = false
+                        Tween(Arrow, {Rotation = 0}, 0.2)
                     end
                 end
                 
-                for _, option in ipairs(Options) do
-                    local OptBtn = Instance.new("TextButton", OptionsFrame)
-                    OptBtn.Size = UDim2.new(1, -10, 0, 25)
-                    OptBtn.BackgroundColor3 = Theme.SliderBg
-                    OptBtn.Text = option
-                    OptBtn.TextColor3 = Theme.Text
-                    OptBtn.TextSize = 12
-                    OptBtn.Font = Enum.Font.Gotham
-                    OptBtn.AutoButtonColor = false
-                    OptBtn.BorderSizePixel = 0
-                    Instance.new("UICorner", OptBtn).CornerRadius = UDim.new(0, 5)
-                    
-                    OptBtn.MouseEnter:Connect(function()
-                        Tween(OptBtn, {BackgroundColor3 = Theme.ElementBgHover})
-                    end)
-                    
-                    OptBtn.MouseLeave:Connect(function()
-                        Tween(OptBtn, {BackgroundColor3 = Theme.SliderBg})
-                    end)
-                    
-                    OptBtn.MouseButton1Click:Connect(function()
-                        CurrentOption = option
-                        NameLabel.Text = option
-                        Opened = false
-                        UpdateSize()
+                -- ✅ UPDATE POSISI saat window di-drag/resize
+                local updateConnection
+                updateConnection = RunService.RenderStepped:Connect(function()
+                    if DropdownPopup.Visible and Frame.Parent then
+                        local framePos = Frame.AbsolutePosition
+                        local mainPos = Main.AbsolutePosition
+                        local relativeX = framePos.X - mainPos.X + 10
+                        local relativeY = framePos.Y - mainPos.Y + 42
                         
-                        -- ✅ TAMBAHKAN: Auto scroll setelah pilih
-                        task.spawn(function()
-                            task.wait(0.15)
-                            local targetY = Frame.AbsolutePosition.Y - TabContent.AbsolutePosition.Y - 20
-                            TabContent.CanvasPosition = Vector2.new(0, math.max(0, targetY))
+                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                    end
+                end)
+                
+                -- ✅ BUAT OPTION BUTTONS
+                local function CreateOptions()
+                    -- Clear existing options
+                    for _, child in ipairs(OptionsScroll:GetChildren()) do
+                        if child:IsA("TextButton") then
+                            child:Destroy()
+                        end
+                    end
+                    
+                    -- Create new options
+                    for _, option in ipairs(Options) do
+                        local OptBtn = Instance.new("TextButton", OptionsScroll)
+                        OptBtn.Size = UDim2.new(1, -10, 0, 30)
+                        OptBtn.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+                        OptBtn.Text = option
+                        OptBtn.TextColor3 = Theme.Text
+                        OptBtn.TextSize = 13
+                        OptBtn.Font = Enum.Font.Gotham
+                        OptBtn.AutoButtonColor = false
+                        OptBtn.BorderSizePixel = 0
+                        OptBtn.TextXAlignment = Enum.TextXAlignment.Left
+                        Instance.new("UICorner", OptBtn).CornerRadius = UDim.new(0, 5)
+                        
+                        -- Padding untuk text
+                        local TextPadding = Instance.new("UIPadding", OptBtn)
+                        TextPadding.PaddingLeft = UDim.new(0, 10)
+                        
+                        -- Hover effect
+                        OptBtn.MouseEnter:Connect(function()
+                            Tween(OptBtn, {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}, 0.15)
                         end)
                         
-                        if Flag then Dunhill.Flags[Flag] = {CurrentValue = option} end
-                        pcall(Callback, option)
-                        SaveConfig()
-                    end)
+                        OptBtn.MouseLeave:Connect(function()
+                            Tween(OptBtn, {BackgroundColor3 = Color3.fromRGB(18, 18, 18)}, 0.15)
+                        end)
+                        
+                        -- Click handler
+                        OptBtn.MouseButton1Click:Connect(function()
+                            CurrentOption = option
+                            NameLabel.Text = option
+                            Opened = false
+                            UpdateSize()
+                            
+                            if Flag then 
+                                Dunhill.Flags[Flag] = {CurrentValue = option} 
+                            end
+                            pcall(Callback, option)
+                            SaveConfig()
+                        end)
+                        
+                        -- ✅ TOUCH SUPPORT untuk mobile
+                        OptBtn.TouchTap:Connect(function()
+                            CurrentOption = option
+                            NameLabel.Text = option
+                            Opened = false
+                            UpdateSize()
+                            
+                            if Flag then 
+                                Dunhill.Flags[Flag] = {CurrentValue = option} 
+                            end
+                            pcall(Callback, option)
+                            SaveConfig()
+                        end)
+                    end
                 end
                 
+                CreateOptions()  -- Initialize options
+                
+                -- ✅ BUTTON CLICK (PC & Mobile)
                 Btn.MouseButton1Click:Connect(function()
                     Opened = not Opened
                     UpdateSize()
                 end)
                 
+                Btn.TouchTap:Connect(function()
+                    Opened = not Opened
+                    UpdateSize()
+                end)
+                
+                -- ✅ CLOSE saat klik di luar (PC & Mobile)
+                local closeConnection
+                closeConnection = UserInputService.InputBegan:Connect(function(input)
+                    if Opened and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+                        local mousePos = input.Position
+                        
+                        -- Cek apakah klik di dalam popup
+                        local popupPos = DropdownPopup.AbsolutePosition
+                        local popupSize = DropdownPopup.AbsoluteSize
+                        local inPopup = mousePos.X >= popupPos.X and mousePos.X <= popupPos.X + popupSize.X and
+                                    mousePos.Y >= popupPos.Y and mousePos.Y <= popupPos.Y + popupSize.Y
+                        
+                        -- Cek apakah klik di button dropdown
+                        local btnPos = Frame.AbsolutePosition
+                        local btnSize = Frame.AbsoluteSize
+                        local inButton = mousePos.X >= btnPos.X and mousePos.X <= btnPos.X + btnSize.X and
+                                        mousePos.Y >= btnPos.Y and mousePos.Y <= btnPos.Y + btnSize.Y
+                        
+                        -- Close jika klik di luar keduanya
+                        if not inPopup and not inButton then
+                            Opened = false
+                            UpdateSize()
+                        end
+                    end
+                end)
+                
+                -- ✅ CLEANUP saat dropdown dihapus
+                Frame.AncestryChanged:Connect(function()
+                    if not Frame.Parent then
+                        if updateConnection then updateConnection:Disconnect() end
+                        if closeConnection then closeConnection:Disconnect() end
+                        DropdownPopup:Destroy()
+                    end
+                end)
+                
+                -- Initialize flag
                 if Flag then
                     Dunhill.Flags[Flag] = {CurrentValue = CurrentOption}
                 end
@@ -1300,44 +1447,19 @@ end)
                             end
                         end
                     end,
+                    
                     Refresh = function(_, newOptions)
                         Options = newOptions
-                        for _, child in ipairs(OptionsFrame:GetChildren()) do
-                            if child:IsA("TextButton") then
-                                child:Destroy()
-                            end
+                        CurrentOption = newOptions[1] or "None"
+                        NameLabel.Text = CurrentOption
+                        CreateOptions()
+                        if Flag then
+                            Dunhill.Flags[Flag] = {CurrentValue = CurrentOption}
                         end
-                        for _, option in ipairs(Options) do
-                            local OptBtn = Instance.new("TextButton", OptionsFrame)
-                            OptBtn.Size = UDim2.new(1, -10, 0, 25)
-                            OptBtn.BackgroundColor3 = Theme.SliderBg
-                            OptBtn.Text = option
-                            OptBtn.TextColor3 = Theme.Text
-                            OptBtn.TextSize = 12
-                            OptBtn.Font = Enum.Font.Gotham
-                            OptBtn.AutoButtonColor = false
-                            OptBtn.BorderSizePixel = 0
-                            Instance.new("UICorner", OptBtn).CornerRadius = UDim.new(0, 5)
-                            OptBtn.MouseEnter:Connect(function() Tween(OptBtn, {BackgroundColor3 = Theme.ElementBgHover}) end)
-                            OptBtn.MouseLeave:Connect(function() Tween(OptBtn, {BackgroundColor3 = Theme.SliderBg}) end)
-                            OptBtn.MouseButton1Click:Connect(function()
-                                CurrentOption = option
-                                NameLabel.Text = option
-                                Opened = false
-                                UpdateSize()
-                                
-                                -- ✅ TAMBAHKAN INI JUGA
-                                task.spawn(function()
-                                    task.wait(0.15)
-                                    local targetY = Frame.AbsolutePosition.Y - TabContent.AbsolutePosition.Y - 20
-                                    TabContent.CanvasPosition = Vector2.new(0, math.max(0, targetY))
-                                end)
-                                
-                                if Flag then Dunhill.Flags[Flag] = {CurrentValue = option} end
-                                pcall(Callback, option)
-                                SaveConfig()
-                            end)
-                        end
+                    end,
+                    
+                    GetValue = function()
+                        return CurrentOption
                     end
                 }
             end
