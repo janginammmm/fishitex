@@ -1190,7 +1190,7 @@ end)
                 Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
-                Frame.ClipsDescendants = false  -- ✅ UBAH ke false biar popup bisa keluar
+                Frame.ClipsDescendants = false
                 Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
                 
                 local Stroke = Instance.new("UIStroke", Frame)
@@ -1223,18 +1223,16 @@ end)
                 Arrow.TextSize = 10
                 Arrow.Font = Enum.Font.Gotham
                 
-                -- ✅ POPUP DROPDOWN (Floating, parent ke Main bukan ScreenGui)
                 local DropdownPopup = Instance.new("Frame")
                 DropdownPopup.Name = "DropdownPopup_" .. Name
-                DropdownPopup.Size = UDim2.new(0, 200, 0, 0)  -- Lebar 200px
-                DropdownPopup.BackgroundColor3 = Color3.fromRGB(12, 12, 12)  -- Hitam polos
+                DropdownPopup.Size = UDim2.new(0, 200, 0, 0)
+                DropdownPopup.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
                 DropdownPopup.BorderSizePixel = 0
                 DropdownPopup.Visible = false
-                DropdownPopup.ZIndex = 100  -- Pastikan di atas semua
-                DropdownPopup.Parent = Main  -- Parent ke Main window
+                DropdownPopup.ZIndex = 100
+                DropdownPopup.Parent = Main
                 Instance.new("UICorner", DropdownPopup).CornerRadius = UDim.new(0, 6)
                 
-                -- ✅ SHADOW untuk popup
                 local PopupShadow = Instance.new("ImageLabel", DropdownPopup)
                 PopupShadow.Size = UDim2.new(1, 20, 1, 20)
                 PopupShadow.Position = UDim2.new(0, -10, 0, -10)
@@ -1246,7 +1244,6 @@ end)
                 PopupShadow.SliceCenter = Rect.new(23, 23, 277, 277)
                 PopupShadow.ZIndex = -1
                 
-                -- ✅ SCROLLING FRAME
                 local OptionsScroll = Instance.new("ScrollingFrame", DropdownPopup)
                 OptionsScroll.Size = UDim2.new(1, -6, 1, -6)
                 OptionsScroll.Position = UDim2.new(0, 3, 0, 3)
@@ -1270,23 +1267,16 @@ end)
                 
                 local Opened = false
                 
-                -- ✅ UPDATE SIZE & POSITION
-                -- ✅ UPDATE SIZE & POSITION
                 local function UpdateSize()
                     if Opened then
-                        -- Hitung tinggi berdasarkan jumlah options
                         local itemHeight = 30
                         local spacing = 4
                         local padding = 10
                         local calculatedHeight = (#Options * itemHeight) + ((#Options - 1) * spacing) + padding
-                        
-                        -- Batas maksimal tinggi (60% dari tinggi window)
                         local maxHeight = Main.AbsoluteSize.Y * 0.6
                         local finalHeight = math.min(calculatedHeight, maxHeight)
-                        
-                        -- ✅ POSISI FIXED: Di kanan window
-                        local relativeX = Main.AbsoluteSize.X - 210  -- 210px dari kanan (200px width + 10px margin)
-                        local relativeY = 50  -- 50px dari atas (di bawah TopBar)
+                        local relativeX = Main.AbsoluteSize.X - 210
+                        local relativeY = 50
                         
                         DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
                         DropdownPopup.Size = UDim2.new(0, 200, 0, finalHeight)
@@ -1298,28 +1288,22 @@ end)
                     end
                 end
                 
-                    -- ✅ UPDATE POSISI saat window di-drag/resize (FIXED: Tetap di kanan)
-                    local updateConnection
-                    updateConnection = RunService.RenderStepped:Connect(function()
-                        if DropdownPopup.Visible then
-                            -- Posisi fixed di kanan window
-                            local relativeX = Main.AbsoluteSize.X - 210  -- 210px dari kanan
-                            local relativeY = 50  -- 50px dari atas
-                            
-                            DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
-                        end
-                    end)
+                local updateConnection
+                updateConnection = RunService.RenderStepped:Connect(function()
+                    if DropdownPopup.Visible then
+                        local relativeX = Main.AbsoluteSize.X - 210
+                        local relativeY = 50
+                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                    end
+                end)
                 
-                -- ✅ BUAT OPTION BUTTONS
                 local function CreateOptions()
-                    -- Clear existing options
                     for _, child in ipairs(OptionsScroll:GetChildren()) do
                         if child:IsA("TextButton") then
                             child:Destroy()
                         end
                     end
                     
-                    -- Create new options
                     for _, option in ipairs(Options) do
                         local OptBtn = Instance.new("TextButton", OptionsScroll)
                         OptBtn.Size = UDim2.new(1, -10, 0, 30)
@@ -1333,11 +1317,9 @@ end)
                         OptBtn.TextXAlignment = Enum.TextXAlignment.Left
                         Instance.new("UICorner", OptBtn).CornerRadius = UDim.new(0, 5)
                         
-                        -- Padding untuk text
                         local TextPadding = Instance.new("UIPadding", OptBtn)
                         TextPadding.PaddingLeft = UDim.new(0, 10)
                         
-                        -- Hover effect
                         OptBtn.MouseEnter:Connect(function()
                             Tween(OptBtn, {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}, 0.15)
                         end)
@@ -1346,71 +1328,68 @@ end)
                             Tween(OptBtn, {BackgroundColor3 = Color3.fromRGB(18, 18, 18)}, 0.15)
                         end)
                         
-                        -- Click handler
-                        OptBtn.MouseButton1Click:Connect(function()
-                            CurrentOption = option
-                            NameLabel.Text = option
-                            Opened = false
-                            UpdateSize()
-                            
-                            if Flag then 
-                                Dunhill.Flags[Flag] = {CurrentValue = option} 
-                            end
-                            pcall(Callback, option)
-                            SaveConfig()
-                        end)
-                        
-                        -- ✅ TOUCH SUPPORT untuk mobile
-                        OptBtn.TouchTap:Connect(function()
-                            CurrentOption = option
-                            NameLabel.Text = option
-                            Opened = false
-                            UpdateSize()
-                            
-                            if Flag then 
-                                Dunhill.Flags[Flag] = {CurrentValue = option} 
-                            end
-                            pcall(Callback, option)
-                            SaveConfig()
-                        end)
-                    end
-                end
-                
-                CreateOptions()  -- Initialize options
-                
-                -- ✅ BUTTON CLICK (PC & Mobile) - INSTANT RESPONSE
-                Btn.MouseButton1Click:Connect(function()
-                    Opened = not Opened
-                    UpdateSize()
-                end)
+                    -- ✅ FIXED: Bedain scroll dan tap
+                    local touchStart = nil
+                    local isTouching = false
 
-                -- ✅ TOUCH SUPPORT untuk Mobile (Instant, tanpa long press)
+                    OptBtn.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                            touchStart = input.Position
+                            isTouching = true
+                        end
+                    end)
+
+                    OptBtn.InputEnded:Connect(function(input)
+                        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
+                            local touchEnd = input.Position
+                            local distance = (touchEnd - touchStart).Magnitude
+                            
+                            -- Kalau gerak kurang dari 10 pixel = tap, bukan scroll
+                            if distance < 10 then
+                                CurrentOption = option
+                                NameLabel.Text = option
+                                Opened = false
+                                UpdateSize()
+                                
+                                if Flag then 
+                                    Dunhill.Flags[Flag] = {CurrentValue = option} 
+                                end
+                                pcall(Callback, option)
+                                SaveConfig()
+                            end
+                            
+                            isTouching = false
+                            touchStart = nil
+                        end
+                    end)
+                
+                CreateOptions()
+                
+                -- ✅ BUTTON CLICK (PC & Mobile)
                 Btn.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.Touch then
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                         Opened = not Opened
                         UpdateSize()
                     end
                 end)
                 
-                -- ✅ CLOSE saat klik di luar (PC & Mobile)
+                -- ✅ CLOSE DETECTION dengan delay
                 local closeConnection
                 closeConnection = UserInputService.InputBegan:Connect(function(input)
                     if Opened and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-                        local mousePos = input.Position
+                        task.wait(0.15)
                         
-                        -- Cek apakah klik di dalam popup
+                        local mousePos = input.Position
                         local popupPos = DropdownPopup.AbsolutePosition
                         local popupSize = DropdownPopup.AbsoluteSize
                         local inPopup = mousePos.X >= popupPos.X and mousePos.X <= popupPos.X + popupSize.X and
                                     mousePos.Y >= popupPos.Y and mousePos.Y <= popupPos.Y + popupSize.Y
                         
-                        -- Cek apakah klik di button dropdown
                         local btnPos = Frame.AbsolutePosition
                         local btnSize = Frame.AbsoluteSize
                         local inButton = mousePos.X >= btnPos.X and mousePos.X <= btnPos.X + btnSize.X and
                                         mousePos.Y >= btnPos.Y and mousePos.Y <= btnPos.Y + btnSize.Y
                         
-                        -- Close jika klik di luar keduanya
                         if not inPopup and not inButton then
                             Opened = false
                             UpdateSize()
@@ -1418,7 +1397,6 @@ end)
                     end
                 end)
                 
-                -- ✅ CLEANUP saat dropdown dihapus
                 Frame.AncestryChanged:Connect(function()
                     if not Frame.Parent then
                         if updateConnection then updateConnection:Disconnect() end
@@ -1427,7 +1405,6 @@ end)
                     end
                 end)
                 
-                -- Initialize flag
                 if Flag then
                     Dunhill.Flags[Flag] = {CurrentValue = CurrentOption}
                 end
