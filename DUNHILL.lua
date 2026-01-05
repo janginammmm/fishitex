@@ -1287,8 +1287,9 @@ end)
                         local mainPos = Main.AbsolutePosition
                         
                         -- Hitung posisi relatif terhadap Main window
-                        local relativeX = framePos.X - mainPos.X + 10  -- Mepet kiri dengan margin 10px
-                        local relativeY = framePos.Y - mainPos.Y + 42  -- Di bawah button
+                        -- ✅ GANTI JADI INI:
+                        local relativeX = 10  
+                        local relativeY = 50  
                         
                         -- Pastikan tidak keluar dari window
                         if relativeY + finalHeight > Main.AbsoluteSize.Y then
@@ -1386,15 +1387,18 @@ end)
                 
                 CreateOptions()  -- Initialize options
                 
-                -- ✅ BUTTON CLICK (PC & Mobile)
+                -- ✅ BUTTON CLICK (PC & Mobile) - INSTANT RESPONSE
                 Btn.MouseButton1Click:Connect(function()
                     Opened = not Opened
                     UpdateSize()
                 end)
-                
-                Btn.TouchTap:Connect(function()
-                    Opened = not Opened
-                    UpdateSize()
+
+                -- ✅ TOUCH SUPPORT untuk Mobile (Instant, tanpa long press)
+                Btn.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.Touch then
+                        Opened = not Opened
+                        UpdateSize()
+                    end
                 end)
                 
                 -- ✅ CLOSE saat klik di luar (PC & Mobile)
