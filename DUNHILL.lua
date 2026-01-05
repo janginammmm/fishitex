@@ -1270,31 +1270,22 @@ end)
                 local Opened = false
                 
                 -- ✅ UPDATE SIZE & POSITION
+                -- ✅ UPDATE SIZE & POSITION
                 local function UpdateSize()
                     if Opened then
                         -- Hitung tinggi berdasarkan jumlah options
-                        local itemHeight = 30  -- Tinggi per item
-                        local spacing = 4      -- Spacing antar item
-                        local padding = 10     -- Padding top + bottom
+                        local itemHeight = 30
+                        local spacing = 4
+                        local padding = 10
                         local calculatedHeight = (#Options * itemHeight) + ((#Options - 1) * spacing) + padding
                         
-                        -- Batas maksimal tinggi (80% dari tinggi window)
+                        -- Batas maksimal tinggi (60% dari tinggi window)
                         local maxHeight = Main.AbsoluteSize.Y * 0.6
                         local finalHeight = math.min(calculatedHeight, maxHeight)
                         
-                        -- Posisi popup: di bawah dropdown button, mepet ke kiri content area
-                        local framePos = Frame.AbsolutePosition
-                        local mainPos = Main.AbsolutePosition
-                        
-                        -- Hitung posisi relatif terhadap Main window
-                        -- ✅ GANTI JADI INI:
-                        local relativeX = 10  
-                        local relativeY = 50  
-                        
-                        -- Pastikan tidak keluar dari window
-                        if relativeY + finalHeight > Main.AbsoluteSize.Y then
-                            relativeY = (framePos.Y - mainPos.Y) - finalHeight - 5  -- Muncul di atas button
-                        end
+                        -- ✅ POSISI FIXED: Di kanan window
+                        local relativeX = Main.AbsoluteSize.X - 210  -- 210px dari kanan (200px width + 10px margin)
+                        local relativeY = 50  -- 50px dari atas (di bawah TopBar)
                         
                         DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
                         DropdownPopup.Size = UDim2.new(0, 200, 0, finalHeight)
@@ -1306,18 +1297,17 @@ end)
                     end
                 end
                 
-                -- ✅ UPDATE POSISI saat window di-drag/resize
-                local updateConnection
-                updateConnection = RunService.RenderStepped:Connect(function()
-                    if DropdownPopup.Visible and Frame.Parent then
-                        local framePos = Frame.AbsolutePosition
-                        local mainPos = Main.AbsolutePosition
-                        local relativeX = framePos.X - mainPos.X + 10
-                        local relativeY = framePos.Y - mainPos.Y + 42
-                        
-                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
-                    end
-                end)
+                    -- ✅ UPDATE POSISI saat window di-drag/resize (FIXED: Tetap di kanan)
+                    local updateConnection
+                    updateConnection = RunService.RenderStepped:Connect(function()
+                        if DropdownPopup.Visible then
+                            -- Posisi fixed di kanan window
+                            local relativeX = Main.AbsoluteSize.X - 210  -- 210px dari kanan
+                            local relativeY = 50  -- 50px dari atas
+                            
+                            DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                        end
+                    end)
                 
                 -- ✅ BUAT OPTION BUTTONS
                 local function CreateOptions()
