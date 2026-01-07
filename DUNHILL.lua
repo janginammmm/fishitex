@@ -1954,7 +1954,7 @@ end
                 local Stroke = Instance.new("UIStroke", Frame)
                 Stroke.Color = Theme.ElementBorder
                 Stroke.Thickness = 1
-                SectionStroke.Transparency = 0.4
+                Stroke.Transparency = 0.4
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
                 local NameLabel = Instance.new("TextLabel", Frame)
