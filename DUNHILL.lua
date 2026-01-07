@@ -677,153 +677,84 @@ end)
             }
         table.insert(Window.Tabs, Tab)
         
-        function Tab:CreateSection(config)
-            config = config or {}
-            local SectionName = config.Name or "Section"
-            
-            -- ✅ UBAH: Frame → TextButton
-            local SectionHeader = Instance.new("TextButton", TabContent)
-            SectionHeader.Name = SectionName .. "_Header"
-            SectionHeader.Size = UDim2.new(1, 0, 0, 30)
-            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
-            SectionHeader.BackgroundTransparency = 0.7
-            SectionHeader.BorderSizePixel = 0
-            SectionHeader.Text = ""
-            SectionHeader.AutoButtonColor = false
-            Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
-            
-            local SectionStroke = Instance.new("UIStroke", SectionHeader)
-            SectionStroke.Color = Theme.ElementBorder
-            SectionStroke.Thickness = 1
-            SectionStroke.Transparency = 0.4
-            SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-            
-            local GlowLine = Instance.new("Frame", SectionHeader)
-            GlowLine.Name = "GlowLine"
-            GlowLine.Size = UDim2.new(1, -10, 0, 2)
-            GlowLine.Position = UDim2.new(0, 5, 1, 0)
-            GlowLine.BackgroundColor3 = Theme.BorderBlue
-            GlowLine.BackgroundTransparency = 0.7
-            GlowLine.BorderSizePixel = 0
-
-            local GlowShadow = Instance.new("UIGradient", GlowLine)
-            GlowShadow.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0.3),
-                NumberSequenceKeypoint.new(0.5, 0),
-                NumberSequenceKeypoint.new(1, 0.3)
-            })
-            GlowShadow.Rotation = 0
-            
-            local SectionTitle = Instance.new("TextLabel", SectionHeader)
-            SectionTitle.Name = "Title"
-            SectionTitle.Size = UDim2.new(1, -40, 1, 0)
-            SectionTitle.Position = UDim2.new(0, 12, 0, 0)
-            SectionTitle.BackgroundTransparency = 1
-            SectionTitle.Text = SectionName
-            SectionTitle.TextColor3 = Theme.TextDim
-            SectionTitle.TextSize = 14
-            SectionTitle.Font = Enum.Font.GothamBold
-            SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-            
-            local Arrow = Instance.new("TextLabel", SectionHeader)
-            Arrow.Size = UDim2.new(0, 20, 0, 20)
-            Arrow.Position = UDim2.new(1, -28, 0.5, -10)
-            Arrow.BackgroundTransparency = 1
-            Arrow.Text = "▼"
-            Arrow.TextColor3 = Theme.TextDim
-            Arrow.TextSize = 10
-            Arrow.Font = Enum.Font.Gotham
-            Arrow.Rotation = 0
-            
-            local Container = Instance.new("Frame", TabContent)
-            Container.Name = SectionName .. "_Content"
-            Container.Size = UDim2.new(1, 0, 0, 0)
-            Container.AutomaticSize = Enum.AutomaticSize.Y
-            Container.BackgroundTransparency = 1
-            
-            local ContainerLayout = Instance.new("UIListLayout", Container)
-            ContainerLayout.Padding = UDim.new(0, 4)
-            ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            
-            local Expanded = true
-            Container.Visible = true
-            
-            local function Toggle()
-                Expanded = not Expanded
-                Container.Visible = Expanded
+            function Tab:CreateSection(config)
+                config = config or {}
+                local SectionName = config.Name or "Section"
                 
-                Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.25)
-                Tween(SectionHeader, {BackgroundColor3 = Expanded and Theme.BorderBlue or Theme.ElementContentBg}, 0.25)
-                Tween(SectionTitle, {TextColor3 = Expanded and Theme.Text or Theme.TextDim}, 0.25)
-                Tween(Arrow, {TextColor3 = Expanded and Theme.Text or Theme.TextDim}, 0.25)
-                Tween(GlowLine, {BackgroundTransparency = Expanded and 0 or 0.7}, 0.25)
-            end
-            
-            local touchStart = nil
-            local isTouching = false
-
-            SectionHeader.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                    touchStart = input.Position
-                    isTouching = true
-                end
-            end)
-
-            SectionHeader.InputEnded:Connect(function(input)
-                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
-                    local touchEnd = input.Position
-                    local distance = (touchEnd - touchStart).Magnitude
-                    
-                    if distance < 10 then
-                        Toggle()
-                    end
-                    
-                    isTouching = false
-                    touchStart = nil
-                end
-            end)
-            
-            SectionHeader.MouseEnter:Connect(function()
-                if not Expanded then
-                    Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
-                end
-            end)
-            
-            SectionHeader.MouseLeave:Connect(function()
-                if not Expanded then
-                    Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
-                end
-            end)
-            
-            local SectionObj = {Container = Container, Frame = SectionHeader}
-
-
-
-                -- ✅ SEMUA FUNCTION DI BAWAH INI TETAP SAMA (CreateLabel, CreateButton, dll)
+                -- ✅ FRAME HANYA UNTUK JUDUL
+                local SectionHeader = Instance.new("Frame", TabContent)
+                SectionHeader.Name = SectionName .. "_Header"
+                SectionHeader.Size = UDim2.new(1, 0, 0, 30)
+                SectionHeader.BackgroundColor3 = Theme.ElementContentBg
+                SectionHeader.BackgroundTransparency = 0.7
+                SectionHeader.BorderSizePixel = 0
+                Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
                 
-                function SectionObj:CreateLabel(config)
-                    config = config or {}
-                    local Text = config.Text or "Label"
-                    
-                    local Label = Instance.new("TextLabel", Container)
-                    Label.Size = UDim2.new(1, 0, 0, 0)
-                    Label.AutomaticSize = Enum.AutomaticSize.Y
-                    Label.BackgroundTransparency = 1
-                    Label.Text = Text
-                    Label.TextColor3 = Theme.TextDim
-                    Label.TextSize = 13
-                    Label.Font = Enum.Font.Gotham
-                    Label.TextXAlignment = Enum.TextXAlignment.Left
-                    Label.TextWrapped = true
-                    
-                    return {
-                        SetText = function(_, text) Label.Text = text end
-                    }
-                end
+                local SectionStroke = Instance.new("UIStroke", SectionHeader)
+                SectionStroke.Color = Theme.ElementBorder
+                SectionStroke.Thickness = 1
+                SectionStroke.Transparency = 0.4
+                SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                -- ✅ TAMBAHKAN INI: GARIS CAHAYA BIRU DI BAWAH
+                local GlowLine = Instance.new("Frame", SectionHeader)
+                GlowLine.Name = "GlowLine"
+                GlowLine.Size = UDim2.new(1, -10, 0, 2)  -- Lebar penuh, tinggi 2px
+                GlowLine.Position = UDim2.new(0, 5, 1, 0)  -- Di bawah header
+                GlowLine.BackgroundColor3 = Theme.BorderBlue  -- Warna biru (sesuai border utama)
+                GlowLine.BackgroundTransparency = 0  -- Full solid
+                GlowLine.BorderSizePixel = 0
+
+                -- ✅ GLOW EFFECT (shadow biru)
+                local GlowShadow = Instance.new("UIGradient", GlowLine)
+                GlowShadow.Transparency = NumberSequence.new({
+                    NumberSequenceKeypoint.new(0, 0.3),   -- Kiri: agak terang
+                    NumberSequenceKeypoint.new(0.5, 0),   -- Tengah: full terang
+                    NumberSequenceKeypoint.new(1, 0.3)    -- Kanan: agak terang
+                })
+                GlowShadow.Rotation = 0
                 
-                -- ... (CreateButton, CreateToggle, CreateSlider, dll TETAP SAMA)
+                local SectionTitle = Instance.new("TextLabel", SectionHeader)
+                SectionTitle.Name = "Title"
+                SectionTitle.Size = UDim2.new(1, -20, 1, 0)
+                SectionTitle.Position = UDim2.new(0, 12, 0, 0)
+                SectionTitle.BackgroundTransparency = 1
+                SectionTitle.Text = SectionName
+                SectionTitle.TextColor3 = Theme.Accent
+                SectionTitle.TextSize = 14
+                SectionTitle.Font = Enum.Font.GothamBold
+                SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
                 
-                return SectionObj
+                -- ✅ CONTAINER LANGSUNG DI TabContent (BUKAN DALAM FRAME)
+                local Container = Instance.new("Frame", TabContent)
+                Container.Name = SectionName .. "_Content"
+                Container.Size = UDim2.new(1, 0, 0, 0)
+                Container.AutomaticSize = Enum.AutomaticSize.Y
+                Container.BackgroundTransparency = 1
+                
+                local ContainerLayout = Instance.new("UIListLayout", Container)
+                ContainerLayout.Padding = UDim.new(0, 4)
+                ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                
+                local SectionObj = {Container = Container, Frame = SectionHeader}
+            
+            function SectionObj:CreateLabel(config)
+                config = config or {}
+                local Text = config.Text or "Label"
+                
+                local Label = Instance.new("TextLabel", Container)
+                Label.Size = UDim2.new(1, 0, 0, 0)
+                Label.AutomaticSize = Enum.AutomaticSize.Y
+                Label.BackgroundTransparency = 1
+                Label.Text = Text
+                Label.TextColor3 = Theme.TextDim
+                Label.TextSize = 13
+                Label.Font = Enum.Font.Gotham
+                Label.TextXAlignment = Enum.TextXAlignment.Left
+                Label.TextWrapped = true
+                
+                return {
+                    SetText = function(_, text) Label.Text = text end
+                }
             end
             
             function SectionObj:CreateButton(config)
