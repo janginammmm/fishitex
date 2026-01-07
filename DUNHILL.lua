@@ -756,6 +756,292 @@ end)
                     SetText = function(_, text) Label.Text = text end
                 }
             end
+
+                -- ================================
+                -- ✅ TAB:CREATECOLLAPSIBLE (TANPA SECTION)
+                -- ================================
+                function Tab:CreateCollapsible(config)
+                    config = config or {}
+                    local Name = config.Name or "Collapsible"
+                    local DefaultExpanded = config.DefaultExpanded or false
+                    
+                    local CollapsibleFrame = Instance.new("Frame", TabContent)
+                    CollapsibleFrame.Size = UDim2.new(1, 0, 0, 38)
+                    CollapsibleFrame.BackgroundColor3 = Theme.ElementContentBg
+                    CollapsibleFrame.BackgroundTransparency = 0.7
+                    CollapsibleFrame.BorderSizePixel = 0
+                    CollapsibleFrame.ClipsDescendants = true
+                    Instance.new("UICorner", CollapsibleFrame).CornerRadius = UDim.new(0, 7)
+                    
+                    local Stroke = Instance.new("UIStroke", CollapsibleFrame)
+                    Stroke.Color = Theme.ElementBorder
+                    Stroke.Thickness = 1
+                    Stroke.Transparency = 0.4
+                    Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                    
+                    local HeaderBtn = Instance.new("TextButton", CollapsibleFrame)
+                    HeaderBtn.Size = UDim2.new(1, 0, 0, 38)
+                    HeaderBtn.BackgroundTransparency = 1
+                    HeaderBtn.Text = ""
+                    
+                    local NameLabel = Instance.new("TextLabel", CollapsibleFrame)
+                    NameLabel.Size = UDim2.new(1, -35, 1, 0)
+                    NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                    NameLabel.BackgroundTransparency = 1
+                    NameLabel.Text = Name
+                    NameLabel.TextColor3 = Theme.Accent
+                    NameLabel.TextSize = 14
+                    NameLabel.Font = Enum.Font.GothamBold
+                    NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                    
+                    local Arrow = Instance.new("TextLabel", CollapsibleFrame)
+                    Arrow.Size = UDim2.new(0, 20, 0, 20)
+                    Arrow.Position = UDim2.new(1, -30, 0, 9)
+                    Arrow.BackgroundTransparency = 1
+                    Arrow.Text = "▼"
+                    Arrow.TextColor3 = Theme.TextDim
+                    Arrow.TextSize = 10
+                    Arrow.Font = Enum.Font.Gotham
+                    Arrow.Rotation = DefaultExpanded and 180 or 0
+                    
+                    local ContentContainer = Instance.new("Frame", CollapsibleFrame)
+                    ContentContainer.Size = UDim2.new(1, -10, 0, 0)
+                    ContentContainer.Position = UDim2.new(0, 5, 0, 43)
+                    ContentContainer.BackgroundTransparency = 1
+                    ContentContainer.AutomaticSize = Enum.AutomaticSize.Y
+                    
+                    local ContentLayout = Instance.new("UIListLayout", ContentContainer)
+                    ContentLayout.Padding = UDim.new(0, 8)
+                    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                    
+                    local Expanded = DefaultExpanded
+                    
+                    local function UpdateHeight()
+                        task.wait(0.05)
+                        local contentHeight = ContentLayout.AbsoluteContentSize.Y
+                        local targetHeight = Expanded and (43 + contentHeight + 15) or 38
+                        Tween(CollapsibleFrame, {Size = UDim2.new(1, 0, 0, targetHeight)}, 0.3)
+                        Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.3)
+                    end
+                    
+                    HeaderBtn.MouseButton1Click:Connect(function()
+                        Expanded = not Expanded
+                        UpdateHeight()
+                    end)
+                    
+                    HeaderBtn.MouseEnter:Connect(function()
+                        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementContentHover})
+                    end)
+                    
+                    HeaderBtn.MouseLeave:Connect(function()
+                        Tween(CollapsibleFrame, {BackgroundColor3 = Theme.ElementContentBg})
+                    end)
+                    
+                    if DefaultExpanded then UpdateHeight() end
+                    
+                    local CollapsibleObj = {Container = ContentContainer, Frame = CollapsibleFrame}
+                    
+                    -- ✅ CREATE METHODS
+                    function CollapsibleObj:CreateLabel(cfg)
+                        cfg = cfg or {}
+                        local Text = cfg.Text or "Label"
+                        
+                        local Label = Instance.new("TextLabel", ContentContainer)
+                        Label.Size = UDim2.new(1, 0, 0, 0)
+                        Label.AutomaticSize = Enum.AutomaticSize.Y
+                        Label.BackgroundTransparency = 1
+                        Label.Text = Text
+                        Label.TextColor3 = Theme.TextDim
+                        Label.TextSize = 13
+                        Label.Font = Enum.Font.Gotham
+                        Label.TextXAlignment = Enum.TextXAlignment.Left
+                        Label.TextWrapped = true
+                        
+                        task.defer(UpdateHeight)
+                        return {SetText = function(_, text) Label.Text = text end}
+                    end
+                    
+                    function CollapsibleObj:CreateToggle(cfg)
+                        cfg = cfg or {}
+                        local Name = cfg.Name or "Toggle"
+                        local CurrentValue = cfg.CurrentValue or false
+                        local Flag = cfg.Flag
+                        local Callback = cfg.Callback or function() end
+                        
+                        local Frame = Instance.new("Frame", ContentContainer)
+                        Frame.Size = UDim2.new(1, 0, 0, 38)
+                        Frame.BackgroundColor3 = Theme.ElementContentBg  
+                        Frame.BackgroundTransparency = 0.4
+                        Frame.BorderSizePixel = 0
+                        Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
+                        
+                        local Stroke = Instance.new("UIStroke", Frame)
+                        Stroke.Color = Theme.ElementBorder
+                        Stroke.Thickness = 1
+                        Stroke.Transparency = 0.4
+                        Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                        
+                        local NameLabel = Instance.new("TextLabel", Frame)
+                        NameLabel.Size = UDim2.new(1, -60, 1, 0)
+                        NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                        NameLabel.BackgroundTransparency = 1
+                        NameLabel.Text = Name
+                        NameLabel.TextColor3 = Theme.Text
+                        NameLabel.TextSize = 13
+                        NameLabel.Font = Enum.Font.GothamBold
+                        NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                        
+                        local ToggleBg = Instance.new("Frame", Frame)
+                        ToggleBg.Size = UDim2.new(0, 44, 0, 22)
+                        ToggleBg.Position = UDim2.new(1, -52, 0.5, -11)
+                        ToggleBg.BackgroundColor3 = CurrentValue and Theme.ToggleOn or Theme.ToggleOff
+                        ToggleBg.BorderSizePixel = 0
+                        Instance.new("UICorner", ToggleBg).CornerRadius = UDim.new(1, 0)
+                        
+                        local ToggleCircle = Instance.new("Frame", ToggleBg)
+                        ToggleCircle.Size = UDim2.new(0, 18, 0, 18)
+                        ToggleCircle.Position = CurrentValue and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)
+                        ToggleCircle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        ToggleCircle.BorderSizePixel = 0
+                        Instance.new("UICorner", ToggleCircle).CornerRadius = UDim.new(1, 0)
+                        
+                        local Interact = Instance.new("TextButton", Frame)
+                        Interact.Size = UDim2.new(1, 0, 1, 0)
+                        Interact.BackgroundTransparency = 1
+                        Interact.Text = ""
+                        
+                        Interact.MouseEnter:Connect(function()
+                            Tween(Frame, {BackgroundColor3 = Theme.ElementContentHover})
+                        end)
+                        
+                        Interact.MouseLeave:Connect(function()
+                            Tween(Frame, {BackgroundColor3 = Theme.ElementContentBg})
+                        end)
+                        
+                        local function SetValue(value)
+                            CurrentValue = value
+                            Tween(ToggleBg, {BackgroundColor3 = value and Theme.ToggleOn or Theme.ToggleOff})
+                            Tween(ToggleCircle, {Position = value and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)})
+                            if Flag then
+                                Dunhill.Flags[Flag] = {CurrentValue = value, SetValue = SetValue}
+                            end
+                            pcall(Callback, value)
+                            SaveConfig()
+                        end
+                        
+                        Interact.MouseButton1Click:Connect(function()
+                            SetValue(not CurrentValue)
+                        end)
+                        
+                        if Flag then
+                            Dunhill.Flags[Flag] = {CurrentValue = CurrentValue, SetValue = SetValue}
+                        end
+                        
+                        task.defer(UpdateHeight)
+                        return {CurrentValue = CurrentValue, Set = SetValue, SetValue = SetValue}
+                    end
+                    
+                    function CollapsibleObj:CreateInput(cfg)
+                        cfg = cfg or {}
+                        local Name = cfg.Name or "Input"
+                        local PlaceholderText = cfg.PlaceholderText or "Enter text..."
+                        local RemoveTextAfterFocusLost = cfg.RemoveTextAfterFocusLost or false
+                        local Flag = cfg.Flag
+                        local Callback = cfg.Callback or function() end
+                        
+                        local CurrentValue = ""
+                        
+                        local Frame = Instance.new("Frame", ContentContainer)
+                        Frame.Size = UDim2.new(1, 0, 0, 40)
+                        Frame.BackgroundColor3 = Theme.ElementContentBg
+                        Frame.BackgroundTransparency = 0.7
+                        Frame.BorderSizePixel = 0
+                        Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
+                        
+                        local Stroke = Instance.new("UIStroke", Frame)
+                        Stroke.Color = Theme.ElementBorder
+                        Stroke.Thickness = 1
+                        Stroke.Transparency = 0.4
+                        Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                        
+                        local NameLabel = Instance.new("TextLabel", Frame)
+                        NameLabel.Size = UDim2.new(1, -160, 1, 0)
+                        NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                        NameLabel.BackgroundTransparency = 1
+                        NameLabel.Text = Name
+                        NameLabel.TextColor3 = Theme.Text
+                        NameLabel.TextSize = 13
+                        NameLabel.Font = Enum.Font.GothamBold
+                        NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                        
+                        local InputBox = Instance.new("TextBox", Frame)
+                        InputBox.Size = UDim2.new(0, 140, 0, 28)
+                        InputBox.Position = UDim2.new(1, -155, 0.5, -14)
+                        InputBox.BackgroundColor3 = Theme.SliderBg
+                        InputBox.Text = ""
+                        InputBox.PlaceholderText = PlaceholderText
+                        InputBox.PlaceholderColor3 = Theme.TextDim
+                        InputBox.TextColor3 = Theme.Text
+                        InputBox.TextSize = 13
+                        InputBox.Font = Enum.Font.Gotham
+                        InputBox.ClearTextOnFocus = false
+                        InputBox.BorderSizePixel = 0
+                        InputBox.TextXAlignment = Enum.TextXAlignment.Center
+                        Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 5)
+
+                        local InputPadding = Instance.new("UIPadding", InputBox)
+                        InputPadding.PaddingLeft = UDim.new(0, 5)
+                        InputPadding.PaddingRight = UDim.new(0, 5)
+                        
+                        InputBox.Focused:Connect(function()
+                            Tween(Stroke, {Color = Theme.Primary})
+                        end)
+                        
+                        InputBox.FocusLost:Connect(function()
+                            Tween(Stroke, {Color = Theme.ElementBorder})
+                            
+                            local text = InputBox.Text or ""
+                            CurrentValue = text
+                            
+                            if Flag then
+                                Dunhill.Flags[Flag] = {CurrentValue = text, SetValue = function(newText)
+                                    InputBox.Text = newText or ""
+                                    CurrentValue = newText or ""
+                                end}
+                            end
+                            
+                            pcall(Callback, text)
+                            
+                            if RemoveTextAfterFocusLost then
+                                InputBox.Text = ""
+                                CurrentValue = ""
+                            end
+                            
+                            SaveConfig()
+                        end)
+                        
+                        if Flag then
+                            Dunhill.Flags[Flag] = {CurrentValue = CurrentValue, SetValue = function(newText)
+                                InputBox.Text = newText or ""
+                                CurrentValue = newText or ""
+                            end}
+                        end
+                        
+                        task.defer(UpdateHeight)
+                        
+                        return {
+                            SetValue = function(_, text)
+                                InputBox.Text = text or ""
+                                CurrentValue = text or ""
+                            end,
+                            GetValue = function() return CurrentValue end
+                        }
+                    end
+                    
+                    return CollapsibleObj
+                end
+
+
             
             function SectionObj:CreateButton(config)
                 config = config or {}
