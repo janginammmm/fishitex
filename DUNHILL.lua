@@ -756,10 +756,41 @@ end)
             
             local Expanded = DefaultExpanded
             
-            -- ✅ TOGGLE VISIBILITY (TANPA ANIMASI SIZE)
+            -- ✅ TOGGLE DENGAN ANIMASI SLIDE DOWN (SEPERTI ACCORDION)
             local function ToggleContent()
                 Expanded = not Expanded
-                Container.Visible = Expanded
+                
+                if Expanded then
+                    -- Buka: Container jadi visible dulu
+                    Container.Visible = true
+                    Container.ClipsDescendants = true  -- Biar animasi slide smooth
+                    
+                    -- Animasi tinggi dari 0 ke full
+                    Container.Size = UDim2.new(1, 0, 0, 0)
+                    task.wait(0.05)
+                    local targetHeight = ContainerLayout.AbsoluteContentSize.Y
+                    
+                    Tween(Container, {Size = UDim2.new(1, 0, 0, targetHeight)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                    
+                    task.delay(0.3, function()
+                        Container.Size = UDim2.new(1, 0, 0, 0)
+                        Container.AutomaticSize = Enum.AutomaticSize.Y  -- Balik ke auto size
+                        Container.ClipsDescendants = false
+                    end)
+                else
+                    -- Tutup: Animasi tinggi ke 0
+                    Container.ClipsDescendants = true
+                    Container.AutomaticSize = Enum.AutomaticSize.None
+                    local currentHeight = Container.AbsoluteSize.Y
+                    Container.Size = UDim2.new(1, 0, 0, currentHeight)
+                    
+                    Tween(Container, {Size = UDim2.new(1, 0, 0, 0)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+                    
+                    task.delay(0.3, function()
+                        Container.Visible = false
+                    end)
+                end
+                
                 Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.3)
             end
             
