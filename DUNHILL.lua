@@ -218,7 +218,7 @@ end
     Title.Size = UDim2.new(0, 30, 0, 30)  -- Ukuran logo
     Title.Position = UDim2.new(0, 15, 0.5, -15)  -- Posisi kiri atas
     Title.BackgroundTransparency = 1
-    Title.Image = "rbxassetid://101311528770915"  -- Logo Mach kamu (sama kayak minimize icon)
+    Title.Image = "rbxassetid://90636797161481"  -- Logo Mach kamu (sama kayak minimize icon)
     Title.ScaleType = Enum.ScaleType.Fit
     Title.ImageTransparency = 0
 
@@ -227,7 +227,7 @@ end
     TitleText.Position = UDim2.new(0, 60, 0, 0)  -- Di sebelah kanan logo
     TitleText.BackgroundTransparency = 1
     TitleText.Text = WindowName
-    TitleText.TextColor3 = Theme.Accent
+    TitleText.TextColor3 = Theme.BorderBlue
     TitleText.TextSize = 17
     TitleText.Font = Enum.Font.GothamBold
     TitleText.TextXAlignment = Enum.TextXAlignment.Left
@@ -568,7 +568,7 @@ end)
         Label.Text = TabName
         Label.TextColor3 = Theme.TextDim
         Label.TextSize = 13
-        Label.Font = Enum.Font.GothamMedium
+        Label.Font = Enum.Font.GothamBold
         Label.TextXAlignment = Enum.TextXAlignment.Left
 
         local TabTitleBar = Instance.new("TextLabel", Content)
@@ -681,13 +681,15 @@ end)
                 config = config or {}
                 local SectionName = config.Name or "Section"
                 
-                -- ✅ FRAME HANYA UNTUK JUDUL
-                local SectionHeader = Instance.new("Frame", TabContent)
+                -- ✅ UBAH: Frame → TextButton
+                local SectionHeader = Instance.new("TextButton", TabContent)
                 SectionHeader.Name = SectionName .. "_Header"
                 SectionHeader.Size = UDim2.new(1, 0, 0, 30)
                 SectionHeader.BackgroundColor3 = Theme.ElementContentBg
                 SectionHeader.BackgroundTransparency = 0.7
                 SectionHeader.BorderSizePixel = 0
+                SectionHeader.Text = ""  -- ✅ TAMBAH
+                SectionHeader.AutoButtonColor = false  -- ✅ TAMBAH
                 Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
                 
                 local SectionStroke = Instance.new("UIStroke", SectionHeader)
@@ -695,36 +697,47 @@ end)
                 SectionStroke.Thickness = 1
                 SectionStroke.Transparency = 0.4
                 SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-                -- ✅ TAMBAHKAN INI: GARIS CAHAYA BIRU DI BAWAH
+                
+                -- ✅ GLOW LINE (tetap sama)
                 local GlowLine = Instance.new("Frame", SectionHeader)
                 GlowLine.Name = "GlowLine"
-                GlowLine.Size = UDim2.new(1, -10, 0, 2)  -- Lebar penuh, tinggi 2px
-                GlowLine.Position = UDim2.new(0, 5, 1, 0)  -- Di bawah header
-                GlowLine.BackgroundColor3 = Theme.BorderBlue  -- Warna biru (sesuai border utama)
-                GlowLine.BackgroundTransparency = 0  -- Full solid
+                GlowLine.Size = UDim2.new(1, -10, 0, 2)
+                GlowLine.Position = UDim2.new(0, 5, 1, 0)
+                GlowLine.BackgroundColor3 = Theme.BorderBlue
+                GlowLine.BackgroundTransparency = 0.7  -- ✅ UBAH: default redup
                 GlowLine.BorderSizePixel = 0
 
-                -- ✅ GLOW EFFECT (shadow biru)
                 local GlowShadow = Instance.new("UIGradient", GlowLine)
                 GlowShadow.Transparency = NumberSequence.new({
-                    NumberSequenceKeypoint.new(0, 0.3),   -- Kiri: agak terang
-                    NumberSequenceKeypoint.new(0.5, 0),   -- Tengah: full terang
-                    NumberSequenceKeypoint.new(1, 0.3)    -- Kanan: agak terang
+                    NumberSequenceKeypoint.new(0, 0.3),
+                    NumberSequenceKeypoint.new(0.5, 0),
+                    NumberSequenceKeypoint.new(1, 0.3)
                 })
                 GlowShadow.Rotation = 0
                 
                 local SectionTitle = Instance.new("TextLabel", SectionHeader)
                 SectionTitle.Name = "Title"
-                SectionTitle.Size = UDim2.new(1, -20, 1, 0)
+                SectionTitle.Size = UDim2.new(1, -40, 1, 0)  -- ✅ UBAH: kasih space arrow
                 SectionTitle.Position = UDim2.new(0, 12, 0, 0)
                 SectionTitle.BackgroundTransparency = 1
                 SectionTitle.Text = SectionName
-                SectionTitle.TextColor3 = Theme.Accent
+                SectionTitle.TextColor3 = Theme.TextDim  -- ✅ UBAH: default abu-abu
                 SectionTitle.TextSize = 14
                 SectionTitle.Font = Enum.Font.GothamBold
                 SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
                 
-                -- ✅ CONTAINER LANGSUNG DI TabContent (BUKAN DALAM FRAME)
+                -- ✅ TAMBAH: Arrow indicator
+                local Arrow = Instance.new("TextLabel", SectionHeader)
+                Arrow.Size = UDim2.new(0, 20, 0, 20)
+                Arrow.Position = UDim2.new(1, -28, 0.5, -10)
+                Arrow.BackgroundTransparency = 1
+                Arrow.Text = "▼"
+                Arrow.TextColor3 = Theme.TextDim
+                Arrow.TextSize = 10
+                Arrow.Font = Enum.Font.Gotham
+                Arrow.Rotation = 0
+                
+                -- ✅ CONTAINER (tetap sama)
                 local Container = Instance.new("Frame", TabContent)
                 Container.Name = SectionName .. "_Content"
                 Container.Size = UDim2.new(1, 0, 0, 0)
@@ -735,26 +748,105 @@ end)
                 ContainerLayout.Padding = UDim.new(0, 4)
                 ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
                 
+                -- ✅ TAMBAH: State variable
+                local Expanded = true
+                Container.Visible = true
+                
+                -- ✅ TAMBAH: Toggle function
+                local function Toggle()
+                    Expanded = not Expanded
+                    Container.Visible = Expanded
+                    
+                    -- Animasi arrow
+                    Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.25)
+                    
+                    -- Background header jadi biru kalau buka
+                    Tween(SectionHeader, {
+                        BackgroundColor3 = Expanded and Theme.BorderBlue or Theme.ElementContentBg
+                    }, 0.25)
+                    
+                    -- Text jadi putih kalau buka
+                    Tween(SectionTitle, {
+                        TextColor3 = Expanded and Theme.Text or Theme.TextDim
+                    }, 0.25)
+                    
+                    -- Arrow jadi putih kalau buka
+                    Tween(Arrow, {
+                        TextColor3 = Expanded and Theme.Text or Theme.TextDim
+                    }, 0.25)
+                    
+                    -- Glow line jadi terang kalau buka
+                    Tween(GlowLine, {
+                        BackgroundTransparency = Expanded and 0 or 0.7
+                    }, 0.25)
+                end
+                
+                -- ✅ GANTI dengan ini (support mouse + touch):
+                local touchStart = nil
+                local isTouching = false
+
+                SectionHeader.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        touchStart = input.Position
+                        isTouching = true
+                    end
+                end)
+
+                SectionHeader.InputEnded:Connect(function(input)
+                    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
+                        local touchEnd = input.Position
+                        local distance = (touchEnd - touchStart).Magnitude
+                        
+                        -- Hanya toggle jika tidak scroll (gerak < 10 pixel)
+                        if distance < 10 then
+                            Toggle()
+                        end
+                        
+                        isTouching = false
+                        touchStart = nil
+                    end
+                end)
+                
+                -- ✅ TAMBAH: Hover effect
+                SectionHeader.MouseEnter:Connect(function()
+                    if not Expanded then
+                        Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
+                    end
+                end)
+                
+                SectionHeader.MouseLeave:Connect(function()
+                    if not Expanded then
+                        Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
+                    end
+                end)
+                
                 local SectionObj = {Container = Container, Frame = SectionHeader}
-            
-            function SectionObj:CreateLabel(config)
-                config = config or {}
-                local Text = config.Text or "Label"
+
+                -- ✅ SEMUA FUNCTION DI BAWAH INI TETAP SAMA (CreateLabel, CreateButton, dll)
                 
-                local Label = Instance.new("TextLabel", Container)
-                Label.Size = UDim2.new(1, 0, 0, 0)
-                Label.AutomaticSize = Enum.AutomaticSize.Y
-                Label.BackgroundTransparency = 1
-                Label.Text = Text
-                Label.TextColor3 = Theme.TextDim
-                Label.TextSize = 13
-                Label.Font = Enum.Font.Gotham
-                Label.TextXAlignment = Enum.TextXAlignment.Left
-                Label.TextWrapped = true
+                function SectionObj:CreateLabel(config)
+                    config = config or {}
+                    local Text = config.Text or "Label"
+                    
+                    local Label = Instance.new("TextLabel", Container)
+                    Label.Size = UDim2.new(1, 0, 0, 0)
+                    Label.AutomaticSize = Enum.AutomaticSize.Y
+                    Label.BackgroundTransparency = 1
+                    Label.Text = Text
+                    Label.TextColor3 = Theme.TextDim
+                    Label.TextSize = 13
+                    Label.Font = Enum.Font.Gotham
+                    Label.TextXAlignment = Enum.TextXAlignment.Left
+                    Label.TextWrapped = true
+                    
+                    return {
+                        SetText = function(_, text) Label.Text = text end
+                    }
+                end
                 
-                return {
-                    SetText = function(_, text) Label.Text = text end
-                }
+                -- ... (CreateButton, CreateToggle, CreateSlider, dll TETAP SAMA)
+                
+                return SectionObj
             end
             
             function SectionObj:CreateButton(config)
@@ -831,7 +923,7 @@ end)
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local ToggleBg = Instance.new("Frame", Frame)
@@ -920,7 +1012,7 @@ end)
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local ValueLabel = Instance.new("TextLabel", Frame)
@@ -1070,7 +1162,7 @@ end)
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local InputBox = Instance.new("TextBox", Frame)
@@ -1211,7 +1303,7 @@ end)
                 NameLabel.Text = CurrentOption
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local Arrow = Instance.new("TextLabel", Frame)
@@ -1367,13 +1459,37 @@ end)
                 
                 CreateOptions()
                 
-                -- ✅ BUTTON CLICK (PC & Mobile)
-                Btn.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                        Opened = not Opened
-                        UpdateSize()
+            -- ✅ BUTTON CLICK dengan deteksi scroll yang lebih ketat
+            local btnTouchStart = nil
+            local btnTouchStartTime = nil
+
+            Btn.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    btnTouchStart = input.Position
+                    btnTouchStartTime = tick()
+                end
+            end)
+
+            Btn.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    if btnTouchStart then
+                        local touchEnd = input.Position
+                        local distance = (touchEnd - btnTouchStart).Magnitude
+                        local touchDuration = tick() - btnTouchStartTime
+                        
+                        -- Hanya buka dropdown jika:
+                        -- 1. Gerak kurang dari 10 pixel (bukan scroll)
+                        -- 2. Touch duration kurang dari 0.3 detik (tap cepat)
+                        if distance < 10 and touchDuration < 0.3 then
+                            Opened = not Opened
+                            UpdateSize()
+                        end
+                        
+                        btnTouchStart = nil
+                        btnTouchStartTime = nil
                     end
-                end)
+                end
+            end)
                 
                 -- ✅ CLOSE DETECTION dengan delay
                 local closeConnection
@@ -1579,7 +1695,7 @@ function SectionObj:CreateCollapsible(config)
         NameLabel.Text = Name
         NameLabel.TextColor3 = Theme.Text
         NameLabel.TextSize = 13
-        NameLabel.Font = Enum.Font.Gotham
+        NameLabel.Font = Enum.Font.GothamBold
         NameLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local ToggleBg = Instance.new("Frame", Frame)
@@ -1663,7 +1779,7 @@ function SectionObj:CreateCollapsible(config)
         NameLabel.Text = Name
         NameLabel.TextColor3 = Theme.Text
         NameLabel.TextSize = 13
-        NameLabel.Font = Enum.Font.Gotham
+        NameLabel.Font = Enum.Font.GothamBold
         NameLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local InputBox = Instance.new("TextBox", Frame)
@@ -1762,7 +1878,7 @@ end
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local KeyBtn = Instance.new("TextButton", Frame)
@@ -1848,7 +1964,7 @@ end
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
-                NameLabel.Font = Enum.Font.Gotham
+                NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
                 
                 local ColorDisplay = Instance.new("TextButton", Frame)
