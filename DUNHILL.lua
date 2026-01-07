@@ -677,150 +677,127 @@ end)
             }
         table.insert(Window.Tabs, Tab)
         
-            function Tab:CreateSection(config)
-                config = config or {}
-                local SectionName = config.Name or "Section"
-                
-                -- ✅ UBAH: Frame → TextButton
-                local SectionHeader = Instance.new("TextButton", TabContent)
-                SectionHeader.Name = SectionName .. "_Header"
-                SectionHeader.Size = UDim2.new(1, 0, 0, 30)
-                SectionHeader.BackgroundColor3 = Theme.ElementContentBg
-                SectionHeader.BackgroundTransparency = 0.7
-                SectionHeader.BorderSizePixel = 0
-                SectionHeader.Text = ""  -- ✅ TAMBAH
-                SectionHeader.AutoButtonColor = false  -- ✅ TAMBAH
-                Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
-                
-                local SectionStroke = Instance.new("UIStroke", SectionHeader)
-                SectionStroke.Color = Theme.ElementBorder
-                SectionStroke.Thickness = 1
-                SectionStroke.Transparency = 0.4
-                SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-                
-                -- ✅ GLOW LINE (tetap sama)
-                local GlowLine = Instance.new("Frame", SectionHeader)
-                GlowLine.Name = "GlowLine"
-                GlowLine.Size = UDim2.new(1, -10, 0, 2)
-                GlowLine.Position = UDim2.new(0, 5, 1, 0)
-                GlowLine.BackgroundColor3 = Theme.BorderBlue
-                GlowLine.BackgroundTransparency = 0.7  -- ✅ UBAH: default redup
-                GlowLine.BorderSizePixel = 0
+        function Tab:CreateSection(config)
+            config = config or {}
+            local SectionName = config.Name or "Section"
+            
+            -- ✅ UBAH: Frame → TextButton
+            local SectionHeader = Instance.new("TextButton", TabContent)
+            SectionHeader.Name = SectionName .. "_Header"
+            SectionHeader.Size = UDim2.new(1, 0, 0, 30)
+            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
+            SectionHeader.BackgroundTransparency = 0.7
+            SectionHeader.BorderSizePixel = 0
+            SectionHeader.Text = ""
+            SectionHeader.AutoButtonColor = false
+            Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
+            
+            local SectionStroke = Instance.new("UIStroke", SectionHeader)
+            SectionStroke.Color = Theme.ElementBorder
+            SectionStroke.Thickness = 1
+            SectionStroke.Transparency = 0.4
+            SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+            
+            local GlowLine = Instance.new("Frame", SectionHeader)
+            GlowLine.Name = "GlowLine"
+            GlowLine.Size = UDim2.new(1, -10, 0, 2)
+            GlowLine.Position = UDim2.new(0, 5, 1, 0)
+            GlowLine.BackgroundColor3 = Theme.BorderBlue
+            GlowLine.BackgroundTransparency = 0.7
+            GlowLine.BorderSizePixel = 0
 
-                local GlowShadow = Instance.new("UIGradient", GlowLine)
-                GlowShadow.Transparency = NumberSequence.new({
-                    NumberSequenceKeypoint.new(0, 0.3),
-                    NumberSequenceKeypoint.new(0.5, 0),
-                    NumberSequenceKeypoint.new(1, 0.3)
-                })
-                GlowShadow.Rotation = 0
+            local GlowShadow = Instance.new("UIGradient", GlowLine)
+            GlowShadow.Transparency = NumberSequence.new({
+                NumberSequenceKeypoint.new(0, 0.3),
+                NumberSequenceKeypoint.new(0.5, 0),
+                NumberSequenceKeypoint.new(1, 0.3)
+            })
+            GlowShadow.Rotation = 0
+            
+            local SectionTitle = Instance.new("TextLabel", SectionHeader)
+            SectionTitle.Name = "Title"
+            SectionTitle.Size = UDim2.new(1, -40, 1, 0)
+            SectionTitle.Position = UDim2.new(0, 12, 0, 0)
+            SectionTitle.BackgroundTransparency = 1
+            SectionTitle.Text = SectionName
+            SectionTitle.TextColor3 = Theme.TextDim
+            SectionTitle.TextSize = 14
+            SectionTitle.Font = Enum.Font.GothamBold
+            SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
+            
+            local Arrow = Instance.new("TextLabel", SectionHeader)
+            Arrow.Size = UDim2.new(0, 20, 0, 20)
+            Arrow.Position = UDim2.new(1, -28, 0.5, -10)
+            Arrow.BackgroundTransparency = 1
+            Arrow.Text = "▼"
+            Arrow.TextColor3 = Theme.TextDim
+            Arrow.TextSize = 10
+            Arrow.Font = Enum.Font.Gotham
+            Arrow.Rotation = 0
+            
+            local Container = Instance.new("Frame", TabContent)
+            Container.Name = SectionName .. "_Content"
+            Container.Size = UDim2.new(1, 0, 0, 0)
+            Container.AutomaticSize = Enum.AutomaticSize.Y
+            Container.BackgroundTransparency = 1
+            
+            local ContainerLayout = Instance.new("UIListLayout", Container)
+            ContainerLayout.Padding = UDim.new(0, 4)
+            ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            
+            local Expanded = true
+            Container.Visible = true
+            
+            local function Toggle()
+                Expanded = not Expanded
+                Container.Visible = Expanded
                 
-                local SectionTitle = Instance.new("TextLabel", SectionHeader)
-                SectionTitle.Name = "Title"
-                SectionTitle.Size = UDim2.new(1, -40, 1, 0)  -- ✅ UBAH: kasih space arrow
-                SectionTitle.Position = UDim2.new(0, 12, 0, 0)
-                SectionTitle.BackgroundTransparency = 1
-                SectionTitle.Text = SectionName
-                SectionTitle.TextColor3 = Theme.TextDim  -- ✅ UBAH: default abu-abu
-                SectionTitle.TextSize = 14
-                SectionTitle.Font = Enum.Font.GothamBold
-                SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-                
-                -- ✅ TAMBAH: Arrow indicator
-                local Arrow = Instance.new("TextLabel", SectionHeader)
-                Arrow.Size = UDim2.new(0, 20, 0, 20)
-                Arrow.Position = UDim2.new(1, -28, 0.5, -10)
-                Arrow.BackgroundTransparency = 1
-                Arrow.Text = "▼"
-                Arrow.TextColor3 = Theme.TextDim
-                Arrow.TextSize = 10
-                Arrow.Font = Enum.Font.Gotham
-                Arrow.Rotation = 0
-                
-                -- ✅ CONTAINER (tetap sama)
-                local Container = Instance.new("Frame", TabContent)
-                Container.Name = SectionName .. "_Content"
-                Container.Size = UDim2.new(1, 0, 0, 0)
-                Container.AutomaticSize = Enum.AutomaticSize.Y
-                Container.BackgroundTransparency = 1
-                
-                local ContainerLayout = Instance.new("UIListLayout", Container)
-                ContainerLayout.Padding = UDim.new(0, 4)
-                ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-                
-                -- ✅ TAMBAH: State variable
-                local Expanded = true
-                Container.Visible = true
-                
-                -- ✅ TAMBAH: Toggle function
-                local function Toggle()
-                    Expanded = not Expanded
-                    Container.Visible = Expanded
-                    
-                    -- Animasi arrow
-                    Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.25)
-                    
-                    -- Background header jadi biru kalau buka
-                    Tween(SectionHeader, {
-                        BackgroundColor3 = Expanded and Theme.BorderBlue or Theme.ElementContentBg
-                    }, 0.25)
-                    
-                    -- Text jadi putih kalau buka
-                    Tween(SectionTitle, {
-                        TextColor3 = Expanded and Theme.Text or Theme.TextDim
-                    }, 0.25)
-                    
-                    -- Arrow jadi putih kalau buka
-                    Tween(Arrow, {
-                        TextColor3 = Expanded and Theme.Text or Theme.TextDim
-                    }, 0.25)
-                    
-                    -- Glow line jadi terang kalau buka
-                    Tween(GlowLine, {
-                        BackgroundTransparency = Expanded and 0 or 0.7
-                    }, 0.25)
+                Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.25)
+                Tween(SectionHeader, {BackgroundColor3 = Expanded and Theme.BorderBlue or Theme.ElementContentBg}, 0.25)
+                Tween(SectionTitle, {TextColor3 = Expanded and Theme.Text or Theme.TextDim}, 0.25)
+                Tween(Arrow, {TextColor3 = Expanded and Theme.Text or Theme.TextDim}, 0.25)
+                Tween(GlowLine, {BackgroundTransparency = Expanded and 0 or 0.7}, 0.25)
+            end
+            
+            local touchStart = nil
+            local isTouching = false
+
+            SectionHeader.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                    touchStart = input.Position
+                    isTouching = true
                 end
-                
-                -- ✅ GANTI dengan ini (support mouse + touch):
-                local touchStart = nil
-                local isTouching = false
+            end)
 
-                SectionHeader.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                        touchStart = input.Position
-                        isTouching = true
+            SectionHeader.InputEnded:Connect(function(input)
+                if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
+                    local touchEnd = input.Position
+                    local distance = (touchEnd - touchStart).Magnitude
+                    
+                    if distance < 10 then
+                        Toggle()
                     end
-                end)
+                    
+                    isTouching = false
+                    touchStart = nil
+                end
+            end)
+            
+            SectionHeader.MouseEnter:Connect(function()
+                if not Expanded then
+                    Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
+                end
+            end)
+            
+            SectionHeader.MouseLeave:Connect(function()
+                if not Expanded then
+                    Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
+                end
+            end)
+            
+            local SectionObj = {Container = Container, Frame = SectionHeader}
 
-                SectionHeader.InputEnded:Connect(function(input)
-                    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
-                        local touchEnd = input.Position
-                        local distance = (touchEnd - touchStart).Magnitude
-                        
-                        -- Hanya toggle jika tidak scroll (gerak < 10 pixel)
-                        if distance < 10 then
-                            Toggle()
-                        end
-                        
-                        isTouching = false
-                        touchStart = nil
-                    end
-                end)
-                
-                -- ✅ TAMBAH: Hover effect
-                SectionHeader.MouseEnter:Connect(function()
-                    if not Expanded then
-                        Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
-                    end
-                end)
-                
-                SectionHeader.MouseLeave:Connect(function()
-                    if not Expanded then
-                        Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
-                    end
-                end)
-                
-                local SectionObj = {Container = Container, Frame = SectionHeader}
+
 
                 -- ✅ SEMUA FUNCTION DI BAWAH INI TETAP SAMA (CreateLabel, CreateButton, dll)
                 
@@ -1954,7 +1931,7 @@ end
                 local Stroke = Instance.new("UIStroke", Frame)
                 Stroke.Color = Theme.ElementBorder
                 Stroke.Thickness = 1
-                Stroke.Transparency = 0.4
+                SectionStroke.Transparency = 0.4
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
                 local NameLabel = Instance.new("TextLabel", Frame)
