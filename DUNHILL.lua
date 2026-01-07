@@ -682,29 +682,27 @@ end)
             local SectionName = config.Name or "Section"
             local DefaultExpanded = config.DefaultExpanded ~= false  -- Default true
             
-            -- ✅ FRAME UTAMA SECTION (Header + Content)
-            local SectionFrame = Instance.new("Frame", TabContent)
-            SectionFrame.Name = SectionName .. "_Section"
-            SectionFrame.Size = UDim2.new(1, 0, 0, 38)  -- Start collapsed
-            SectionFrame.BackgroundColor3 = Theme.ElementContentBg
-            SectionFrame.BackgroundTransparency = 0.7
-            SectionFrame.BorderSizePixel = 0
-            SectionFrame.ClipsDescendants = true
-            Instance.new("UICorner", SectionFrame).CornerRadius = UDim.new(0, 8)
+            -- ✅ HEADER SECTION (FRAME KECIL, TIDAK MEMBUNGKUS ELEMENT)
+            local SectionHeader = Instance.new("Frame", TabContent)
+            SectionHeader.Name = SectionName .. "_Header"
+            SectionHeader.Size = UDim2.new(1, 0, 0, 38)
+            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
+            SectionHeader.BackgroundTransparency = 0.7
+            SectionHeader.BorderSizePixel = 0
+            Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
             
-            local SectionStroke = Instance.new("UIStroke", SectionFrame)
+            local SectionStroke = Instance.new("UIStroke", SectionHeader)
             SectionStroke.Color = Theme.ElementBorder
             SectionStroke.Thickness = 1
             SectionStroke.Transparency = 0.4
             SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             
-            -- ✅ HEADER (Clickable)
-            local SectionHeader = Instance.new("TextButton", SectionFrame)
-            SectionHeader.Name = "Header"
-            SectionHeader.Size = UDim2.new(1, 0, 0, 38)
-            SectionHeader.BackgroundTransparency = 1
-            SectionHeader.Text = ""
-            SectionHeader.AutoButtonColor = false
+            -- ✅ BUTTON (CLICKABLE AREA)
+            local HeaderBtn = Instance.new("TextButton", SectionHeader)
+            HeaderBtn.Size = UDim2.new(1, 0, 1, 0)
+            HeaderBtn.BackgroundTransparency = 1
+            HeaderBtn.Text = ""
+            HeaderBtn.AutoButtonColor = false
             
             local SectionTitle = Instance.new("TextLabel", SectionHeader)
             SectionTitle.Name = "Title"
@@ -744,13 +742,13 @@ end)
                 NumberSequenceKeypoint.new(1, 0.3)
             })
             
-            -- ✅ CONTENT CONTAINER (Elements akan masuk sini)
-            local Container = Instance.new("Frame", SectionFrame)
+            -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
+            local Container = Instance.new("Frame", TabContent)
             Container.Name = SectionName .. "_Content"
-            Container.Size = UDim2.new(1, -10, 0, 0)
-            Container.Position = UDim2.new(0, 5, 0, 43)
-            Container.BackgroundTransparency = 1
+            Container.Size = UDim2.new(1, 0, 0, 0)
             Container.AutomaticSize = Enum.AutomaticSize.Y
+            Container.BackgroundTransparency = 1
+            Container.Visible = DefaultExpanded  -- ✅ Langsung hide/show
             
             local ContainerLayout = Instance.new("UIListLayout", Container)
             ContainerLayout.Padding = UDim.new(0, 4)
@@ -758,44 +756,49 @@ end)
             
             local Expanded = DefaultExpanded
             
-            -- ✅ UPDATE HEIGHT FUNCTION
-            local function UpdateHeight()
-                task.wait(0.05)
-                
-                local contentHeight = ContainerLayout.AbsoluteContentSize.Y
-                local targetHeight = Expanded and (43 + contentHeight + 10) or 38
-                
-                Tween(SectionFrame, {Size = UDim2.new(1, 0, 0, targetHeight)}, 0.3)
+            -- ✅ TOGGLE VISIBILITY (TANPA ANIMASI SIZE)
+            local function ToggleContent()
+                Expanded = not Expanded
+                Container.Visible = Expanded
                 Tween(Arrow, {Rotation = Expanded and 180 or 0}, 0.3)
             end
             
-            -- ✅ CLICK TO EXPAND/COLLAPSE
-            SectionHeader.MouseButton1Click:Connect(function()
-                Expanded = not Expanded
-                UpdateHeight()
-            end)
-            
-            SectionHeader.MouseEnter:Connect(function()
-                Tween(SectionFrame, {BackgroundColor3 = Theme.ElementContentHover})
-            end)
-            
-            SectionHeader.MouseLeave:Connect(function()
-                Tween(SectionFrame, {BackgroundColor3 = Theme.ElementContentBg})
-            end)
-            
-            -- ✅ Initialize
-            if DefaultExpanded then
-                UpdateHeight()
+        -- ✅ CLICK EVENT (SUPPORT MOUSE & TOUCH)
+        local touchStart = nil
+        local isTouching = false
+
+        HeaderBtn.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                touchStart = input.Position
+                isTouching = true
             end
-            
-            -- ✅ Auto-update height when elements added
-            ContainerLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-                if Expanded then
-                    UpdateHeight()
+        end)
+
+        HeaderBtn.InputEnded:Connect(function(input)
+            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
+                local touchEnd = input.Position
+                local distance = (touchEnd - touchStart).Magnitude
+                
+                -- Kalau gerak kurang dari 10 pixel = tap, bukan scroll
+                if distance < 10 then
+                    ToggleContent()
                 end
-            end)
+                
+                isTouching = false
+                touchStart = nil
+            end
+        end)
+
+        -- ✅ HOVER EFFECT (PC ONLY)
+        HeaderBtn.MouseEnter:Connect(function()
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
+        end)
+
+        HeaderBtn.MouseLeave:Connect(function()
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
+        end)
             
-            local SectionObj = {Container = Container, Frame = SectionFrame}
+            local SectionObj = {Container = Container, Frame = SectionHeader}
             
             function SectionObj:CreateLabel(config)
                 config = config or {}
