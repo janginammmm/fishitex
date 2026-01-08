@@ -970,7 +970,7 @@ end)
                 -- ✅ TOGGLE DI KANAN BAWAH
                 local ToggleBg = Instance.new("Frame", Frame)
                 ToggleBg.Size = UDim2.new(0, 44, 0, 22)
-                ToggleBg.Position = UDim2.new(1, -56, 1, -28)  -- ✅ Di kanan bawah
+                ToggleBg.Position = UDim2.new(1, -56, 1, -33)  -- ✅ Lebih ke atas, lebih centered
                 ToggleBg.BackgroundColor3 = CurrentValue and Theme.ToggleOn or Theme.ToggleOff
                 ToggleBg.BorderSizePixel = 0
                 Instance.new("UICorner", ToggleBg).CornerRadius = UDim.new(1, 0)
