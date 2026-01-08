@@ -1703,6 +1703,18 @@ end)
                     return count
                 end
                 
+                -- ✅ Buat ValueLabel DULU sebelum fungsi UpdateValueLabel
+                local ValueLabel = Instance.new("TextLabel", DropdownBox)
+                ValueLabel.Size = UDim2.new(1, -35, 1, 0)
+                ValueLabel.Position = UDim2.new(0, 10, 0, 0)
+                ValueLabel.BackgroundTransparency = 1
+                ValueLabel.Text = "None"
+                ValueLabel.TextColor3 = Theme.BorderBlue
+                ValueLabel.TextSize = 12
+                ValueLabel.Font = Enum.Font.Gotham
+                ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
+                ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
+                
                 local function UpdateValueLabel()
                     local count = GetSelectedCount()
                     if count == 0 then
@@ -1716,17 +1728,6 @@ end)
                         ValueLabel.Text = count .. " selected"
                     end
                 end
-                
-                local ValueLabel = Instance.new("TextLabel", DropdownBox)
-                ValueLabel.Size = UDim2.new(1, -35, 1, 0)
-                ValueLabel.Position = UDim2.new(0, 10, 0, 0)
-                ValueLabel.BackgroundTransparency = 1
-                ValueLabel.Text = "None"
-                ValueLabel.TextColor3 = Theme.BorderBlue
-                ValueLabel.TextSize = 12
-                ValueLabel.Font = Enum.Font.Gotham
-                ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
-                ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
                 
                 UpdateValueLabel()
                 
