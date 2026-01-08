@@ -247,7 +247,7 @@ end
     CloseBtn.Size = UDim2.new(0, 35, 0, 35)
     CloseBtn.Position = UDim2.new(1, -40, 0.5, -17.5)
     CloseBtn.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
-    CloseBtn.Image = "rbxassetid://97946818577230"
+    CloseBtn.Image = "rbxassetid://121517903415373"
     CloseBtn.ScaleType = Enum.ScaleType.Fit
     CloseBtn.AutoButtonColor = false
     CloseBtn.BorderSizePixel = 0
@@ -1731,14 +1731,13 @@ end)
                 
                 UpdateValueLabel()
                 
-                local Arrow = Instance.new("TextLabel", DropdownBox)
-                Arrow.Size = UDim2.new(0, 20, 0, 20)
-                Arrow.Position = UDim2.new(1, -25, 0.5, -10)
+                local Arrow = Instance.new("ImageLabel", DropdownBox)
+                Arrow.Size = UDim2.new(0, 16, 0, 16)
+                Arrow.Position = UDim2.new(1, -23, 0.5, -8)
                 Arrow.BackgroundTransparency = 1
-                Arrow.Text = "▼"
-                Arrow.TextColor3 = Theme.TextDim
-                Arrow.TextSize = 10
-                Arrow.Font = Enum.Font.Gotham
+                Arrow.Image = "rbxassetid://109663591620306"
+                Arrow.ImageColor3 = Theme.TextDim
+                Arrow.ScaleType = Enum.ScaleType.Fit
                 
                 local DropdownPopup = Instance.new("Frame")
                 DropdownPopup.Name = "MultiDropdownPopup_" .. Name
@@ -2040,14 +2039,13 @@ function SectionObj:CreateCollapsible(config)
     NameLabel.Font = Enum.Font.GothamBold
     NameLabel.TextXAlignment = Enum.TextXAlignment.Left
     
-    local Arrow = Instance.new("TextLabel", CollapsibleFrame)
-    Arrow.Size = UDim2.new(0, 20, 0, 20)
-    Arrow.Position = UDim2.new(1, -30, 0, 9)
+    local Arrow = Instance.new("ImageLabel", CollapsibleFrame)
+    Arrow.Size = UDim2.new(0, 16, 0, 16)
+    Arrow.Position = UDim2.new(1, -28, 0, 11)
     Arrow.BackgroundTransparency = 1
-    Arrow.Text = "▼"
-    Arrow.TextColor3 = Theme.TextDim
-    Arrow.TextSize = 10
-    Arrow.Font = Enum.Font.Gotham
+    Arrow.Image = "rbxassetid://109663591620306"
+    Arrow.ImageColor3 = Theme.TextDim
+    Arrow.ScaleType = Enum.ScaleType.Fit
     Arrow.Rotation = DefaultExpanded and 180 or 0
     
     -- Content Container
