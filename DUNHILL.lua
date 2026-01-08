@@ -211,6 +211,7 @@ end
     local TopBar = Instance.new("Frame", Main)
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 40)
+    TopBar.Position = UDim2.new(0, 0, 0, -45)  -- ✅ Geser ke atas, ada gap 5px
     TopBar.BackgroundColor3 = Theme.Background
     TopBar.BackgroundTransparency = 0.7
     TopBar.BorderSizePixel = 0
