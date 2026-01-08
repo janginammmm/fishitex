@@ -1345,14 +1345,14 @@ end)
                 -- ✅ Label di sebelah kiri
                 local NameLabel = Instance.new("TextLabel", Frame)
                 NameLabel.Size = UDim2.new(0.4, -10, 1, 0)  -- 40% lebar, di kiri
-                NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                NameLabel.Position = UDim2.new(0, 15, 0, 5)  -- Sedikit ke atas
                 NameLabel.BackgroundTransparency = 1
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
                 NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
-                NameLabel.TextYAlignment = Enum.TextYAlignment.Center
+                NameLabel.TextYAlignment = Enum.TextYAlignment.Top  -- Align ke atas
                 
                 -- ✅ Box dropdown di sebelah kanan
                 local DropdownBox = Instance.new("Frame", Frame)
