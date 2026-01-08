@@ -1178,7 +1178,7 @@ end)
                 -- ✅ FIX: Tambah pcall untuk semua operasi
                 local success, Frame = pcall(function()
                     local frame = Instance.new("Frame")
-                    frame.Size = UDim2.new(1, 0, 0, 40)
+                    frame.Size = UDim2.new(1, 0, 0, 60)  -- ✅ Lebih tinggi untuk layout vertikal
                     frame.BackgroundColor3 = Theme.ElementContentBg
                     frame.BackgroundTransparency = 0.7
                     frame.BorderSizePixel = 0
@@ -1201,20 +1201,23 @@ end)
                 Stroke.Transparency = 0.4
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
+                -- ✅ LABEL DI ATAS
                 local NameLabel = Instance.new("TextLabel", Frame)
-                NameLabel.Size = UDim2.new(1, -160, 1, 0)
-                NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                NameLabel.Size = UDim2.new(1, -24, 0, 20)
+                NameLabel.Position = UDim2.new(0, 12, 0, 8)
                 NameLabel.BackgroundTransparency = 1
                 NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
                 NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                NameLabel.TextYAlignment = Enum.TextYAlignment.Top
                 
+                -- ✅ INPUT BOX DI BAWAH, LEBAR PENUH, WARNA ABU-ABU
                 local InputBox = Instance.new("TextBox", Frame)
-                InputBox.Size = UDim2.new(0, 140, 0, 28)
-                InputBox.Position = UDim2.new(1, -155, 0.5, -14)
-                InputBox.BackgroundColor3 = Theme.SliderBg
+                InputBox.Size = UDim2.new(1, -24, 0, 28)
+                InputBox.Position = UDim2.new(0, 12, 1, -34)  -- Di bawah
+                InputBox.BackgroundColor3 = Color3.fromRGB(50, 55, 60)  -- ✅ Abu-abu gelap
                 InputBox.Text = ""
                 InputBox.PlaceholderText = PlaceholderText
                 InputBox.PlaceholderColor3 = Theme.TextDim
@@ -1223,16 +1226,15 @@ end)
                 InputBox.Font = Enum.Font.Gotham
                 InputBox.ClearTextOnFocus = false
                 InputBox.BorderSizePixel = 0
-                InputBox.TextXAlignment = Enum.TextXAlignment.Center  -- ✅ UBAH ke Center
+                InputBox.TextXAlignment = Enum.TextXAlignment.Left  -- ✅ Align kiri
 
                 pcall(function()
                     Instance.new("UICorner", InputBox).CornerRadius = UDim.new(0, 5)
                 end)
 
-                -- ✅ HAPUS PADDING atau kurangi nilainya
                 local InputPadding = Instance.new("UIPadding", InputBox)
-                InputPadding.PaddingLeft = UDim.new(0, 5)   -- ✅ Dari 10 jadi 5
-                InputPadding.PaddingRight = UDim.new(0, 5)  -- ✅ Dari 10 jadi 5
+                InputPadding.PaddingLeft = UDim.new(0, 10)
+                InputPadding.PaddingRight = UDim.new(0, 10)
                 
                 -- ✅ FIX: Wrap semua event dengan pcall
                 pcall(function()
