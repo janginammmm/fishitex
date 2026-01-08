@@ -290,7 +290,7 @@ end
     Sidebar.Size = UDim2.new(0, 135, 1, -15)
     Sidebar.Position = UDim2.new(0, 10, 0, 10)
     Sidebar.BackgroundColor3 = Theme.Sidebar
-    Sidebar.BackgroundTransparency = 0.15
+    Sidebar.BackgroundTransparency = 0.5  -- ✅ Lebih transparan
     Sidebar.BorderSizePixel = 0
     Sidebar.ScrollBarThickness = 3
     Sidebar.ScrollBarImageColor3 = Theme.Primary
@@ -544,11 +544,11 @@ end)
         local TabBtn = Instance.new("TextButton", Sidebar)
         TabBtn.Name = TabName
         TabBtn.Size = UDim2.new(1, -12, 0, 38)
-        TabBtn.BackgroundColor3 = Theme.ElementBg
+        TabBtn.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
         TabBtn.Text = ""
         TabBtn.AutoButtonColor = false
         TabBtn.BorderSizePixel = 0
-        Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 7)
+        -- ✅ UICorner dihapus karena tidak ada background
 
         local ActiveIndicator = Instance.new("Frame", TabBtn)
         ActiveIndicator.Name = "ActiveIndicator"
@@ -619,23 +619,25 @@ end)
         Padding.PaddingRight = UDim.new(0, 5)
         Padding.PaddingBottom = UDim.new(0, 5)
         
-        TabBtn.MouseEnter:Connect(function()
-            if Window.CurrentTab ~= TabContent then
-                Tween(TabBtn, {BackgroundColor3 = Theme.SidebarHover})
-            end
-        end)
+        -- ✅ Hover effect dihapus karena tab tidak punya background
+        -- TabBtn.MouseEnter:Connect(function()
+        --     if Window.CurrentTab ~= TabContent then
+        --         Tween(TabBtn, {BackgroundColor3 = Theme.SidebarHover})
+        --     end
+        -- end)
         
-        TabBtn.MouseLeave:Connect(function()
-            if Window.CurrentTab ~= TabContent then
-                Tween(TabBtn, {BackgroundColor3 = Theme.ElementBg})
-            end
-        end)
+        -- TabBtn.MouseLeave:Connect(function()
+        --     if Window.CurrentTab ~= TabContent then
+        --         Tween(TabBtn, {BackgroundColor3 = Theme.ElementBg})
+        --     end
+        -- end)
         
             local function ActivateTab()
                 for _, tab in pairs(Window.Tabs) do
                     tab.Content.Visible = false
-                    tab.TitleBar.Visible = false  -- ✅ TAMBAHKAN
-                    Tween(tab.Button, {BackgroundColor3 = Theme.TabInactive})
+                    tab.TitleBar.Visible = false
+                    -- ✅ Background color animation dihapus karena tab transparan
+                    -- Tween(tab.Button, {BackgroundColor3 = Theme.TabInactive})
                     Tween(tab.Label, {TextColor3 = Theme.TextDim})
                     
                     if tab.Icon and tab.Icon.Visible then
@@ -649,8 +651,9 @@ end)
                 
                 Window.CurrentTab = TabContent
                 TabContent.Visible = true
-                TabTitleBar.Visible = true  -- ✅ TAMBAHKAN
-                Tween(TabBtn, {BackgroundColor3 = Theme.TabActive})
+                TabTitleBar.Visible = true
+                -- ✅ Background color animation dihapus karena tab transparan
+                -- Tween(TabBtn, {BackgroundColor3 = Theme.TabActive})
                 Tween(Label, {TextColor3 = Theme.Text})
                 
                 if Icon and Icon.Visible then
