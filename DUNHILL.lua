@@ -189,33 +189,51 @@ end
     Main.BackgroundColor3 = Theme.Background
     Main.BackgroundTransparency = 0.15  -- ✅ Sedikit transparan
     Main.BorderSizePixel = 0
-    Main.ClipsDescendants = false  -- ✅ Matikan agar TopBar tidak ke-clip
+    Main.ClipsDescendants = true
     Main.Parent = ScreenGui
 
 
     -- ✅ Border biru dihapus sesuai permintaan user
     Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
     
+    local Shadow = Instance.new("ImageLabel", Main)
+    Shadow.Name = "Shadow"
+    Shadow.Size = UDim2.new(1, 40, 1, 40)
+    Shadow.Position = UDim2.new(0, -20, 0, -20)
+    Shadow.BackgroundTransparency = 1
+    Shadow.Image = "rbxassetid://5554236805"
+    Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    Shadow.ImageTransparency = 0.4
+    Shadow.ScaleType = Enum.ScaleType.Slice
+    Shadow.SliceCenter = Rect.new(23, 23, 277, 277)
+    Shadow.ZIndex = -1
+    
     local TopBar = Instance.new("Frame", Main)
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 40)
-    TopBar.Position = UDim2.new(0, 0, 0, -60)  -- ✅ Gap 10px di atas Main
     TopBar.BackgroundColor3 = Theme.Background
-    TopBar.BackgroundTransparency = 0.7  -- ✅ Kembalikan transparency
+    TopBar.BackgroundTransparency = 0.7
     TopBar.BorderSizePixel = 0
     
     local TopBarCorner = Instance.new("UICorner", TopBar)
     TopBarCorner.CornerRadius = UDim.new(0, 10)
     
-    -- ✅ Frame penutup untuk bikin sudut bawah runcing
-    local BottomCover = Instance.new("Frame", TopBar)
-    BottomCover.Size = UDim2.new(1, 0, 0, 10)  -- Tinggi 10px (sama dengan corner radius)
-    BottomCover.Position = UDim2.new(0, 0, 1, -10)  -- Di bagian bawah TopBar
-    BottomCover.BackgroundColor3 = Theme.Background
-    BottomCover.BackgroundTransparency = 0.7  -- Sama dengan TopBar
-    BottomCover.BorderSizePixel = 0
-    BottomCover.ZIndex = TopBar.ZIndex + 1  -- Di atas TopBar
+    local TopBarExtend = Instance.new("Frame", TopBar)
+    TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
+    TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
+    TopBarExtend.BackgroundColor3 = Theme.Background  
+    TopBarExtend.BackgroundTransparency = 0.7
+    TopBarExtend.BorderSizePixel = 0
     
+    -- ✅ Garis putih tipis sebagai pembatas
+    local Divider = Instance.new("Frame", TopBar)
+    Divider.Name = "Divider"
+    Divider.Size = UDim2.new(1, 0, 0, 1)  -- Tinggi 1px (tipis)
+    Divider.Position = UDim2.new(0, 0, 1, 0)  -- Di bagian paling bawah TopBar
+    Divider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)  -- Putih
+    Divider.BackgroundTransparency = 0.8  -- Sedikit transparan biar tidak terlalu terang
+    Divider.BorderSizePixel = 0
+    Divider.ZIndex = TopBar.ZIndex + 2  -- Di atas semua elemen TopBar
     
     local Title = Instance.new("ImageLabel", TopBar)
     Title.Size = UDim2.new(0, 30, 0, 30)  -- Ukuran logo
