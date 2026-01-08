@@ -196,22 +196,10 @@ end
     -- ✅ Border biru dihapus sesuai permintaan user
     Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
     
-    local Shadow = Instance.new("ImageLabel", Main)
-    Shadow.Name = "Shadow"
-    Shadow.Size = UDim2.new(1, 40, 1, 40)
-    Shadow.Position = UDim2.new(0, -20, 0, -20)
-    Shadow.BackgroundTransparency = 1
-    Shadow.Image = "rbxassetid://5554236805"
-    Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    Shadow.ImageTransparency = 0.4
-    Shadow.ScaleType = Enum.ScaleType.Slice
-    Shadow.SliceCenter = Rect.new(23, 23, 277, 277)
-    Shadow.ZIndex = -1
-    
     local TopBar = Instance.new("Frame", Main)
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 40)
-    TopBar.Position = UDim2.new(0, 0, 0, -50)  -- ✅ Gap 10px di atas Main
+    TopBar.Position = UDim2.new(0, 0, 0, -60)  -- ✅ Gap 10px di atas Main
     TopBar.BackgroundColor3 = Theme.Background
     TopBar.BackgroundTransparency = 0.7  -- ✅ Kembalikan transparency
     TopBar.BorderSizePixel = 0
