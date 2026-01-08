@@ -695,20 +695,12 @@ end)
             local SectionName = config.Name or "Section"
             local DefaultExpanded = config.DefaultExpanded == true
             
-            -- ✅ HEADER SECTION (FRAME KECIL, TIDAK MEMBUNGKUS ELEMENT)
+            -- ✅ HEADER SECTION (MINIMALIS SEPERTI CHLOE X)
             local SectionHeader = Instance.new("Frame", TabContent)
             SectionHeader.Name = SectionName .. "_Header"
-            SectionHeader.Size = UDim2.new(1, 0, 0, 48)  -- ✅ Tambah tinggi untuk dot indicator
-            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
-            SectionHeader.BackgroundTransparency = 0.7
+            SectionHeader.Size = UDim2.new(1, 0, 0, 32)  -- ✅ Lebih kecil, hanya untuk text
+            SectionHeader.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
             SectionHeader.BorderSizePixel = 0
-            Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
-            
-            local SectionStroke = Instance.new("UIStroke", SectionHeader)
-            SectionStroke.Color = Theme.ElementBorder
-            SectionStroke.Thickness = 1
-            SectionStroke.Transparency = 0.4
-            SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             
             -- ✅ BUTTON (CLICKABLE AREA)
             local HeaderBtn = Instance.new("TextButton", SectionHeader)
@@ -719,60 +711,46 @@ end)
             
             local SectionTitle = Instance.new("TextLabel", SectionHeader)
             SectionTitle.Name = "Title"
-            SectionTitle.Size = UDim2.new(1, -40, 0, 30)
-            SectionTitle.Position = UDim2.new(0, 12, 0, 0)
+            SectionTitle.Size = UDim2.new(1, -60, 1, 0)  -- ✅ Full height
+            SectionTitle.Position = UDim2.new(0, 0, 0, 0)
             SectionTitle.BackgroundTransparency = 1
             SectionTitle.Text = SectionName
-            SectionTitle.TextColor3 = DefaultExpanded and Theme.BorderBlue or Theme.Accent  -- ✅ Biru jika expanded
-            SectionTitle.TextSize = 14
+            SectionTitle.TextColor3 = DefaultExpanded and Theme.BorderBlue or Theme.Accent
+            SectionTitle.TextSize = 13  -- ✅ Sedikit lebih kecil
             SectionTitle.Font = Enum.Font.GothamBold
             SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
             
             -- ✅ ARROW ICON
             local Arrow = Instance.new("TextLabel", SectionHeader)
-            Arrow.Size = UDim2.new(0, 20, 0, 20)
-            Arrow.Position = UDim2.new(1, -30, 0, 5)
+            Arrow.Size = UDim2.new(0, 16, 0, 16)
+            Arrow.Position = UDim2.new(1, -20, 0.5, -8)  -- ✅ Centered vertically
             Arrow.BackgroundTransparency = 1
             Arrow.Text = "▼"
             Arrow.TextColor3 = Theme.TextDim
-            Arrow.TextSize = 10
+            Arrow.TextSize = 8  -- ✅ Lebih kecil
             Arrow.Font = Enum.Font.Gotham
             Arrow.Rotation = DefaultExpanded and 180 or 0
             
-            -- ✅ DOT INDICATOR CONTAINER (SEPERTI CHLOE X)
+            -- ✅ DOT INDICATOR (DI SAMPING TEXT, SEPERTI CHLOE X)
             local DotContainer = Instance.new("Frame", SectionHeader)
             DotContainer.Name = "DotIndicator"
-            DotContainer.Size = UDim2.new(0, 60, 0, 10)
-            DotContainer.Position = UDim2.new(0.5, -30, 1, -15)  -- Di tengah bawah
+            DotContainer.Size = UDim2.new(0, 50, 0, 8)
+            DotContainer.Position = UDim2.new(1, -70, 0.5, -4)  -- ✅ Di samping kanan, sebelum arrow
             DotContainer.BackgroundTransparency = 1
-            DotContainer.Visible = DefaultExpanded  -- ✅ Hanya muncul saat expanded
+            DotContainer.Visible = DefaultExpanded
             
-            -- ✅ BUAT 5 DOT PUTIH
+            -- ✅ BUAT 5 DOT PUTIH (LEBIH KECIL)
             for i = 1, 5 do
                 local Dot = Instance.new("Frame", DotContainer)
                 Dot.Name = "Dot" .. i
-                Dot.Size = UDim2.new(0, 6, 0, 6)
-                Dot.Position = UDim2.new(0, (i - 1) * 12, 0.5, -3)
+                Dot.Size = UDim2.new(0, 5, 0, 5)  -- ✅ Lebih kecil
+                Dot.Position = UDim2.new(0, (i - 1) * 10, 0.5, -2.5)
                 Dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 Dot.BorderSizePixel = 0
                 Instance.new("UICorner", Dot).CornerRadius = UDim.new(1, 0)
             end
             
-            -- ✅ GLOW LINE BIRU (HANYA MUNCUL SAAT EXPANDED)
-            local GlowLine = Instance.new("Frame", SectionHeader)
-            GlowLine.Name = "GlowLine"
-            GlowLine.Size = UDim2.new(1, -10, 0, 2)
-            GlowLine.Position = UDim2.new(0, 5, 1, 0)
-            GlowLine.BackgroundColor3 = Theme.BorderBlue
-            GlowLine.BackgroundTransparency = DefaultExpanded and 0 or 1  -- ✅ Transparan jika collapsed
-            GlowLine.BorderSizePixel = 0
-            
-            local GlowShadow = Instance.new("UIGradient", GlowLine)
-            GlowShadow.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 0.3),
-                NumberSequenceKeypoint.new(0.5, 0),
-                NumberSequenceKeypoint.new(1, 0.3)
-            })
+            -- ✅ GLOW LINE dihapus karena header minimalis
             
             -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
             local Container = Instance.new("Frame", TabContent)
@@ -792,14 +770,12 @@ end)
             local function ToggleContent()
                 Expanded = not Expanded
                 
-                -- ✅ ANIMASI WARNA TITLE (BIRU SAAT EXPANDED)
+                -- ✅ ANIMASI WARNA TITLE DAN DOT
                 if Expanded then
                     Tween(SectionTitle, {TextColor3 = Theme.BorderBlue}, 0.3)
-                    Tween(GlowLine, {BackgroundTransparency = 0}, 0.3)
                     DotContainer.Visible = true
                 else
                     Tween(SectionTitle, {TextColor3 = Theme.Accent}, 0.3)
-                    Tween(GlowLine, {BackgroundTransparency = 1}, 0.3)
                     task.delay(0.3, function()
                         DotContainer.Visible = false
                     end)
@@ -865,14 +841,7 @@ end)
             end
         end)
 
-        -- ✅ HOVER EFFECT (PC ONLY) - Chloe X style
-        HeaderBtn.MouseEnter:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
-        end)
-
-        HeaderBtn.MouseLeave:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
-        end)
+        -- ✅ HOVER EFFECT dihapus karena header minimalis
             
             local SectionObj = {Container = Container, Frame = SectionHeader}
             
