@@ -1619,7 +1619,7 @@ end)
                     Refresh = function(_, newOptions)
                         Options = newOptions
                         CurrentOption = newOptions[1] or "None"
-                        NameLabel.Text = CurrentOption
+                        ValueLabel.Text = CurrentOption  -- ✅ Update value box, bukan name label
                         CreateOptions()
                         if Flag then
                             Dunhill.Flags[Flag] = {CurrentValue = CurrentOption}
