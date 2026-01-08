@@ -56,9 +56,9 @@ local Theme = {
     ElementBgHover = Color3.fromRGB(28, 32, 36),
     ElementBorder = Color3.fromRGB(40, 45, 50),
 
-    -- Element Content (Untuk section items)
-    ElementContentBg = Color3.fromRGB(25, 28, 32),
-    ElementContentHover = Color3.fromRGB(30, 35, 40),
+    -- Element Content (Untuk section items - Abu-abu seperti sebelumnya)
+    ElementContentBg = Color3.fromRGB(65, 70, 80),
+    ElementContentHover = Color3.fromRGB(75, 80, 90),
     
     -- Tab Colors
     TabActive = Color3.fromRGB(35, 40, 45),
@@ -739,24 +739,7 @@ end)
             Arrow.Font = Enum.Font.Gotham
             Arrow.Rotation = DefaultExpanded and 180 or 0
             
-            -- ✅ DOT INDICATOR (DI SAMPING TEXT, SEPERTI CHLOE X)
-            local DotContainer = Instance.new("Frame", SectionHeader)
-            DotContainer.Name = "DotIndicator"
-            DotContainer.Size = UDim2.new(0, 50, 0, 8)
-            DotContainer.Position = UDim2.new(1, -70, 0.5, -4)  -- ✅ Di samping kanan, sebelum arrow
-            DotContainer.BackgroundTransparency = 1
-            DotContainer.Visible = DefaultExpanded
-            
-            -- ✅ BUAT 5 DOT PUTIH (LEBIH KECIL)
-            for i = 1, 5 do
-                local Dot = Instance.new("Frame", DotContainer)
-                Dot.Name = "Dot" .. i
-                Dot.Size = UDim2.new(0, 5, 0, 5)  -- ✅ Lebih kecil
-                Dot.Position = UDim2.new(0, (i - 1) * 10, 0.5, -2.5)
-                Dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Dot.BorderSizePixel = 0
-                Instance.new("UICorner", Dot).CornerRadius = UDim.new(1, 0)
-            end
+            -- ✅ DOT INDICATOR dihapus sesuai permintaan user
             
             -- ✅ GARIS BIRU ANIMASI (EXPAND DARI TENGAH, UJUNG RUNCING)
             local UnderlineContainer = Instance.new("Frame", SectionHeader)
@@ -802,17 +785,13 @@ end)
             local function ToggleContent()
                 Expanded = not Expanded
                 
-                -- ✅ ANIMASI WARNA TITLE, DOT, DAN GARIS BIRU
+                -- ✅ ANIMASI WARNA TITLE DAN GARIS BIRU
                 if Expanded then
                     Tween(SectionTitle, {TextColor3 = Theme.BorderBlue}, 0.3)
-                    DotContainer.Visible = true
                     -- ✅ ANIMASI GARIS BIRU: Expand dari tengah ke samping
                     Tween(BlueLine, {Size = UDim2.new(1, 0, 1, 0)}, 0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                 else
                     Tween(SectionTitle, {TextColor3 = Theme.Accent}, 0.3)
-                    task.delay(0.3, function()
-                        DotContainer.Visible = false
-                    end)
                     -- ✅ ANIMASI GARIS BIRU: Collapse ke tengah
                     Tween(BlueLine, {Size = UDim2.new(0, 0, 1, 0)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
                 end
@@ -964,7 +943,7 @@ end)
                 local Callback = config.Callback or function() end
                 
                 local Frame = Instance.new("Frame", Container)
-                Frame.Size = UDim2.new(1, 0, 0, 38)
+                Frame.Size = UDim2.new(1, 0, 0, 50)  -- ✅ Lebih besar dari 38 ke 50
                 Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
@@ -976,19 +955,22 @@ end)
                 Stroke.Transparency = 0.4
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
+                -- ✅ TEXT DI ATAS
                 local NameLabel = Instance.new("TextLabel", Frame)
-                NameLabel.Size = UDim2.new(1, -60, 1, 0)
-                NameLabel.Position = UDim2.new(0, 15, 0, 0)
+                NameLabel.Size = UDim2.new(1, -60, 0, 20)
+                NameLabel.Position = UDim2.new(0, 12, 0, 8)  -- ✅ Di atas dengan padding
                 NameLabel.BackgroundTransparency = 1
                 NameLabel.Text = Name
-                NameLabel.TextColor3 = Theme.Text
+                NameLabel.TextColor3 = CurrentValue and Theme.BorderBlue or Theme.Text  -- ✅ Biru jika aktif
                 NameLabel.TextSize = 13
                 NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                NameLabel.TextYAlignment = Enum.TextYAlignment.Top
                 
+                -- ✅ TOGGLE DI BAWAH
                 local ToggleBg = Instance.new("Frame", Frame)
                 ToggleBg.Size = UDim2.new(0, 44, 0, 22)
-                ToggleBg.Position = UDim2.new(1, -52, 0.5, -11)
+                ToggleBg.Position = UDim2.new(0, 12, 1, -28)  -- ✅ Di bawah, sejajar kiri dengan text
                 ToggleBg.BackgroundColor3 = CurrentValue and Theme.ToggleOn or Theme.ToggleOff
                 ToggleBg.BorderSizePixel = 0
                 Instance.new("UICorner", ToggleBg).CornerRadius = UDim.new(1, 0)
@@ -1018,6 +1000,8 @@ end)
                     -- ✅ CHLOE X: Animasi lebih cepat (0.2s)
                     Tween(ToggleBg, {BackgroundColor3 = value and Theme.ToggleOn or Theme.ToggleOff}, 0.2)
                     Tween(ToggleCircle, {Position = value and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)}, 0.2)
+                    -- ✅ ANIMASI WARNA TEXT: Biru jika aktif, putih jika nonaktif
+                    Tween(NameLabel, {TextColor3 = value and Theme.BorderBlue or Theme.Text}, 0.2)
                     if Flag then
                         Dunhill.Flags[Flag] = {CurrentValue = value, SetValue = SetValue}
                     end
