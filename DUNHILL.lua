@@ -1,4 +1,3 @@
-
 --[[
     ╔══════════════════════════════════════╗
     ║      DUNHILL UI LIBRARY v2.0         ║
@@ -214,7 +213,7 @@ end
     TopBar.Size = UDim2.new(1, 0, 0, 40)
     TopBar.Position = UDim2.new(0, 0, 0, -45)  -- ✅ Geser ke atas, ada gap 5px
     TopBar.BackgroundColor3 = Theme.Background
-    TopBar.BackgroundTransparency = 0.7
+    TopBar.BackgroundTransparency = 0  -- ✅ Solid, tidak transparan
     TopBar.BorderSizePixel = 0
     
     local TopBarCorner = Instance.new("UICorner", TopBar)
@@ -224,7 +223,7 @@ end
     TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
     TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
     TopBarExtend.BackgroundColor3 = Theme.Background  
-    TopBarExtend.BackgroundTransparency = 0.7
+    TopBarExtend.BackgroundTransparency = 0  -- ✅ Solid, tidak transparan
     TopBarExtend.BorderSizePixel = 0
     
     local Title = Instance.new("ImageLabel", TopBar)
