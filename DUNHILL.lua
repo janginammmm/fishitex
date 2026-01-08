@@ -695,12 +695,20 @@ end)
             local SectionName = config.Name or "Section"
             local DefaultExpanded = config.DefaultExpanded == true
             
-            -- ✅ HEADER SECTION (MINIMALIS SEPERTI CHLOE X)
+            -- ✅ HEADER SECTION (KECIL TAPI ADA BINGKAI)
             local SectionHeader = Instance.new("Frame", TabContent)
             SectionHeader.Name = SectionName .. "_Header"
-            SectionHeader.Size = UDim2.new(1, 0, 0, 32)  -- ✅ Lebih kecil, hanya untuk text
-            SectionHeader.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
+            SectionHeader.Size = UDim2.new(1, 0, 0, 35)  -- ✅ Kecil tapi ada background
+            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
+            SectionHeader.BackgroundTransparency = 0.7
             SectionHeader.BorderSizePixel = 0
+            Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
+            
+            local SectionStroke = Instance.new("UIStroke", SectionHeader)
+            SectionStroke.Color = Theme.ElementBorder
+            SectionStroke.Thickness = 1
+            SectionStroke.Transparency = 0.4
+            SectionStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             
             -- ✅ BUTTON (CLICKABLE AREA)
             local HeaderBtn = Instance.new("TextButton", SectionHeader)
@@ -711,12 +719,12 @@ end)
             
             local SectionTitle = Instance.new("TextLabel", SectionHeader)
             SectionTitle.Name = "Title"
-            SectionTitle.Size = UDim2.new(1, -60, 1, 0)  -- ✅ Full height
-            SectionTitle.Position = UDim2.new(0, 0, 0, 0)
+            SectionTitle.Size = UDim2.new(1, -80, 1, 0)
+            SectionTitle.Position = UDim2.new(0, 12, 0, 0)  -- ✅ Padding kiri
             SectionTitle.BackgroundTransparency = 1
             SectionTitle.Text = SectionName
             SectionTitle.TextColor3 = DefaultExpanded and Theme.BorderBlue or Theme.Accent
-            SectionTitle.TextSize = 13  -- ✅ Sedikit lebih kecil
+            SectionTitle.TextSize = 13
             SectionTitle.Font = Enum.Font.GothamBold
             SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
             
@@ -841,7 +849,14 @@ end)
             end
         end)
 
-        -- ✅ HOVER EFFECT dihapus karena header minimalis
+        -- ✅ HOVER EFFECT
+        HeaderBtn.MouseEnter:Connect(function()
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
+        end)
+
+        HeaderBtn.MouseLeave:Connect(function()
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
+        end)
             
             local SectionObj = {Container = Container, Frame = SectionHeader}
             
