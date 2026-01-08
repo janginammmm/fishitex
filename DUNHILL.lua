@@ -187,7 +187,7 @@ end
     Main.Size = UDim2.new(0, 500, 0, 290)
     Main.Position = UDim2.new(0.5, -250, 0.5, -175)
     Main.BackgroundColor3 = Theme.Background
-    Main.BackgroundTransparency = 0.05  -- ✅ Lebih solid, tidak terlalu transparan
+    Main.BackgroundTransparency = 0.15  -- ✅ Sedikit transparan
     Main.BorderSizePixel = 0
     Main.ClipsDescendants = true
     Main.Parent = ScreenGui
@@ -288,7 +288,7 @@ end
     Sidebar.Size = UDim2.new(0, 135, 1, -15)
     Sidebar.Position = UDim2.new(0, 10, 0, 10)
     Sidebar.BackgroundColor3 = Theme.Sidebar
-    Sidebar.BackgroundTransparency = 0.5  -- ✅ Lebih transparan
+    Sidebar.BackgroundTransparency = 0.7  -- ✅ Lebih transparan
     Sidebar.BorderSizePixel = 0
     Sidebar.ScrollBarThickness = 3
     Sidebar.ScrollBarImageColor3 = Theme.Primary
