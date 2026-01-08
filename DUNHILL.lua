@@ -207,6 +207,15 @@ end
     local TopBarCorner = Instance.new("UICorner", TopBar)
     TopBarCorner.CornerRadius = UDim.new(0, 10)
     
+    -- ✅ Frame penutup untuk bikin sudut bawah runcing
+    local BottomCover = Instance.new("Frame", TopBar)
+    BottomCover.Size = UDim2.new(1, 0, 0, 10)  -- Tinggi 10px (sama dengan corner radius)
+    BottomCover.Position = UDim2.new(0, 0, 1, -10)  -- Di bagian bawah TopBar
+    BottomCover.BackgroundColor3 = Theme.Background
+    BottomCover.BackgroundTransparency = 0.7  -- Sama dengan TopBar
+    BottomCover.BorderSizePixel = 0
+    BottomCover.ZIndex = TopBar.ZIndex + 1  -- Di atas TopBar
+    
     
     local Title = Instance.new("ImageLabel", TopBar)
     Title.Size = UDim2.new(0, 30, 0, 30)  -- Ukuran logo
