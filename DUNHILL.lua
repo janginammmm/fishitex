@@ -192,10 +192,8 @@ end
     Main.ClipsDescendants = true
     Main.Parent = ScreenGui
 
-    local MainBorder = Instance.new("UIStroke", Main)
-    MainBorder.Color = Theme.BorderBlue  -- Sky Blue
-    MainBorder.Thickness = 2
-    MainBorder.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+    -- ✅ Border biru dihapus sesuai permintaan user
     Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 10)
     
     local Shadow = Instance.new("ImageLabel", Main)
