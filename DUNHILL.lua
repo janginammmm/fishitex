@@ -729,15 +729,14 @@ end)
             SectionTitle.Font = Enum.Font.GothamBold
             SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
             
-            -- ✅ ARROW ICON
-            local Arrow = Instance.new("TextLabel", SectionHeader)
+            -- ✅ ARROW ICON (Custom Image)
+            local Arrow = Instance.new("ImageLabel", SectionHeader)
             Arrow.Size = UDim2.new(0, 16, 0, 16)
             Arrow.Position = UDim2.new(1, -20, 0.5, -8)  -- ✅ Centered vertically
             Arrow.BackgroundTransparency = 1
-            Arrow.Text = "▼"
-            Arrow.TextColor3 = Theme.TextDim
-            Arrow.TextSize = 8  -- ✅ Lebih kecil
-            Arrow.Font = Enum.Font.Gotham
+            Arrow.Image = "rbxassetid://109663591620306"
+            Arrow.ImageColor3 = Theme.TextDim
+            Arrow.ScaleType = Enum.ScaleType.Fit
             Arrow.Rotation = DefaultExpanded and 180 or 0
             
             -- ✅ DOT INDICATOR dihapus sesuai permintaan user
@@ -1385,14 +1384,13 @@ end)
                 ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
                 ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
                 
-                local Arrow = Instance.new("TextLabel", DropdownBox)
-                Arrow.Size = UDim2.new(0, 20, 0, 20)
-                Arrow.Position = UDim2.new(1, -25, 0.5, -10)
+                local Arrow = Instance.new("ImageLabel", DropdownBox)
+                Arrow.Size = UDim2.new(0, 16, 0, 16)
+                Arrow.Position = UDim2.new(1, -23, 0.5, -8)
                 Arrow.BackgroundTransparency = 1
-                Arrow.Text = "▼"
-                Arrow.TextColor3 = Theme.TextDim
-                Arrow.TextSize = 10
-                Arrow.Font = Enum.Font.Gotham
+                Arrow.Image = "rbxassetid://109663591620306"
+                Arrow.ImageColor3 = Theme.TextDim
+                Arrow.ScaleType = Enum.ScaleType.Fit
                 
                 local DropdownPopup = Instance.new("Frame")
                 DropdownPopup.Name = "DropdownPopup_" .. Name
