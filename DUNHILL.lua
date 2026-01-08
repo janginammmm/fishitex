@@ -1327,8 +1327,9 @@ end)
                 local Flag = config.Flag
                 local Callback = config.Callback or function() end
                 
+                -- ✅ Frame lebih tinggi dengan layout 2 kolom
                 local Frame = Instance.new("Frame", Container)
-                Frame.Size = UDim2.new(1, 0, 0, 38)
+                Frame.Size = UDim2.new(1, 0, 0, 50)  -- Lebih tinggi
                 Frame.BackgroundColor3 = Theme.ElementContentBg
                 Frame.BackgroundTransparency = 0.7
                 Frame.BorderSizePixel = 0
@@ -1341,24 +1342,52 @@ end)
                 Stroke.Transparency = 0.4
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
-                local Btn = Instance.new("TextButton", Frame)
-                Btn.Size = UDim2.new(1, 0, 0, 38)
-                Btn.BackgroundTransparency = 1
-                Btn.Text = ""
-                
+                -- ✅ Label di sebelah kiri
                 local NameLabel = Instance.new("TextLabel", Frame)
-                NameLabel.Size = UDim2.new(1, -35, 1, 0)
+                NameLabel.Size = UDim2.new(0.4, -10, 1, 0)  -- 40% lebar, di kiri
                 NameLabel.Position = UDim2.new(0, 15, 0, 0)
                 NameLabel.BackgroundTransparency = 1
-                NameLabel.Text = CurrentOption
+                NameLabel.Text = Name
                 NameLabel.TextColor3 = Theme.Text
                 NameLabel.TextSize = 13
                 NameLabel.Font = Enum.Font.GothamBold
                 NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                NameLabel.TextYAlignment = Enum.TextYAlignment.Center
                 
-                local Arrow = Instance.new("TextLabel", Frame)
+                -- ✅ Box dropdown di sebelah kanan
+                local DropdownBox = Instance.new("Frame", Frame)
+                DropdownBox.Size = UDim2.new(0.55, 0, 0, 35)  -- 55% lebar, di kanan
+                DropdownBox.Position = UDim2.new(0.43, 0, 0.5, -17.5)  -- Centered vertically
+                DropdownBox.BackgroundColor3 = Color3.fromRGB(25, 28, 32)
+                DropdownBox.BackgroundTransparency = 0.3
+                DropdownBox.BorderSizePixel = 0
+                Instance.new("UICorner", DropdownBox).CornerRadius = UDim.new(0, 6)
+                
+                local DropboxStroke = Instance.new("UIStroke", DropdownBox)
+                DropboxStroke.Color = Theme.ElementBorder
+                DropboxStroke.Thickness = 1
+                DropboxStroke.Transparency = 0.5
+                DropboxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                
+                local Btn = Instance.new("TextButton", DropdownBox)
+                Btn.Size = UDim2.new(1, 0, 1, 0)
+                Btn.BackgroundTransparency = 1
+                Btn.Text = ""
+                
+                local ValueLabel = Instance.new("TextLabel", DropdownBox)
+                ValueLabel.Size = UDim2.new(1, -35, 1, 0)
+                ValueLabel.Position = UDim2.new(0, 10, 0, 0)
+                ValueLabel.BackgroundTransparency = 1
+                ValueLabel.Text = CurrentOption
+                ValueLabel.TextColor3 = Theme.BorderBlue  -- Cyan
+                ValueLabel.TextSize = 12
+                ValueLabel.Font = Enum.Font.Gotham
+                ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
+                ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
+                
+                local Arrow = Instance.new("TextLabel", DropdownBox)
                 Arrow.Size = UDim2.new(0, 20, 0, 20)
-                Arrow.Position = UDim2.new(1, -30, 0, 9)
+                Arrow.Position = UDim2.new(1, -25, 0.5, -10)
                 Arrow.BackgroundTransparency = 1
                 Arrow.Text = "▼"
                 Arrow.TextColor3 = Theme.TextDim
@@ -1486,10 +1515,9 @@ end)
                             local touchEnd = input.Position
                             local distance = (touchEnd - touchStart).Magnitude
                             
-                            -- Kalau gerak kurang dari 10 pixel = tap, bukan scroll
                             if distance < 10 then
                                 CurrentOption = option
-                                NameLabel.Text = option
+                                ValueLabel.Text = option
                                 Opened = false
                                 UpdateSize()
                                 
@@ -1581,7 +1609,7 @@ end)
                     SetValue = function(_, option)
                         if table.find(Options, option) then
                             CurrentOption = option
-                            NameLabel.Text = option
+                            ValueLabel.Text = option
                             if Flag then
                                 Dunhill.Flags[Flag] = {CurrentValue = option}
                             end
@@ -1613,7 +1641,7 @@ function SectionObj:CreateCollapsible(config)
     local DefaultExpanded = config.DefaultExpanded or false
     
     local CollapsibleFrame = Instance.new("Frame", Container)
-    CollapsibleFrame.Size = UDim2.new(1, 0, 0, 38)
+    CollapsibleFrame.Size = UDim2.new(1, 0, 0, 35)
     CollapsibleFrame.BackgroundColor3 = Theme.ElementContentBg
     CollapsibleFrame.BackgroundTransparency = 0.7
     CollapsibleFrame.BorderSizePixel = 0
