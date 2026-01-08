@@ -219,12 +219,6 @@ end
     local TopBarCorner = Instance.new("UICorner", TopBar)
     TopBarCorner.CornerRadius = UDim.new(0, 10)
     
-    local TopBarExtend = Instance.new("Frame", TopBar)
-    TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
-    TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
-    TopBarExtend.BackgroundColor3 = Theme.Background  
-    TopBarExtend.BackgroundTransparency = 0.7  -- ✅ Kembalikan transparency
-    TopBarExtend.BorderSizePixel = 0
     
     local Title = Instance.new("ImageLabel", TopBar)
     Title.Size = UDim2.new(0, 30, 0, 30)  -- Ukuran logo
