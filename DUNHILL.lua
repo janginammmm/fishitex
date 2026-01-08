@@ -189,7 +189,7 @@ end
     Main.BackgroundColor3 = Theme.Background
     Main.BackgroundTransparency = 0.15  -- ✅ Sedikit transparan
     Main.BorderSizePixel = 0
-    Main.ClipsDescendants = true
+    Main.ClipsDescendants = false  -- ✅ Matikan agar TopBar tidak ke-clip
     Main.Parent = ScreenGui
 
 
