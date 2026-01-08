@@ -680,12 +680,12 @@ end)
         function Tab:CreateSection(config)
             config = config or {}
             local SectionName = config.Name or "Section"
-            local DefaultExpanded = config.DefaultExpanded ~= false  -- Default true
+            local DefaultExpanded = config.DefaultExpanded == true
             
             -- ✅ HEADER SECTION (FRAME KECIL, TIDAK MEMBUNGKUS ELEMENT)
             local SectionHeader = Instance.new("Frame", TabContent)
             SectionHeader.Name = SectionName .. "_Header"
-            SectionHeader.Size = UDim2.new(1, 0, 0, 38)
+            SectionHeader.Size = UDim2.new(1, 0, 0, 48)  -- ✅ Tambah tinggi untuk dot indicator
             SectionHeader.BackgroundColor3 = Theme.ElementContentBg
             SectionHeader.BackgroundTransparency = 0.7
             SectionHeader.BorderSizePixel = 0
@@ -706,11 +706,11 @@ end)
             
             local SectionTitle = Instance.new("TextLabel", SectionHeader)
             SectionTitle.Name = "Title"
-            SectionTitle.Size = UDim2.new(1, -40, 1, 0)
+            SectionTitle.Size = UDim2.new(1, -40, 0, 30)
             SectionTitle.Position = UDim2.new(0, 12, 0, 0)
             SectionTitle.BackgroundTransparency = 1
             SectionTitle.Text = SectionName
-            SectionTitle.TextColor3 = Theme.Accent
+            SectionTitle.TextColor3 = DefaultExpanded and Theme.BorderBlue or Theme.Accent  -- ✅ Biru jika expanded
             SectionTitle.TextSize = 14
             SectionTitle.Font = Enum.Font.GothamBold
             SectionTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -718,7 +718,7 @@ end)
             -- ✅ ARROW ICON
             local Arrow = Instance.new("TextLabel", SectionHeader)
             Arrow.Size = UDim2.new(0, 20, 0, 20)
-            Arrow.Position = UDim2.new(1, -30, 0, 9)
+            Arrow.Position = UDim2.new(1, -30, 0, 5)
             Arrow.BackgroundTransparency = 1
             Arrow.Text = "▼"
             Arrow.TextColor3 = Theme.TextDim
@@ -726,13 +726,32 @@ end)
             Arrow.Font = Enum.Font.Gotham
             Arrow.Rotation = DefaultExpanded and 180 or 0
             
-            -- ✅ GLOW LINE BIRU
+            -- ✅ DOT INDICATOR CONTAINER (SEPERTI CHLOE X)
+            local DotContainer = Instance.new("Frame", SectionHeader)
+            DotContainer.Name = "DotIndicator"
+            DotContainer.Size = UDim2.new(0, 60, 0, 10)
+            DotContainer.Position = UDim2.new(0.5, -30, 1, -15)  -- Di tengah bawah
+            DotContainer.BackgroundTransparency = 1
+            DotContainer.Visible = DefaultExpanded  -- ✅ Hanya muncul saat expanded
+            
+            -- ✅ BUAT 5 DOT PUTIH
+            for i = 1, 5 do
+                local Dot = Instance.new("Frame", DotContainer)
+                Dot.Name = "Dot" .. i
+                Dot.Size = UDim2.new(0, 6, 0, 6)
+                Dot.Position = UDim2.new(0, (i - 1) * 12, 0.5, -3)
+                Dot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Dot.BorderSizePixel = 0
+                Instance.new("UICorner", Dot).CornerRadius = UDim.new(1, 0)
+            end
+            
+            -- ✅ GLOW LINE BIRU (HANYA MUNCUL SAAT EXPANDED)
             local GlowLine = Instance.new("Frame", SectionHeader)
             GlowLine.Name = "GlowLine"
             GlowLine.Size = UDim2.new(1, -10, 0, 2)
             GlowLine.Position = UDim2.new(0, 5, 1, 0)
             GlowLine.BackgroundColor3 = Theme.BorderBlue
-            GlowLine.BackgroundTransparency = 0
+            GlowLine.BackgroundTransparency = DefaultExpanded and 0 or 1  -- ✅ Transparan jika collapsed
             GlowLine.BorderSizePixel = 0
             
             local GlowShadow = Instance.new("UIGradient", GlowLine)
@@ -748,7 +767,7 @@ end)
             Container.Size = UDim2.new(1, 0, 0, 0)
             Container.AutomaticSize = Enum.AutomaticSize.Y
             Container.BackgroundTransparency = 1
-            Container.Visible = DefaultExpanded  -- ✅ Langsung hide/show
+            Container.Visible = DefaultExpanded
             
             local ContainerLayout = Instance.new("UIListLayout", Container)
             ContainerLayout.Padding = UDim.new(0, 4)
@@ -760,10 +779,23 @@ end)
             local function ToggleContent()
                 Expanded = not Expanded
                 
+                -- ✅ ANIMASI WARNA TITLE (BIRU SAAT EXPANDED)
+                if Expanded then
+                    Tween(SectionTitle, {TextColor3 = Theme.BorderBlue}, 0.3)
+                    Tween(GlowLine, {BackgroundTransparency = 0}, 0.3)
+                    DotContainer.Visible = true
+                else
+                    Tween(SectionTitle, {TextColor3 = Theme.Accent}, 0.3)
+                    Tween(GlowLine, {BackgroundTransparency = 1}, 0.3)
+                    task.delay(0.3, function()
+                        DotContainer.Visible = false
+                    end)
+                end
+                
                 if Expanded then
                     -- Buka: Container jadi visible dulu
                     Container.Visible = true
-                    Container.ClipsDescendants = true  -- Biar animasi slide smooth
+                    Container.ClipsDescendants = true
                     
                     -- Animasi tinggi dari 0 ke full
                     Container.Size = UDim2.new(1, 0, 0, 0)
@@ -774,7 +806,7 @@ end)
                     
                     task.delay(0.3, function()
                         Container.Size = UDim2.new(1, 0, 0, 0)
-                        Container.AutomaticSize = Enum.AutomaticSize.Y  -- Balik ke auto size
+                        Container.AutomaticSize = Enum.AutomaticSize.Y
                         Container.ClipsDescendants = false
                     end)
                 else
