@@ -699,7 +699,7 @@ end)
             local SectionHeader = Instance.new("Frame", TabContent)
             SectionHeader.Name = SectionName .. "_Header"
             SectionHeader.Size = UDim2.new(1, 0, 0, 35)  -- ✅ Kecil tapi ada background
-            SectionHeader.BackgroundColor3 = Theme.ElementContentBg
+            SectionHeader.BackgroundColor3 = Color3.fromRGB(65, 70, 80)  -- ✅ Abu-abu seperti sebelumnya
             SectionHeader.BackgroundTransparency = 0.7
             SectionHeader.BorderSizePixel = 0
             Instance.new("UICorner", SectionHeader).CornerRadius = UDim.new(0, 8)
@@ -758,7 +758,31 @@ end)
                 Instance.new("UICorner", Dot).CornerRadius = UDim.new(1, 0)
             end
             
-            -- ✅ GLOW LINE dihapus karena header minimalis
+            -- ✅ GARIS BIRU ANIMASI (EXPAND DARI TENGAH, UJUNG RUNCING)
+            local UnderlineContainer = Instance.new("Frame", SectionHeader)
+            UnderlineContainer.Name = "UnderlineContainer"
+            UnderlineContainer.Size = UDim2.new(1, 0, 0, 3)
+            UnderlineContainer.Position = UDim2.new(0, 0, 1, 0)  -- Di bawah header
+            UnderlineContainer.BackgroundTransparency = 1
+            UnderlineContainer.ClipsDescendants = true
+            
+            -- Garis biru dengan gradient untuk ujung runcing
+            local BlueLine = Instance.new("Frame", UnderlineContainer)
+            BlueLine.Name = "BlueLine"
+            BlueLine.Size = DefaultExpanded and UDim2.new(1, 0, 1, 0) or UDim2.new(0, 0, 1, 0)  -- Mulai dari 0 jika collapsed
+            BlueLine.Position = UDim2.new(0.5, 0, 0, 0)  -- Anchor di tengah
+            BlueLine.AnchorPoint = Vector2.new(0.5, 0)  -- Expand dari tengah
+            BlueLine.BackgroundColor3 = Theme.BorderBlue
+            BlueLine.BorderSizePixel = 0
+            
+            -- Gradient untuk ujung runcing (fade out di kedua sisi)
+            local LineGradient = Instance.new("UIGradient", BlueLine)
+            LineGradient.Transparency = NumberSequence.new({
+                NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (runcing)
+                NumberSequenceKeypoint.new(0.05, 0),   -- Solid
+                NumberSequenceKeypoint.new(0.95, 0),   -- Solid
+                NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (runcing)
+            })
             
             -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
             local Container = Instance.new("Frame", TabContent)
@@ -778,15 +802,19 @@ end)
             local function ToggleContent()
                 Expanded = not Expanded
                 
-                -- ✅ ANIMASI WARNA TITLE DAN DOT
+                -- ✅ ANIMASI WARNA TITLE, DOT, DAN GARIS BIRU
                 if Expanded then
                     Tween(SectionTitle, {TextColor3 = Theme.BorderBlue}, 0.3)
                     DotContainer.Visible = true
+                    -- ✅ ANIMASI GARIS BIRU: Expand dari tengah ke samping
+                    Tween(BlueLine, {Size = UDim2.new(1, 0, 1, 0)}, 0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
                 else
                     Tween(SectionTitle, {TextColor3 = Theme.Accent}, 0.3)
                     task.delay(0.3, function()
                         DotContainer.Visible = false
                     end)
+                    -- ✅ ANIMASI GARIS BIRU: Collapse ke tengah
+                    Tween(BlueLine, {Size = UDim2.new(0, 0, 1, 0)}, 0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
                 end
                 
                 if Expanded then
@@ -851,11 +879,11 @@ end)
 
         -- ✅ HOVER EFFECT
         HeaderBtn.MouseEnter:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
+            Tween(SectionHeader, {BackgroundColor3 = Color3.fromRGB(75, 80, 90)}, 0.15)  -- ✅ Abu-abu lebih terang
         end)
 
         HeaderBtn.MouseLeave:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
+            Tween(SectionHeader, {BackgroundColor3 = Color3.fromRGB(65, 70, 80)}, 0.15)  -- ✅ Kembali ke abu-abu normal
         end)
             
             local SectionObj = {Container = Container, Frame = SectionHeader}
