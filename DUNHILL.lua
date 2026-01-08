@@ -34,44 +34,57 @@ end
 local DunhillFolder = "DunhillUI"
 local ConfigurationExtension = ".dhl"
 
+-- ✅ CHLOE X COLOR SCHEME
 local Theme = {
-    Background = Color3.fromRGB(15, 15, 15),
-    BackgroundSecondary = Color3.fromRGB(20, 20, 20),
-    TopBar = Color3.fromRGB(18, 18, 18),
+    -- Backgrounds (Lebih gelap seperti Chloe X)
+    Background = Color3.fromRGB(12, 14, 16),
+    BackgroundSecondary = Color3.fromRGB(18, 20, 23),
+    TopBar = Color3.fromRGB(15, 17, 20),
     
-    Sidebar = Color3.fromRGB(22, 22, 22),
-    SidebarHover = Color3.fromRGB(28, 28, 28),
-    SidebarSelected = Color3.fromRGB(180, 180, 180),
+    -- Sidebar
+    Sidebar = Color3.fromRGB(20, 22, 25),
+    SidebarHover = Color3.fromRGB(28, 31, 35),
+    SidebarSelected = Color3.fromRGB(180, 190, 200),
     
-    Primary = Color3.fromRGB(200, 200, 200),
-    Secondary = Color3.fromRGB(140, 140, 140),
-    Accent = Color3.fromRGB(220, 220, 220),
+    -- Primary Colors (Cyan seperti Chloe X)
+    Primary = Color3.fromRGB(210, 220, 230),
+    Secondary = Color3.fromRGB(150, 160, 170),
+    Accent = Color3.fromRGB(200, 210, 220),
     
-    ElementBg = Color3.fromRGB(25, 25, 25),
-    ElementBgHover = Color3.fromRGB(30, 30, 30),
-    ElementBorder = Color3.fromRGB(45, 45, 45),
+    -- Element Backgrounds
+    ElementBg = Color3.fromRGB(22, 25, 28),
+    ElementBgHover = Color3.fromRGB(28, 32, 36),
+    ElementBorder = Color3.fromRGB(40, 45, 50),
 
-    ElementContentBg = Color3.fromRGB(65, 70, 80),  -- Abu-abu untuk element
-    ElementContentHover = Color3.fromRGB(75, 80, 90),
+    -- Element Content (Untuk section items)
+    ElementContentBg = Color3.fromRGB(25, 28, 32),
+    ElementContentHover = Color3.fromRGB(30, 35, 40),
     
-    TabActive = Color3.fromRGB(60, 60, 60),
-    TabInactive = Color3.fromRGB(25, 25, 25),
+    -- Tab Colors
+    TabActive = Color3.fromRGB(35, 40, 45),
+    TabInactive = Color3.fromRGB(20, 22, 25),
 
-    Text = Color3.fromRGB(245, 245, 245),
-    TextDim = Color3.fromRGB(160, 160, 160),
-    TextDark = Color3.fromRGB(20, 20, 20),
+    -- Text Colors (Lebih kontras)
+    Text = Color3.fromRGB(255, 255, 255),
+    TextDim = Color3.fromRGB(160, 170, 180),
+    TextDark = Color3.fromRGB(15, 15, 15),
     
+    -- Status Colors
     Success = Color3.fromRGB(80, 200, 120),
     Warning = Color3.fromRGB(255, 180, 0),
     Error = Color3.fromRGB(240, 80, 80),
-    Info = Color3.fromRGB(100, 160, 255),
+    Info = Color3.fromRGB(100, 180, 255),
     
-    ToggleOn = Color3.fromRGB(100, 160, 255),
-    ToggleOff = Color3.fromRGB(50, 50, 50),
+    -- Toggle Colors (Cyan untuk ON seperti Chloe X)
+    ToggleOn = Color3.fromRGB(100, 200, 255),  -- Cyan terang
+    ToggleOff = Color3.fromRGB(50, 55, 60),
     
-    SliderFill = Color3.fromRGB(190, 190, 190),
-    SliderBg = Color3.fromRGB(35, 35, 35),
-    BorderBlue = Color3.fromRGB(65, 105, 225),
+    -- Slider Colors
+    SliderFill = Color3.fromRGB(100, 200, 255),  -- Cyan
+    SliderBg = Color3.fromRGB(30, 35, 40),
+    
+    -- Border Cyan (Signature Chloe X)
+    BorderBlue = Color3.fromRGB(100, 200, 255),  -- Cyan terang
 }
 
 local function Tween(obj, props, duration, style, direction)
@@ -852,13 +865,13 @@ end)
             end
         end)
 
-        -- ✅ HOVER EFFECT (PC ONLY)
+        -- ✅ HOVER EFFECT (PC ONLY) - Chloe X style
         HeaderBtn.MouseEnter:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover})
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
         end)
 
         HeaderBtn.MouseLeave:Connect(function()
-            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg})
+            Tween(SectionHeader, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
         end)
             
             local SectionObj = {Container = Container, Frame = SectionHeader}
@@ -907,13 +920,14 @@ end)
                 Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 
                 Btn.MouseEnter:Connect(function()
-                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentHover})
-                    Tween(Stroke, {Color = Theme.Primary})
+                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
+                    -- ✅ CHLOE X: Cyan border on hover
+                    Tween(Stroke, {Color = Theme.BorderBlue, Transparency = 0.2}, 0.15)
                 end)
                 
                 Btn.MouseLeave:Connect(function()
-                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentBg})
-                    Tween(Stroke, {Color = Theme.ElementBorder})
+                    Tween(Btn, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
+                    Tween(Stroke, {Color = Theme.ElementBorder, Transparency = 0.4}, 0.15)
                 end)
                 
                 Btn.MouseButton1Click:Connect(function()
@@ -980,17 +994,18 @@ end)
                 Interact.Text = ""
                 
                 Interact.MouseEnter:Connect(function()
-                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentHover})
+                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentHover}, 0.15)
                 end)
                 
                 Interact.MouseLeave:Connect(function()
-                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentBg})
+                    Tween(Frame, {BackgroundColor3 = Theme.ElementContentBg}, 0.15)
                 end)
                 
                 local function SetValue(value)
                     CurrentValue = value
-                    Tween(ToggleBg, {BackgroundColor3 = value and Theme.ToggleOn or Theme.ToggleOff})
-                    Tween(ToggleCircle, {Position = value and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)})
+                    -- ✅ CHLOE X: Animasi lebih cepat (0.2s)
+                    Tween(ToggleBg, {BackgroundColor3 = value and Theme.ToggleOn or Theme.ToggleOff}, 0.2)
+                    Tween(ToggleCircle, {Position = value and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)}, 0.2)
                     if Flag then
                         Dunhill.Flags[Flag] = {CurrentValue = value, SetValue = SetValue}
                     end
@@ -1081,10 +1096,11 @@ end)
                 SliderThumb.ZIndex = 2
                 Instance.new("UICorner", SliderThumb).CornerRadius = UDim.new(1, 0)
                 
-                -- Shadow untuk bulatan
+                -- ✅ CHLOE X: Cyan glow untuk slider thumb
                 local ThumbShadow = Instance.new("UIStroke", SliderThumb)
-                ThumbShadow.Color = Theme.SliderFill
+                ThumbShadow.Color = Theme.BorderBlue  -- Cyan glow
                 ThumbShadow.Thickness = 2
+                ThumbShadow.Transparency = 0.3
                 
                 local SliderBtn = Instance.new("TextButton", SliderBg)
                 SliderBtn.Size = UDim2.new(1, 0, 1, 20)
@@ -1226,7 +1242,8 @@ end)
                 pcall(function()
                     InputBox.Focused:Connect(function()
                         pcall(function()
-                            Tween(Stroke, {Color = Theme.Primary})
+                            -- ✅ CHLOE X: Cyan border on focus
+                            Tween(Stroke, {Color = Theme.BorderBlue, Transparency = 0.2})
                         end)
                     end)
                 end)
@@ -1234,7 +1251,7 @@ end)
                 pcall(function()
                     InputBox.FocusLost:Connect(function(enterPressed)
                         pcall(function()
-                            Tween(Stroke, {Color = Theme.ElementBorder})
+                            Tween(Stroke, {Color = Theme.ElementBorder, Transparency = 0.4})
                         end)
                         
                         local text = InputBox.Text or ""
