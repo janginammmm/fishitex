@@ -329,27 +329,26 @@ end
         wait(0.35)
         ScreenGui:Destroy()
     end)
-            -- ✅ RESIZE HANDLE (setelah MakeDraggable)
+            -- ✅ RESIZE HANDLE (Mobile-friendly, transparan)
         local ResizeHandle = Instance.new("TextButton", Main)
-        ResizeHandle.Size = UDim2.new(0, 20, 0, 20)
-        ResizeHandle.Position = UDim2.new(1, -20, 1, -20)
-        ResizeHandle.BackgroundColor3 = Theme.BorderBlue
-        ResizeHandle.BackgroundTransparency = 0.3
+        ResizeHandle.Size = UDim2.new(0, 35, 0, 35)  -- ✅ Lebih besar untuk mobile
+        ResizeHandle.Position = UDim2.new(1, -35, 1, -35)
+        ResizeHandle.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
         ResizeHandle.Text = ""
         ResizeHandle.AutoButtonColor = false
         ResizeHandle.BorderSizePixel = 0
         ResizeHandle.ZIndex = 10
-        Instance.new("UICorner", ResizeHandle).CornerRadius = UDim.new(0, 4)
 
-        -- Icon garis resize (opsional, bisa dihapus jika mau polos)
-        local ResizeIcon = Instance.new("TextLabel", ResizeHandle)
-        ResizeIcon.Size = UDim2.new(1, 0, 1, 0)
+        -- ✅ Icon resize menggunakan gambar
+        local ResizeIcon = Instance.new("ImageLabel", ResizeHandle)
+        ResizeIcon.Size = UDim2.new(0, 24, 0, 24)  -- Ukuran icon
+        ResizeIcon.Position = UDim2.new(0.5, -12, 0.5, -12)  -- Center
         ResizeIcon.BackgroundTransparency = 1
-        ResizeIcon.Text = "⋰"
-        ResizeIcon.TextColor3 = Theme.Text
-        ResizeIcon.TextSize = 16
-        ResizeIcon.Font = Enum.Font.GothamBold
-        ResizeIcon.Rotation = 90
+        ResizeIcon.Image = "rbxassetid://7733992901"  -- Icon resize (arrows diagonal)
+        ResizeIcon.ImageColor3 = Theme.BorderBlue
+        ResizeIcon.ImageTransparency = 0.3
+        ResizeIcon.ScaleType = Enum.ScaleType.Fit
+
 
         -- ✅ RESIZE LOGIC
         local resizing = false
@@ -363,6 +362,8 @@ end
                 resizing = true
                 resizeStart = input.Position
                 startSize = Main.AbsoluteSize
+                -- ✅ Visual feedback saat touch (icon jadi solid)
+                Tween(ResizeIcon, {ImageTransparency = 0}, 0.15)
             end
         end)
 
@@ -371,6 +372,8 @@ end
                 resizing = false
                 -- Update OriginalSize agar minimize/maximize tetap pakai size baru
                 OriginalSize = Main.Size
+                -- ✅ Kembalikan transparency
+                Tween(ResizeIcon, {ImageTransparency = 0.3}, 0.15)
             end
         end)
 
@@ -384,14 +387,16 @@ end
             end
         end)
 
-        -- Hover effect untuk resize handle
+        -- Hover effect untuk resize icon (Desktop only)
         ResizeHandle.MouseEnter:Connect(function()
-            Tween(ResizeHandle, {BackgroundTransparency = 0})
+            if not resizing then
+                Tween(ResizeIcon, {ImageTransparency = 0.1}, 0.15)
+            end
         end)
 
         ResizeHandle.MouseLeave:Connect(function()
             if not resizing then
-                Tween(ResizeHandle, {BackgroundTransparency = 0.3})
+                Tween(ResizeIcon, {ImageTransparency = 0.3}, 0.15)
             end
         end)
 
