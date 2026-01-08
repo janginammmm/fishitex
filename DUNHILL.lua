@@ -187,7 +187,7 @@ end
     Main.Size = UDim2.new(0, 500, 0, 290)
     Main.Position = UDim2.new(0.5, -250, 0.5, -175)
     Main.BackgroundColor3 = Theme.Background
-    Main.BackgroundTransparency = 0.15
+    Main.BackgroundTransparency = 0.05  -- ✅ Lebih solid, tidak terlalu transparan
     Main.BorderSizePixel = 0
     Main.ClipsDescendants = true
     Main.Parent = ScreenGui
@@ -246,24 +246,22 @@ end
     local CloseBtn = Instance.new("ImageButton", TopBar)
     CloseBtn.Size = UDim2.new(0, 35, 0, 35)
     CloseBtn.Position = UDim2.new(1, -40, 0.5, -17.5)
-    CloseBtn.BackgroundColor3 = Theme.ElementBg
+    CloseBtn.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
     CloseBtn.Image = "rbxassetid://97946818577230"
     CloseBtn.ScaleType = Enum.ScaleType.Fit
     CloseBtn.AutoButtonColor = false
     CloseBtn.BorderSizePixel = 0
-    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)  -- ✅ TAMBAHKAN INI
     
     local MinBtn = Instance.new("TextButton", TopBar)
     MinBtn.Size = UDim2.new(0, 35, 0, 35)
     MinBtn.Position = UDim2.new(1, -80, 0.5, -17.5)
-    MinBtn.BackgroundColor3 = Theme.ElementBg
+    MinBtn.BackgroundTransparency = 1  -- ✅ Transparan, tanpa background
     MinBtn.Text = "−"
     MinBtn.TextColor3 = Theme.Text
     MinBtn.TextSize = 18
     MinBtn.Font = Enum.Font.GothamBold
     MinBtn.AutoButtonColor = false
     MinBtn.BorderSizePixel = 0
-    Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 8)
         
     local MinimizedIcon = Instance.new("ImageButton", ScreenGui)
     MinimizedIcon.Name = "MinIcon"
@@ -308,13 +306,14 @@ end
     
     MakeDraggable(Main, TopBar)
     
-    CloseBtn.MouseEnter:Connect(function() 
-        Tween(CloseBtn, {BackgroundColor3 = Theme.Error})
-    end)
+    -- ✅ Hover effects dihapus karena button tidak punya background
+    -- CloseBtn.MouseEnter:Connect(function() 
+    --     Tween(CloseBtn, {BackgroundColor3 = Theme.Error})
+    -- end)
 
-    CloseBtn.MouseLeave:Connect(function() 
-        Tween(CloseBtn, {BackgroundColor3 = Theme.ElementBg})
-    end)
+    -- CloseBtn.MouseLeave:Connect(function() 
+    --     Tween(CloseBtn, {BackgroundColor3 = Theme.ElementBg})
+    -- end)
     CloseBtn.MouseButton1Click:Connect(function()
         Tween(Main, {Size = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0.5, 0, 0.5, 0)}, 0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In)
         wait(0.35)
@@ -386,8 +385,9 @@ end
             end
         end)
 
-    MinBtn.MouseEnter:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBgHover}) end)
-    MinBtn.MouseLeave:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBg}) end)
+    -- ✅ Hover effects dihapus karena button tidak punya background
+    -- MinBtn.MouseEnter:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBgHover}) end)
+    -- MinBtn.MouseLeave:Connect(function() Tween(MinBtn, {BackgroundColor3 = Theme.ElementBg}) end)
 -- ✅ FIX: Simpan ukuran dan posisi asli
 local OriginalSize = Main.Size
 local OriginalPosition = Main.Position
