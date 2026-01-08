@@ -1633,6 +1633,375 @@ end)
             end
             
             -- ================================
+            -- ✅ MULTI-SELECT DROPDOWN
+            -- ================================
+            function SectionObj:CreateMultiDropdown(config)
+                config = config or {}
+                local Name = config.Name or "Multi Dropdown"
+                local Options = config.Options or {"Option 1", "Option 2"}
+                local Default = config.Default or {}
+                local Flag = config.Flag
+                local Callback = config.Callback or function() end
+                
+                local SelectedOptions = {}
+                for _, v in ipairs(Default) do
+                    SelectedOptions[v] = true
+                end
+                
+                -- ✅ Frame lebih tinggi dengan layout 2 kolom
+                local Frame = Instance.new("Frame", Container)
+                Frame.Size = UDim2.new(1, 0, 0, 50)
+                Frame.BackgroundColor3 = Theme.ElementContentBg
+                Frame.BackgroundTransparency = 0.7
+                Frame.BorderSizePixel = 0
+                Frame.ClipsDescendants = false
+                Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 7)
+                
+                local Stroke = Instance.new("UIStroke", Frame)
+                Stroke.Color = Theme.ElementBorder
+                Stroke.Thickness = 1
+                Stroke.Transparency = 0.4
+                Stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                
+                -- ✅ Label di sebelah kiri
+                local NameLabel = Instance.new("TextLabel", Frame)
+                NameLabel.Size = UDim2.new(0.4, -10, 1, 0)
+                NameLabel.Position = UDim2.new(0, 15, 0, 5)
+                NameLabel.BackgroundTransparency = 1
+                NameLabel.Text = Name
+                NameLabel.TextColor3 = Theme.Text
+                NameLabel.TextSize = 13
+                NameLabel.Font = Enum.Font.GothamBold
+                NameLabel.TextXAlignment = Enum.TextXAlignment.Left
+                NameLabel.TextYAlignment = Enum.TextYAlignment.Top
+                
+                -- ✅ Box dropdown di sebelah kanan
+                local DropdownBox = Instance.new("Frame", Frame)
+                DropdownBox.Size = UDim2.new(0.55, 0, 0, 35)
+                DropdownBox.Position = UDim2.new(0.43, 0, 0.5, -17.5)
+                DropdownBox.BackgroundColor3 = Color3.fromRGB(25, 28, 32)
+                DropdownBox.BackgroundTransparency = 0.3
+                DropdownBox.BorderSizePixel = 0
+                Instance.new("UICorner", DropdownBox).CornerRadius = UDim.new(0, 6)
+                
+                local DropboxStroke = Instance.new("UIStroke", DropdownBox)
+                DropboxStroke.Color = Theme.ElementBorder
+                DropboxStroke.Thickness = 1
+                DropboxStroke.Transparency = 0.5
+                DropboxStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                
+                local Btn = Instance.new("TextButton", DropdownBox)
+                Btn.Size = UDim2.new(1, 0, 1, 0)
+                Btn.BackgroundTransparency = 1
+                Btn.Text = ""
+                
+                local function GetSelectedCount()
+                    local count = 0
+                    for _ in pairs(SelectedOptions) do
+                        count = count + 1
+                    end
+                    return count
+                end
+                
+                local function UpdateValueLabel()
+                    local count = GetSelectedCount()
+                    if count == 0 then
+                        ValueLabel.Text = "None"
+                    elseif count == 1 then
+                        for opt in pairs(SelectedOptions) do
+                            ValueLabel.Text = opt
+                            break
+                        end
+                    else
+                        ValueLabel.Text = count .. " selected"
+                    end
+                end
+                
+                local ValueLabel = Instance.new("TextLabel", DropdownBox)
+                ValueLabel.Size = UDim2.new(1, -35, 1, 0)
+                ValueLabel.Position = UDim2.new(0, 10, 0, 0)
+                ValueLabel.BackgroundTransparency = 1
+                ValueLabel.Text = "None"
+                ValueLabel.TextColor3 = Theme.BorderBlue
+                ValueLabel.TextSize = 12
+                ValueLabel.Font = Enum.Font.Gotham
+                ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
+                ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
+                
+                UpdateValueLabel()
+                
+                local Arrow = Instance.new("TextLabel", DropdownBox)
+                Arrow.Size = UDim2.new(0, 20, 0, 20)
+                Arrow.Position = UDim2.new(1, -25, 0.5, -10)
+                Arrow.BackgroundTransparency = 1
+                Arrow.Text = "▼"
+                Arrow.TextColor3 = Theme.TextDim
+                Arrow.TextSize = 10
+                Arrow.Font = Enum.Font.Gotham
+                
+                local DropdownPopup = Instance.new("Frame")
+                DropdownPopup.Name = "MultiDropdownPopup_" .. Name
+                DropdownPopup.Size = UDim2.new(0, 200, 0, 0)
+                DropdownPopup.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+                DropdownPopup.BorderSizePixel = 0
+                DropdownPopup.Visible = false
+                DropdownPopup.ZIndex = 100
+                DropdownPopup.Parent = Main
+                Instance.new("UICorner", DropdownPopup).CornerRadius = UDim.new(0, 6)
+                
+                local PopupShadow = Instance.new("ImageLabel", DropdownPopup)
+                PopupShadow.Size = UDim2.new(1, 20, 1, 20)
+                PopupShadow.Position = UDim2.new(0, -10, 0, -10)
+                PopupShadow.BackgroundTransparency = 1
+                PopupShadow.Image = "rbxassetid://5554236805"
+                PopupShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+                PopupShadow.ImageTransparency = 0.5
+                PopupShadow.ScaleType = Enum.ScaleType.Slice
+                PopupShadow.SliceCenter = Rect.new(23, 23, 277, 277)
+                PopupShadow.ZIndex = -1
+                
+                local OptionsScroll = Instance.new("ScrollingFrame", DropdownPopup)
+                OptionsScroll.Size = UDim2.new(1, -6, 1, -6)
+                OptionsScroll.Position = UDim2.new(0, 3, 0, 3)
+                OptionsScroll.BackgroundTransparency = 1
+                OptionsScroll.ScrollBarThickness = 4
+                OptionsScroll.ScrollBarImageColor3 = Theme.Primary
+                OptionsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+                OptionsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+                OptionsScroll.BorderSizePixel = 0
+                OptionsScroll.ScrollingDirection = Enum.ScrollingDirection.Y
+                
+                local OptionsLayout = Instance.new("UIListLayout", OptionsScroll)
+                OptionsLayout.Padding = UDim.new(0, 4)
+                OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                
+                local OptionsPadding = Instance.new("UIPadding", OptionsScroll)
+                OptionsPadding.PaddingTop = UDim.new(0, 5)
+                OptionsPadding.PaddingBottom = UDim.new(0, 5)
+                OptionsPadding.PaddingLeft = UDim.new(0, 5)
+                OptionsPadding.PaddingRight = UDim.new(0, 5)
+                
+                local Opened = false
+                
+                local function UpdateSize()
+                    if Opened then
+                        local itemHeight = 30
+                        local spacing = 4
+                        local padding = 10
+                        local calculatedHeight = (#Options * itemHeight) + ((#Options - 1) * spacing) + padding
+                        local maxHeight = Main.AbsoluteSize.Y * 0.6
+                        local finalHeight = math.min(calculatedHeight, maxHeight)
+                        local relativeX = Main.AbsoluteSize.X - 210
+                        local relativeY = 50
+                        
+                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                        DropdownPopup.Size = UDim2.new(0, 200, 0, finalHeight)
+                        DropdownPopup.Visible = true
+                        Tween(Arrow, {Rotation = 180}, 0.2)
+                    else
+                        DropdownPopup.Visible = false
+                        Tween(Arrow, {Rotation = 0}, 0.2)
+                    end
+                end
+                
+                local updateConnection
+                updateConnection = RunService.RenderStepped:Connect(function()
+                    if DropdownPopup.Visible then
+                        local relativeX = Main.AbsoluteSize.X - 210
+                        local relativeY = 50
+                        DropdownPopup.Position = UDim2.new(0, relativeX, 0, relativeY)
+                    end
+                end)
+                
+                local function CreateOptions()
+                    for _, child in ipairs(OptionsScroll:GetChildren()) do
+                        if child:IsA("Frame") then
+                            child:Destroy()
+                        end
+                    end
+                    
+                    for _, option in ipairs(Options) do
+                        local OptFrame = Instance.new("Frame", OptionsScroll)
+                        OptFrame.Size = UDim2.new(1, -10, 0, 30)
+                        OptFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+                        OptFrame.BorderSizePixel = 0
+                        Instance.new("UICorner", OptFrame).CornerRadius = UDim.new(0, 5)
+                        
+                        -- ✅ Garis biru di kiri untuk item yang dipilih
+                        local LeftBorder = Instance.new("Frame", OptFrame)
+                        LeftBorder.Name = "LeftBorder"
+                        LeftBorder.Size = UDim2.new(0, 3, 0.8, 0)
+                        LeftBorder.Position = UDim2.new(0, 0, 0.1, 0)
+                        LeftBorder.BackgroundColor3 = Theme.BorderBlue
+                        LeftBorder.BorderSizePixel = 0
+                        LeftBorder.Visible = SelectedOptions[option] or false
+                        Instance.new("UICorner", LeftBorder).CornerRadius = UDim.new(0, 2)
+                        
+                        local OptBtn = Instance.new("TextButton", OptFrame)
+                        OptBtn.Size = UDim2.new(1, 0, 1, 0)
+                        OptBtn.BackgroundTransparency = 1
+                        OptBtn.Text = option
+                        OptBtn.TextColor3 = Theme.Text
+                        OptBtn.TextSize = 13
+                        OptBtn.Font = Enum.Font.Gotham
+                        OptBtn.AutoButtonColor = false
+                        OptBtn.TextXAlignment = Enum.TextXAlignment.Left
+                        
+                        local TextPadding = Instance.new("UIPadding", OptBtn)
+                        TextPadding.PaddingLeft = UDim.new(0, 15)
+                        
+                        OptBtn.MouseEnter:Connect(function()
+                            Tween(OptFrame, {BackgroundColor3 = Color3.fromRGB(40, 40, 40)}, 0.15)
+                        end)
+                        
+                        OptBtn.MouseLeave:Connect(function()
+                            Tween(OptFrame, {BackgroundColor3 = Color3.fromRGB(18, 18, 18)}, 0.15)
+                        end)
+                        
+                        local touchStart = nil
+                        local isTouching = false
+                        
+                        OptBtn.InputBegan:Connect(function(input)
+                            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                                touchStart = input.Position
+                                isTouching = true
+                            end
+                        end)
+                        
+                        OptBtn.InputEnded:Connect(function(input)
+                            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and isTouching then
+                                local touchEnd = input.Position
+                                local distance = (touchEnd - touchStart).Magnitude
+                                
+                                if distance < 10 then
+                                    -- Toggle selection
+                                    SelectedOptions[option] = not SelectedOptions[option]
+                                    LeftBorder.Visible = SelectedOptions[option]
+                                    
+                                    UpdateValueLabel()
+                                    
+                                    if Flag then
+                                        local selected = {}
+                                        for opt in pairs(SelectedOptions) do
+                                            table.insert(selected, opt)
+                                        end
+                                        Dunhill.Flags[Flag] = {CurrentValue = selected}
+                                    end
+                                    
+                                    pcall(function()
+                                        local selected = {}
+                                        for opt in pairs(SelectedOptions) do
+                                            table.insert(selected, opt)
+                                        end
+                                        Callback(selected)
+                                    end)
+                                    SaveConfig()
+                                end
+                                isTouching = false
+                            end
+                        end)
+                    end
+                end
+                
+                CreateOptions()
+                
+                local btnTouchStart = nil
+                local btnTouchStartTime = nil
+                
+                Btn.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        btnTouchStart = input.Position
+                        btnTouchStartTime = tick()
+                    end
+                end)
+                
+                Btn.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        if btnTouchStart then
+                            local touchEnd = input.Position
+                            local distance = (touchEnd - btnTouchStart).Magnitude
+                            local touchDuration = tick() - btnTouchStartTime
+                            
+                            if distance < 10 and touchDuration < 0.3 then
+                                Opened = not Opened
+                                UpdateSize()
+                            end
+                            
+                            btnTouchStart = nil
+                            btnTouchStartTime = nil
+                        end
+                    end
+                end)
+                
+                local closeConnection
+                closeConnection = UserInputService.InputBegan:Connect(function(input)
+                    if Opened and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+                        task.wait(0.15)
+                        
+                        local mousePos = input.Position
+                        local popupPos = DropdownPopup.AbsolutePosition
+                        local popupSize = DropdownPopup.AbsoluteSize
+                        
+                        if mousePos.X < popupPos.X or mousePos.X > popupPos.X + popupSize.X or
+                           mousePos.Y < popupPos.Y or mousePos.Y > popupPos.Y + popupSize.Y then
+                            Opened = false
+                            UpdateSize()
+                        end
+                    end
+                end)
+                
+                Frame.AncestryChanged:Connect(function()
+                    if not Frame.Parent then
+                        if updateConnection then updateConnection:Disconnect() end
+                        if closeConnection then closeConnection:Disconnect() end
+                        DropdownPopup:Destroy()
+                    end
+                end)
+                
+                if Flag then
+                    local selected = {}
+                    for opt in pairs(SelectedOptions) do
+                        table.insert(selected, opt)
+                    end
+                    Dunhill.Flags[Flag] = {CurrentValue = selected}
+                end
+                
+                return {
+                    SetValue = function(_, options)
+                        SelectedOptions = {}
+                        for _, opt in ipairs(options) do
+                            if table.find(Options, opt) then
+                                SelectedOptions[opt] = true
+                            end
+                        end
+                        CreateOptions()
+                        UpdateValueLabel()
+                        if Flag then
+                            Dunhill.Flags[Flag] = {CurrentValue = options}
+                        end
+                    end,
+                    
+                    Refresh = function(_, newOptions)
+                        Options = newOptions
+                        SelectedOptions = {}
+                        CreateOptions()
+                        UpdateValueLabel()
+                        if Flag then
+                            Dunhill.Flags[Flag] = {CurrentValue = {}}
+                        end
+                    end,
+                    
+                    GetValue = function()
+                        local selected = {}
+                        for opt in pairs(SelectedOptions) do
+                            table.insert(selected, opt)
+                        end
+                        return selected
+                    end
+                }
+            end
+            
+            -- ================================
 -- ✅ COLLAPSIBLE SECTION (ACCORDION)
 -- ================================
 function SectionObj:CreateCollapsible(config)
