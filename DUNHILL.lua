@@ -211,9 +211,9 @@ end
     local TopBar = Instance.new("Frame", Main)
     TopBar.Name = "TopBar"
     TopBar.Size = UDim2.new(1, 0, 0, 40)
-    TopBar.Position = UDim2.new(0, 0, 0, -45)  -- ✅ Geser ke atas, ada gap 5px
+    TopBar.Position = UDim2.new(0, 0, 0, 0)  -- ✅ Nempel langsung, tanpa gap
     TopBar.BackgroundColor3 = Theme.Background
-    TopBar.BackgroundTransparency = 0  -- ✅ Solid, tidak transparan
+    TopBar.BackgroundTransparency = 0.7  -- ✅ Kembalikan transparency
     TopBar.BorderSizePixel = 0
     
     local TopBarCorner = Instance.new("UICorner", TopBar)
@@ -223,7 +223,7 @@ end
     TopBarExtend.Size = UDim2.new(1, 0, 0, 10)
     TopBarExtend.Position = UDim2.new(0, 0, 1, -10)
     TopBarExtend.BackgroundColor3 = Theme.Background  
-    TopBarExtend.BackgroundTransparency = 0  -- ✅ Solid, tidak transparan
+    TopBarExtend.BackgroundTransparency = 0.7  -- ✅ Kembalikan transparency
     TopBarExtend.BorderSizePixel = 0
     
     local Title = Instance.new("ImageLabel", TopBar)
