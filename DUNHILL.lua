@@ -777,9 +777,17 @@ end)
             local LineGradient = Instance.new("UIGradient", BlueLine)
             LineGradient.Transparency = NumberSequence.new({
                 NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (runcing panjang)
-                NumberSequenceKeypoint.new(0.2, 0),    -- Solid mulai di 20% (ujung tajam)
-                NumberSequenceKeypoint.new(0.8, 0),    -- Solid sampai 80% (ujung tajam)
+                NumberSequenceKeypoint.new(0.4, 0),    -- Solid di tengah (runcing sangat tajam)
+                NumberSequenceKeypoint.new(0.6, 0),    -- Solid di tengah
                 NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (runcing panjang)
+            })
+
+            -- Warna Hitam -> Biru -> Hitam untuk efek tajam
+            LineGradient.Color = ColorSequence.new({
+                ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),        -- Hitam di ujung (tajam)
+                ColorSequenceKeypoint.new(0.4, Theme.BorderBlue),       -- Biru di tengah
+                ColorSequenceKeypoint.new(0.6, Theme.BorderBlue),       -- Biru di tengah
+                ColorSequenceKeypoint.new(1, Color3.new(0,0,0))         -- Hitam di ujung (tajam)
             })
             
             -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
