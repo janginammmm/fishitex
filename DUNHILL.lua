@@ -764,30 +764,47 @@ end)
             UnderlineContainer.BackgroundTransparency = 1
             UnderlineContainer.ClipsDescendants = true
             
-            -- Garis biru dengan gradient untuk ujung runcing
+            -- Garis biru solid (tanpa gradient)
             local BlueLine = Instance.new("Frame", UnderlineContainer)
             BlueLine.Name = "BlueLine"
-            BlueLine.Size = DefaultExpanded and UDim2.new(1, 0, 1, 0) or UDim2.new(0, 0, 1, 0)  -- Mulai dari 0 jika collapsed
-            BlueLine.Position = UDim2.new(0.5, 0, 0, 0)  -- Anchor di tengah
-            BlueLine.AnchorPoint = Vector2.new(0.5, 0)  -- Expand dari tengah
+            BlueLine.Size = DefaultExpanded and UDim2.new(1, 0, 1, 0) or UDim2.new(0, 0, 1, 0)
+            BlueLine.Position = UDim2.new(0.5, 0, 0, 0)
+            BlueLine.AnchorPoint = Vector2.new(0.5, 0)
             BlueLine.BackgroundColor3 = Theme.BorderBlue
             BlueLine.BorderSizePixel = 0
             
-            -- Gradient untuk ujung runcing (fade out di kedua sisi)
-            local LineGradient = Instance.new("UIGradient", BlueLine)
-            LineGradient.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (runcing panjang)
-                NumberSequenceKeypoint.new(0.4, 0),    -- Solid di tengah (runcing sangat tajam)
-                NumberSequenceKeypoint.new(0.6, 0),    -- Solid di tengah
-                NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (runcing panjang)
+            -- ✅ SEGITIGA HITAM KIRI (Membentuk ujung runcing)
+            local LeftTriangle = Instance.new("Frame", UnderlineContainer)
+            LeftTriangle.Name = "LeftTriangle"
+            LeftTriangle.Size = UDim2.new(0, 30, 1, 0)  -- Lebar 30px untuk efek runcing
+            LeftTriangle.Position = UDim2.new(0, 0, 0, 0)
+            LeftTriangle.BackgroundColor3 = Theme.Background  -- Warna sama dengan background section
+            LeftTriangle.BorderSizePixel = 0
+            LeftTriangle.ZIndex = 2  -- Di atas garis biru
+            
+            -- Gradient untuk membentuk segitiga (kiri)
+            local LeftGradient = Instance.new("UIGradient", LeftTriangle)
+            LeftGradient.Rotation = 0  -- Horizontal
+            LeftGradient.Transparency = NumberSequence.new({
+                NumberSequenceKeypoint.new(0, 0),      -- Solid di kiri
+                NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (membentuk segitiga)
             })
-
-            -- Warna Hitam -> Biru -> Hitam untuk efek tajam
-            LineGradient.Color = ColorSequence.new({
-                ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),        -- Hitam di ujung (tajam)
-                ColorSequenceKeypoint.new(0.4, Theme.BorderBlue),       -- Biru di tengah
-                ColorSequenceKeypoint.new(0.6, Theme.BorderBlue),       -- Biru di tengah
-                ColorSequenceKeypoint.new(1, Color3.new(0,0,0))         -- Hitam di ujung (tajam)
+            
+            -- ✅ SEGITIGA HITAM KANAN (Membentuk ujung runcing)
+            local RightTriangle = Instance.new("Frame", UnderlineContainer)
+            RightTriangle.Name = "RightTriangle"
+            RightTriangle.Size = UDim2.new(0, 30, 1, 0)  -- Lebar 30px untuk efek runcing
+            RightTriangle.Position = UDim2.new(1, -30, 0, 0)
+            RightTriangle.BackgroundColor3 = Theme.Background  -- Warna sama dengan background section
+            RightTriangle.BorderSizePixel = 0
+            RightTriangle.ZIndex = 2  -- Di atas garis biru
+            
+            -- Gradient untuk membentuk segitiga (kanan)
+            local RightGradient = Instance.new("UIGradient", RightTriangle)
+            RightGradient.Rotation = 0  -- Horizontal
+            RightGradient.Transparency = NumberSequence.new({
+                NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (membentuk segitiga)
+                NumberSequenceKeypoint.new(1, 0)       -- Solid di kanan
             })
             
             -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
