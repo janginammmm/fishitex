@@ -344,7 +344,7 @@ end
         ResizeIcon.Size = UDim2.new(0, 24, 0, 24)  -- Ukuran icon
         ResizeIcon.Position = UDim2.new(0.5, -12, 0.5, -12)  -- Center
         ResizeIcon.BackgroundTransparency = 1
-        ResizeIcon.Image = "rbxassetid://106578353388946"  -- Icon resize (arrows diagonal)
+        ResizeIcon.Image = "rbxassetid://7733992901"  -- Icon resize (arrows diagonal)
         ResizeIcon.ImageColor3 = Theme.BorderBlue
         ResizeIcon.ImageTransparency = 0.3
         ResizeIcon.ScaleType = Enum.ScaleType.Fit
@@ -749,7 +749,7 @@ end)
             Arrow.Size = UDim2.new(0, 16, 0, 16)
             Arrow.Position = UDim2.new(1, -20, 0.5, -8)  -- ✅ Centered vertically
             Arrow.BackgroundTransparency = 1
-            Arrow.Image = "rbxassetid://73786707562567"
+            Arrow.Image = "rbxassetid://109663591620306"
             Arrow.ImageColor3 = Theme.TextDim
             Arrow.ScaleType = Enum.ScaleType.Fit
             Arrow.Rotation = DefaultExpanded and 180 or 0
@@ -776,10 +776,9 @@ end)
             -- Gradient untuk ujung runcing (fade out di kedua sisi)
             local LineGradient = Instance.new("UIGradient", BlueLine)
             LineGradient.Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (runcing)
-                NumberSequenceKeypoint.new(0.05, 0),   -- Solid
-                NumberSequenceKeypoint.new(0.95, 0),   -- Solid
-                NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (runcing)
+                NumberSequenceKeypoint.new(0, 1),      -- Transparan di kiri (runcing panjang)
+                NumberSequenceKeypoint.new(0.5, 0),    -- Solid di tengah (runcing ekstrim)
+                NumberSequenceKeypoint.new(1, 1)       -- Transparan di kanan (runcing panjang)
             })
             
             -- ✅ CONTAINER (LANGSUNG DI TabContent, BUKAN DI DALAM FRAME!)
@@ -1403,7 +1402,7 @@ end)
                 Arrow.Size = UDim2.new(0, 16, 0, 16)
                 Arrow.Position = UDim2.new(1, -23, 0.5, -8)
                 Arrow.BackgroundTransparency = 1
-                Arrow.Image = "rbxassetid://73786707562567"
+                Arrow.Image = "rbxassetid://109663591620306"
                 Arrow.ImageColor3 = Theme.TextDim
                 Arrow.ScaleType = Enum.ScaleType.Fit
                 
@@ -1748,7 +1747,7 @@ end)
                 Arrow.Size = UDim2.new(0, 16, 0, 16)
                 Arrow.Position = UDim2.new(1, -23, 0.5, -8)
                 Arrow.BackgroundTransparency = 1
-                Arrow.Image = "rbxassetid://73786707562567"
+                Arrow.Image = "rbxassetid://109663591620306"
                 Arrow.ImageColor3 = Theme.TextDim
                 Arrow.ScaleType = Enum.ScaleType.Fit
                 
@@ -2056,7 +2055,7 @@ function SectionObj:CreateCollapsible(config)
     Arrow.Size = UDim2.new(0, 16, 0, 16)
     Arrow.Position = UDim2.new(1, -28, 0, 11)
     Arrow.BackgroundTransparency = 1
-    Arrow.Image = "rbxassetid://73786707562567"
+    Arrow.Image = "rbxassetid://109663591620306"
     Arrow.ImageColor3 = Theme.TextDim
     Arrow.ScaleType = Enum.ScaleType.Fit
     Arrow.Rotation = DefaultExpanded and 180 or 0
